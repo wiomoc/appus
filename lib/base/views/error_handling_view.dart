@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:campus_flutter/base/extensions/custom_exception.dart';
 import 'package:campus_flutter/base/networking/apis/tumOnlineApi/tum_online_api_exception.dart';
 import 'package:campus_flutter/searchComponent/model/search_exception.dart';
@@ -15,7 +17,7 @@ class ErrorHandlingView extends StatelessWidget {
 
   final Object error;
   final ErrorHandlingViewType errorHandlingViewType;
-  final Future<dynamic> Function(bool)? retry;
+  final FutureOr<dynamic> Function(bool)? retry;
   final Color? titleColor;
   final Color? bodyColor;
 

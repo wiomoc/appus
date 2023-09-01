@@ -5,7 +5,7 @@ part 'mvv_response.g.dart';
 
 @JsonSerializable()
 class MvvResponse {
-  @JsonKey(name: "departureList")
+  @JsonKey(name: "stopEvents")
   final List<Departure> departures;
 
   MvvResponse({required this.departures});

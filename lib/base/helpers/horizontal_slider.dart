@@ -7,12 +7,14 @@ class HorizontalSlider<E> extends StatelessWidget {
       required this.data,
       required this.height,
       required this.child,
+      this.scrollController,
       this.leadingTrailingPadding = true});
 
   final List<E> data;
   final Widget Function(E data) child;
   final double height;
   final bool leadingTrailingPadding;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -20,29 +22,21 @@ class HorizontalSlider<E> extends StatelessWidget {
     return SizedBox(
         height: height,
         child: Padding(
-            padding: EdgeInsets.only(
-                right:
-                    orientation == Orientation.landscape ? context.padding : 0),
-            child: ListView(scrollDirection: Axis.horizontal, children: [
+            padding: EdgeInsets.only(right: orientation == Orientation.landscape ? context.padding : 0),
+            child: ListView(scrollDirection: Axis.horizontal, controller: scrollController, children: [
               for (var indexAndValue in data.indexed) ...[
                 if (indexAndValue.$1 == 0) ...[
-                  if (leadingTrailingPadding)
-                    const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 7.5)),
+                  if (leadingTrailingPadding) const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                   child(indexAndValue.$2)
                 ],
-                if (indexAndValue.$1 != 0 &&
-                    indexAndValue.$1 == data.length - 1) ...[
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                if (indexAndValue.$1 != 0 && indexAndValue.$1 == data.length - 1) ...[
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                   child(indexAndValue.$2),
-                  if (orientation != Orientation.landscape &&
-                      leadingTrailingPadding)
-                    const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 7.5))
+                  if (orientation != Orientation.landscape && leadingTrailingPadding)
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 2))
                 ],
-                if (indexAndValue.$1 != 0 &&
-                    indexAndValue.$1 != data.length - 1) ...[
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                if (indexAndValue.$1 != 0 && indexAndValue.$1 != data.length - 1) ...[
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
                   child(indexAndValue.$2)
                 ]
               ]

@@ -19,6 +19,12 @@ class DeparturesHomeWidget extends ConsumerStatefulWidget {
 
 class _DeparturesHomeWidgetState extends ConsumerState<DeparturesHomeWidget> {
   @override
+  void initState() {
+    super.initState();
+    ref.read(departureViewModel).fetch(true);
+  }
+
+  @override
   void deactivate() {
     ref.read(departureViewModel).timer?.cancel();
     super.deactivate();

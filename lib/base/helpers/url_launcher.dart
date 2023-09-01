@@ -6,9 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class UrlLauncher {
-  static urlString(String urlString, WidgetRef ref) async {
+  static urlString(String urlString, [WidgetRef? ref]) async {
     if (await canLaunchUrlString(urlString)) {
-      if (ref.read(useWebView) && Platform.isIOS) {
+      if ((ref?.read(useWebView) ?? true) && Platform.isIOS) {
         launchUrlString(urlString, mode: LaunchMode.inAppWebView).onError(
             (error, stackTrace) => launchUrlString(urlString,
                 mode: LaunchMode.externalApplication));

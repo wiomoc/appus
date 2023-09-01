@@ -8,7 +8,7 @@ class MvvDeparturesApi extends Api {
   MvvDeparturesApi({required this.station, required this.walkingTime});
 
   @override
-  String get baseURL => "efa.mvv-muenchen.de";
+  String get baseURL => "www3.vvs.de";
 
   @override
   bool get needsAuth => false;
@@ -32,7 +32,7 @@ class MvvDeparturesApi extends Api {
   };
 
   @override
-  String get path => "/ng/";
+  String get path => "/mngvvs/";
 
   @override
   String get paths => "${path}XML_DM_REQUEST";

@@ -35,7 +35,6 @@ class DeparturesViewModel extends ViewModel {
   }
 
   DeparturesViewModel() {
-    calculateClosestCampus();
   }
 
   void calculateClosestCampus() async {
@@ -90,14 +89,19 @@ class DeparturesViewModel extends ViewModel {
   }
 
   void fetchDepartures() {
-    if (closestCampus.value != null) {
       // TODO: calculate walking distance - feasible in Flutter?
       fetch(true);
-    }
   }
 
   @override
   Future fetch(bool forcedRefresh) async {
+    DeparturesService.fetchDepartures(
+        true,
+        "de:08111:6008",
+        null)
+        .then((response) => sortDepartures(response),
+        onError: (error) => departures.addError(error));
+    /*
     if (closestCampus.value != null) {
       if (selectedStation.value != null) {
         DeparturesService.fetchDepartures(
@@ -112,7 +116,7 @@ class DeparturesViewModel extends ViewModel {
             .then((response) => sortDepartures(response),
                 onError: (error) => departures.addError(error));
       }
-    }
+    }*/
   }
 
   void sortDepartures(({DateTime? saved, MvvResponse data}) response) {

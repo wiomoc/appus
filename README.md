@@ -10,7 +10,7 @@
 </a>
 --->
 
-# Tum Campus App - An Unofficial Guide Through University Life
+# ~~Tum~~ Uni Stuttgart Campus App - An Unofficial Guide Through University Life
 
 The TUM Campus App (TCA) is an open source project, developed by volunteers. This repository is dedicated to the development and transition to Flutter and currently in Beta. <!-- and [available on the App Store](https://itunes.apple.com/app/id1217412716), [on the Play Store]() and as a [web app](https://tum-dev.github.io/Campus-Flutter/). -->
 

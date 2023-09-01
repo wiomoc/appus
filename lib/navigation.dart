@@ -1,7 +1,6 @@
-import 'package:campus_flutter/calendarComponent/views/calendars_view.dart';
-import 'package:campus_flutter/gradeComponent/views/grades_view.dart';
+import 'package:campus_flutter/courseComponent/courses_view.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
-import 'package:campus_flutter/lectureComponent/views/lectures_view.dart';
+import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:campus_flutter/searchComponent/views/search_body_view.dart';
@@ -12,19 +11,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
-class Navigation extends ConsumerStatefulWidget {
+import 'calendar2Component/calendars_view.dart';
+
+class Navigation extends StatefulWidget {
   const Navigation({super.key});
 
   @override
-  ConsumerState<Navigation> createState() => _NavigationState();
+  State<Navigation> createState() => _NavigationState();
 }
 
-class _NavigationState extends ConsumerState<Navigation> {
+class _NavigationState extends State<Navigation> {
   int currentPageIndex = 0;
   double _searchAreaHeight = 0.0;
   bool _isSearching = false;
   bool showContent = false;
 
+  /*
   void _toggleSearch() {
     setState(() {
       ref.read(searchViewModel).clear();
@@ -41,11 +43,11 @@ class _NavigationState extends ConsumerState<Navigation> {
       _isSearching = false;
       _searchAreaHeight = 0.0;
     });
-  }
+  }*/
 
   @override
   void initState() {
-    ref.read(profileViewModel).fetch(true);
+    //ref.read(profileViewModel).fetch(true);
     super.initState();
   }
 
@@ -63,9 +65,9 @@ class _NavigationState extends ConsumerState<Navigation> {
                     padding: const EdgeInsets.all(15),
                     child: Image.asset('assets/images/logos/tum-logo-blue.png',
                         fit: BoxFit.scaleDown))
-                : IconButton(
+                : /*IconButton(
                     onPressed: () => _toggleSearch(),
-                    icon: const Icon(Icons.search)),
+                    icon: const Icon(Icons.search))*/ null,
             title: (() {
               switch (currentPageIndex) {
                 case 0:
@@ -77,7 +79,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                         fit: BoxFit.cover, height: 20);
                   }
                 case 1:
-                  return Text("Grades",
+                  return Text("Organisations",
                       style: Theme.of(context).textTheme.titleLarge);
                 case 2:
                   return Text("Lectures",
@@ -115,10 +117,10 @@ class _NavigationState extends ConsumerState<Navigation> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: _searchAreaHeight,
-                child: _isSearching
+                child: /*_isSearching
                     ? SearchView(
                         index: currentPageIndex, showContent: showContent)
-                    : null,
+                    : */null,
                 onEnd: () {
                   setState(() {
                     showContent = !showContent;
@@ -135,9 +137,9 @@ class _NavigationState extends ConsumerState<Navigation> {
       case 0:
         return HomeScreen();
       case 1:
-        return const GradesView();
+        return const OrganisationsView();
       case 2:
-        return const LecturesView();
+        return const CoursesView();
       case 3:
         return const CalendarsView();
       case 4:
@@ -161,8 +163,8 @@ class _NavigationState extends ConsumerState<Navigation> {
         ),
         child: NavigationBar(
           onDestinationSelected: (int index) {
-            _closeSearch();
-            ref.read(searchViewModel).clear();
+            //_closeSearch();
+            //ref.read(searchViewModel).clear();
             setState(() {
               currentPageIndex = index;
             });
@@ -182,9 +184,9 @@ class _NavigationState extends ConsumerState<Navigation> {
               label: 'Home',
             ),
             NavigationDestination(
-              icon: Icon(Icons.school_outlined),
-              selectedIcon: Icon(Icons.school),
-              label: 'Grades',
+              icon: Icon(Icons.feed_outlined),
+              selectedIcon: Icon(Icons.feed),
+              label: 'Organisations'
             ),
             NavigationDestination(
               icon: Icon(Icons.class_outlined),
@@ -224,9 +226,9 @@ class _NavigationState extends ConsumerState<Navigation> {
               label: Text('Home'),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.school_outlined),
-              selectedIcon: Icon(Icons.school),
-              label: Text('Grades'),
+              icon: Icon(Icons.feed_outlined),
+              selectedIcon: Icon(Icons.feed),
+              label: Text('Organisations'),
             ),
             NavigationRailDestination(
               icon: Icon(Icons.class_outlined),

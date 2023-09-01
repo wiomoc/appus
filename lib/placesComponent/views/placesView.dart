@@ -4,6 +4,7 @@ import 'package:campus_flutter/base/helpers/padded_divider.dart';
 import 'package:campus_flutter/base/helpers/tapable.dart';
 import 'package:campus_flutter/placesComponent/views/cafeterias/cafeterias_view.dart';
 import 'package:campus_flutter/placesComponent/views/campuses/campus_card_view.dart';
+import 'package:campus_flutter/placesComponent/views/mensa/mensas_view.dart';
 import 'package:campus_flutter/placesComponent/views/studyGroups/study_rooms_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class PlacesView extends ConsumerWidget {
                   ],
                 ))),
             action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const CafeteriasScaffold()))),
+                builder: (context) => const MensaPageView()))),
         const PaddedDivider(),
         for (var campus in ref.watch(placesViewModel).campuses)
           CampusCardView(campus: campus),
