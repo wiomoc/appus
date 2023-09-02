@@ -7,6 +7,7 @@ import 'package:campus_flutter/placesComponent/views/campuses/campus_card_view.d
 import 'package:campus_flutter/placesComponent/views/mensa/mensas_view.dart';
 import 'package:campus_flutter/placesComponent/views/studyGroups/study_rooms_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
+import 'package:campus_flutter/vvsComponent/views/departures_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,6 +51,22 @@ class PlacesView extends ConsumerWidget {
                 ))),
             action: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const MensasPageView()))),
+        Tapable(
+            child: const AspectRatio(
+                aspectRatio: 6,
+                child: CardWithPadding(
+                    child: Row(
+                      children: [
+                        IconText(
+                            iconData: Icons.train,
+                            label: "ÖPNV",
+                            iconSize: 24),
+                        Spacer(),
+                        Icon(Icons.arrow_forward_ios, size: 15)
+                      ],
+                    ))),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const VVSPageView()))),
         const PaddedDivider(),
         for (var campus in ref.watch(placesViewModel).campuses)
           CampusCardView(campus: campus),
