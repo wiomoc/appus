@@ -4,10 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../../../base/helpers/card_with_padding.dart';
 import '../../../base/helpers/delayed_loading_indicator.dart';
 import '../../../base/views/error_handling_view.dart';
-import '../../viewModels/cafeterias_viewmodel.dart';
 import 'meal_model.dart';
 import 'mensa_service.dart';
 
@@ -48,19 +46,23 @@ class MealCard extends StatelessWidget {
                         child: Padding(padding: EdgeInsets.all(25), child: CircularProgressIndicator()));
                   },
                 )),
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(meal.category, style: Theme.of(context).textTheme.titleLarge),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
-              Text(
-                ((meal.description != "") ? "${meal.meal}\n${meal.description}" : meal.meal) + "\n\n",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
-              Text("${meal.price} €", maxLines: 1, style: Theme.of(context).textTheme.bodyLarge),
-            ]),
+          Expanded(
+            child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(meal.category, style: Theme.of(context).textTheme.titleLarge),
+                      const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
+                      Expanded(
+                          child: Text(
+                        ((meal.description != "") ? "${meal.meal}\n${meal.description}" : meal.meal),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                      Text("${meal.price} €", maxLines: 1, style: Theme.of(context).textTheme.bodyLarge),
+                    ])),
           )
         ],
       ),
@@ -68,24 +70,23 @@ class MealCard extends StatelessWidget {
   }
 }
 
-class MensaPageView extends StatefulWidget {
-  const MensaPageView({super.key});
+class MensasPageView extends StatefulWidget {
+  const MensasPageView({super.key});
 
   @override
-  MensaPageState createState() {
-    return MensaPageState();
+  MensasPageState createState() {
+    return MensasPageState();
   }
 }
 
-class MensaPageState extends State<MensaPageView> {
-  MensaLocation currentLocation = mensaLocations.first;
-  DateTime? selectedDate;
+class MensasPageState extends State<MensasPageView> {
+  MensaLocation _currentLocation = mensaLocations.first;
   late Retryable<Map<DateTime, List<Meal>>> _mealsRetryable;
 
   @override
   void initState() {
     super.initState();
-    _mealsRetryable = Retryable(() => fetchMeals(currentLocation.id));
+    _mealsRetryable = Retryable(() => fetchMeals(_currentLocation.id));
   }
 
   @override
@@ -94,7 +95,7 @@ class MensaPageState extends State<MensaPageView> {
       appBar: AppBar(
         leading: const BackButton(),
         title: DropdownButton(
-          value: currentLocation,
+          value: _currentLocation,
           items: mensaLocations
               .map((location) => DropdownMenuItem(
                     value: location,
@@ -103,8 +104,8 @@ class MensaPageState extends State<MensaPageView> {
               .toList(),
           onChanged: (value) {
             setState(() {
-              if (currentLocation != value) {
-                currentLocation = value!;
+              if (_currentLocation != value) {
+                _currentLocation = value!;
                 _mealsRetryable.retry();
               }
             });
@@ -114,48 +115,7 @@ class MensaPageState extends State<MensaPageView> {
       body: GenericStreamBuilder(
           stream: _mealsRetryable.stream,
           dataBuilder: (context, meals) {
-            final minDate = meals.keys.min;
-            final maxDate = meals.keys.max;
-
-            if (selectedDate == null || !meals.containsKey(selectedDate)) {
-              //setState(() {
-              selectedDate = minDate;
-              // });
-            }
-            final todaysMeals = meals[selectedDate]!;
-            return Column(
-              children: [
-                SizedBox(
-                    height: 80,
-                    child: SfDateRangePicker(
-                      headerHeight: 0,
-                      toggleDaySelection: false,
-                      enablePastDates: false,
-                      allowViewNavigation: false,
-                      initialSelectedDate: selectedDate,
-                      selectableDayPredicate: (date) => meals.containsKey(date),
-                      minDate: minDate,
-                      maxDate: maxDate,
-                      monthViewSettings:
-                          const DateRangePickerMonthViewSettings(numberOfWeeksInView: 1, firstDayOfWeek: 1),
-                      onSelectionChanged: (args) => setState(() {
-                        selectedDate = args.value as DateTime;
-                      }),
-                    )),
-                Expanded(
-                    child: GridView.builder(
-                  padding: EdgeInsets.all(5),
-                  itemCount: todaysMeals.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: 235,
-                  ),
-                  itemBuilder: (context, index) => MealCard(todaysMeals[index]),
-                ))
-
-                //Text(dishes.first.$1.name)
-              ],
-            );
+            return MensaView(key: ValueKey(_currentLocation), meals: meals);
           },
           errorBuilder: (context, error) => ErrorHandlingView(
                 error: error,
@@ -166,5 +126,88 @@ class MensaPageState extends State<MensaPageView> {
               ),
           loadingBuilder: (p0) => const DelayedLoadingIndicator(name: "Meals")),
     );
+  }
+}
+
+class MensaView extends StatefulWidget {
+  final Map<DateTime, List<Meal>> meals;
+
+  const MensaView({super.key, required this.meals});
+
+  @override
+  MensaViewState createState() {
+    return MensaViewState();
+  }
+}
+
+class MensaViewState extends State<MensaView> with TickerProviderStateMixin {
+  late TabController _tabController;
+  late DateRangePickerController _datePickerController;
+
+  @override
+  void initState() {
+    super.initState();
+    final meals = widget.meals;
+    _datePickerController = DateRangePickerController();
+    final minDate = meals.keys.min;
+    _datePickerController.selectedDate = minDate;
+
+    _tabController = TabController(length: meals.length, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        _datePickerController.selectedDate = meals.keys.elementAt(_tabController.index);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final meals = widget.meals;
+    final minDate = meals.keys.min;
+    final maxDate = meals.keys.max;
+    return Column(
+      children: [
+        SizedBox(
+            height: 80,
+            child: SfDateRangePicker(
+              headerHeight: 0,
+              toggleDaySelection: false,
+              enablePastDates: false,
+              allowViewNavigation: false,
+              controller: _datePickerController,
+              selectableDayPredicate: (date) => meals.containsKey(date),
+              minDate: minDate,
+              maxDate: maxDate,
+              monthViewSettings: const DateRangePickerMonthViewSettings(numberOfWeeksInView: 1, firstDayOfWeek: 1),
+              onSelectionChanged: (dateRange) {
+                _tabController.animateTo(meals.keys.indexed.where((element) => element.$2 == dateRange.value).first.$1);
+              },
+            )),
+        Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: meals.values
+                    .map((todaysMeals) => GridView.builder(
+                          padding: EdgeInsets.all(5),
+                          itemCount: todaysMeals.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisExtent: 235,
+                          ),
+                          itemBuilder: (context, index) => MealCard(todaysMeals[index]),
+                        ))
+                    .toList()))
+
+        //Text(dishes.first.$1.name)
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _datePickerController.dispose();
+    _tabController.dispose();
   }
 }

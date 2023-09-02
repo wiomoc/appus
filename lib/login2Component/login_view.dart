@@ -4,8 +4,6 @@ import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:campus_flutter/loginComponent/views/confirm_view.dart';
 
 import '../navigation.dart';
 
@@ -25,6 +23,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
+    _usernameController.addListener(() {setState(() {});});
+    _passwordController.addListener(() {setState(() {});});
   }
 
   @override
@@ -87,34 +87,36 @@ class _LoginViewState extends State<LoginView> {
       children: [
         if (_invalidCredentials) const Text("Invalid Credentials", style: TextStyle(color: Colors.red)),
         ElevatedButton(
-            onPressed: (!_processingLogin)// && _usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
-                ? () {
-                    setState(() {
-                      _processingLogin = true;
-                    });
-
-                    getIt<CampusApi>().login(_usernameController.text, _passwordController.text).catchError((error) {
-                      if (error is InvalidCampusCredentialsException) {
+            onPressed:
+                (!_processingLogin && _usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
+                    ? () {
                         setState(() {
-                          _processingLogin = false;
-                          _invalidCredentials = true;
+                          _processingLogin = true;
                         });
-                      } else {
-                        _processingLogin = false;
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: const Duration(seconds: 10),
-                            content: ErrorHandlingView(
-                              error: error,
-                              errorHandlingViewType: ErrorHandlingViewType.textOnly,
-                              titleColor: Colors.white,
-                            )));
+                        getIt<CampusApi>().login(_usernameController.text, _passwordController.text).then((value) {
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(builder: (context) => const Navigation()));
+                        }).onError((error, stacktrace) {
+                          if (error is InvalidCampusCredentialsException) {
+                            setState(() {
+                              _processingLogin = false;
+                              _invalidCredentials = true;
+                            });
+                          } else {
+                            setState(() {
+                              _processingLogin = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(seconds: 10),
+                                content: ErrorHandlingView(
+                                  error: error!,
+                                  errorHandlingViewType: ErrorHandlingViewType.textOnly,
+                                  titleColor: Colors.white,
+                                )));
+                          }
+                        });
                       }
-                    }).then((value) {
-                      Navigator.of(context)
-                          .pushReplacement(MaterialPageRoute(builder: (context) => const Navigation()));
-                    });
-                  }
-                : null,
+                    : null,
             child: Text("Log in", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white))),
       ],
     );

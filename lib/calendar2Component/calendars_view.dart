@@ -1,14 +1,9 @@
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
-import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/calendar2Component/calendar_datasource.dart';
 import 'package:campus_flutter/courseComponent/course_view.dart';
-import 'package:campus_flutter/lectureComponent/views/lecture_details_view.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../base/networking/apis/campUSApi/campus_api.dart';
-import '../calendarComponent/model/calendar_data_source.dart';
 import '../providers_get_it.dart';
 
 class CalendarsView extends StatefulWidget {

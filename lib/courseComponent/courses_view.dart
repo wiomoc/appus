@@ -1,21 +1,12 @@
 import 'package:campus_flutter/base/helpers/retryable.dart';
-import 'package:campus_flutter/base/helpers/url_launcher.dart';
 import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
 import 'package:campus_flutter/base/views/generic_stream_builder.dart';
-import 'package:campus_flutter/mapComponent/map_view.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../base/helpers/card_with_padding.dart';
 import '../base/helpers/delayed_loading_indicator.dart';
-import '../base/helpers/horizontal_slider.dart';
-import '../base/helpers/icon_text.dart';
 import '../base/views/error_handling_view.dart';
 import '../providers_get_it.dart';
-import 'basic_course_info_view.dart';
 import 'course_view.dart';
-import 'detailed_course_info_view.dart';
 
 class CoursesView extends StatefulWidget {
   const CoursesView({super.key});

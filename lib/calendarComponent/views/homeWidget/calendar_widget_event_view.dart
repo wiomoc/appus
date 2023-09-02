@@ -1,6 +1,5 @@
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
 import 'package:campus_flutter/calendarComponent/views/calendars_view.dart';
-import 'package:campus_flutter/lectureComponent/views/lecture_details_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,8 +27,8 @@ class CalendarHomeWidgetEventView extends ConsumerWidget {
             showModalSheet(null, calendarEvent, context, ref);
           } else {
             ref.read(selectedEvent.notifier).state = calendarEvent;
-            ref.read(selectedLecture.notifier).state = null;
-            ref.read(homeSplitViewModel).selectedWidget.add(const LectureDetailsView());
+            //ref.read(selectedLecture.notifier).state = null;
+            //ref.read(homeSplitViewModel).selectedWidget.add(const LectureDetailsView());
           }
         },
         child: Column(

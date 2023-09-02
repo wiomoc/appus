@@ -49,7 +49,7 @@ class PlacesView extends ConsumerWidget {
                   ],
                 ))),
             action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const MensaPageView()))),
+                builder: (context) => const MensasPageView()))),
         const PaddedDivider(),
         for (var campus in ref.watch(placesViewModel).campuses)
           CampusCardView(campus: campus),

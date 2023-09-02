@@ -1,9 +1,7 @@
-import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:campus_flutter/loginComponent/views/confirm_view.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -160,7 +158,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ElevatedButton(
                   onPressed: (snapshot.data != null && snapshot.data!)
                       ? () {
-                          ref.read(loginViewModel).requestLogin().then(
+                          /*ref.read(loginViewModel).requestLogin().then(
                               (value) => Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) =>
@@ -174,7 +172,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                       ErrorHandlingViewType.textOnly,
                                   titleColor: Colors.white,
                                 )));
-                          });
+                          });*/
                         }
                       : null,
                   child: Text("Log in",

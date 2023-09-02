@@ -26,17 +26,17 @@ class HorizontalSlider<E> extends StatelessWidget {
             child: ListView(scrollDirection: Axis.horizontal, controller: scrollController, children: [
               for (var indexAndValue in data.indexed) ...[
                 if (indexAndValue.$1 == 0) ...[
-                  if (leadingTrailingPadding) const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                  if (leadingTrailingPadding) const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                   child(indexAndValue.$2)
                 ],
                 if (indexAndValue.$1 != 0 && indexAndValue.$1 == data.length - 1) ...[
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                   child(indexAndValue.$2),
                   if (orientation != Orientation.landscape && leadingTrailingPadding)
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 2))
+                    const Padding(padding: EdgeInsets.symmetric(horizontal: 3))
                 ],
                 if (indexAndValue.$1 != 0 && indexAndValue.$1 != data.length - 1) ...[
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                   child(indexAndValue.$2)
                 ]
               ]

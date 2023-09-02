@@ -9,7 +9,7 @@ import 'package:zoom_widget/zoom_widget.dart';
 import '../base/helpers/delayed_loading_indicator.dart';
 import '../base/helpers/retryable.dart';
 import '../base/views/error_handling_view.dart';
-import '../lectureComponent/views/basic_lecture_info_row_view.dart';
+import '../courseComponent/basic_course_info_row_view.dart';
 import 'models.dart';
 
 class FloorPlanView extends StatefulWidget {
@@ -64,7 +64,7 @@ class LayerPlanState extends State<FloorPlanView> {
             centerOnScale: true,
             onScaleUpdate: (scale, zoom) {
               setState(() {
-                this._markerScale = max(2 - zoom, 0.8);
+                _markerScale = max(2 - zoom, 0.8);
               });
             },
             child: Stack(
@@ -93,27 +93,27 @@ class RoomInformationView extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          BasicLectureInfoRowView(
+          BasicCourseInfoRowView(
             iconData: Icons.numbers_outlined,
             information: roomLocation.room.number,
           ),
-          BasicLectureInfoRowView(
+          BasicCourseInfoRowView(
             iconData: Icons.layers_outlined,
             information: roomLocation.floor.name,
           ),
-          BasicLectureInfoRowView(
+          BasicCourseInfoRowView(
             iconData: Icons.location_city_outlined,
             information: "${roomLocation.building.street}\n${roomLocation.building.city}",
           ),
           const Divider(),
           if (roomLocation.room.seats != null) ...[
-            BasicLectureInfoRowView(
+            BasicCourseInfoRowView(
               iconData: Icons.event_seat_outlined,
               information: roomLocation.room.seats!.toString(),
             ),
           ],
           if (roomLocation.room.usage != null) ...[
-            BasicLectureInfoRowView(
+            BasicCourseInfoRowView(
               iconData: Icons.room_preferences_outlined,
               information: roomLocation.room.usage!,
             )

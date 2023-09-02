@@ -5,7 +5,7 @@ import 'models.dart';
 class MapService {
   Future<RoomLocation> fetchRoomLocation(int id) async {
     final client = Dio();
-    final roomLocationJson = await client.get("http://10.53.31.135:8000/map/room/$id",
+    final roomLocationJson = await client.get("http://10.53.31.174:8000/map/room/$id",
         options: Options(
           responseType: ResponseType.json,
           sendTimeout: const Duration(seconds: 10),

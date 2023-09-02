@@ -4,7 +4,6 @@ import 'package:campus_flutter/base/helpers/retryable.dart';
 import 'package:campus_flutter/base/helpers/url_launcher.dart';
 import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
 import 'package:campus_flutter/mapComponent/map_view.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -39,7 +38,7 @@ class CourseAppointsmentsState extends State<CourseAppointmentsView> {
     var upcomingIndex = widget.appointments.indexWhere((appointment) => appointment.endDate.isAfter(selectedDate));
     if (upcomingIndex == -1) upcomingIndex = widget.appointments.length - 1;
 
-    _scrollController = ScrollController(initialScrollOffset: max(upcomingIndex * 200.0 - 10, 0));
+    _scrollController = ScrollController(initialScrollOffset: max(upcomingIndex * 206.0 - 10, 0));
   }
 
   @override
@@ -48,7 +47,6 @@ class CourseAppointsmentsState extends State<CourseAppointmentsView> {
 
     return HorizontalSlider(
       data: widget.appointments,
-      leadingTrailingPadding: false,
       scrollController: _scrollController,
       height: 155,
       child: (appointment) {
@@ -59,6 +57,7 @@ class CourseAppointsmentsState extends State<CourseAppointmentsView> {
                 color: (appointment.endDate.isBefore(now) || appointment.status == CalendarEventStatus.canceled)
                     ? color.withOpacity(0.5)
                     : color,
+                margin: EdgeInsets.zero,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

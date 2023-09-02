@@ -6,6 +6,7 @@ import 'package:campus_flutter/theme.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,6 +28,7 @@ main() async {
     HiveCacheStore(directory.path).clean();
     getIt.registerSingleton<MainApi>(MainApi.mobileCache(await getTemporaryDirectory()));
   }*/
+  //debugPaintSizeEnabled=true;
   runApp(const ProviderScope(child: CampusApp()));
 }
 

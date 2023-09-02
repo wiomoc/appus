@@ -171,9 +171,9 @@ class SearchViewModel {
       case 1:
         ref.read(gradesSearchViewModel).gradesSearch(query: this.searchString);
       case 2:
-        ref
-            .read(lectureSearchViewModel)
-            .personalLectureSearch(query: this.searchString);
+        //ref
+        //    .read(lectureSearchViewModel)
+        //    .personalLectureSearch(query: this.searchString);
       case 3:
         ref
             .read(calendarSearchViewModel)
@@ -187,9 +187,9 @@ class SearchViewModel {
             .studyRoomSearch(query: this.searchString);
       default:
         ref.read(gradesSearchViewModel).gradesSearch(query: this.searchString);
-        ref
-            .read(lectureSearchViewModel)
-            .personalLectureSearch(query: this.searchString);
+      //  ref
+      //      .read(lectureSearchViewModel)
+      //      .personalLectureSearch(query: this.searchString);
         ref.read(movieSearchViewModel).movieSearch(query: this.searchString);
         ref
             .read(calendarSearchViewModel)

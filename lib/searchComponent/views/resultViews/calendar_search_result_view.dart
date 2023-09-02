@@ -3,7 +3,6 @@ import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:campus_flutter/base/helpers/padded_divider.dart';
 import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
-import 'package:campus_flutter/lectureComponent/views/lecture_details_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +46,7 @@ class CalendarSearchResultView extends ConsumerWidget {
                         onTap: () {
                           ref.read(selectedEvent.notifier).state =
                               snapshot.data![index].$1;
+                          /*
                           ref.read(selectedLecture.notifier).state = null;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => Scaffold(
@@ -54,7 +54,7 @@ class CalendarSearchResultView extends ConsumerWidget {
                                     leading: const BackButton(),
                                   ),
                                   body: const SafeArea(
-                                      child: LectureDetailsView()))));
+                                      child: LectureDetailsView()))));*/
                         }),
                     separatorBuilder: (context, index) => const PaddedDivider(
                           height: 0,

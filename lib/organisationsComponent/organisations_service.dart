@@ -5,7 +5,7 @@ import 'models.dart';
 class OrganisationsService {
   Future<List<Organisation>> fetchOrganisations(List<String> ids) async {
     final client = Dio();
-    final organisationsJson = await client.get("http://10.53.31.135:8000/organisations",
+    final organisationsJson = await client.get("http://10.53.31.174:8000/organisations",
         queryParameters: {"orgs": ids},
         options: Options(
           responseType: ResponseType.json,

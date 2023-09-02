@@ -42,16 +42,16 @@ class CampusCalendarDatasource extends CalendarDataSource {
   Future<void> handleLoadMore(DateTime startDate, DateTime endDate) async {
     final startWeek = _startOfWeek(startDate);
     print("Loading more events for week $startWeek");
-    bool notifed = false;
+    bool notified = false;
     for (DateTime week = startWeek; week.isBefore(endDate); week = week.add(const Duration(days: 7))) {
       if (loadedWeeks.add(week)) {
         final events = await campusApi.calendar(week, week.add(const Duration(days: 7)));
         appointments!.addAll(events);
         notifyListeners(CalendarDataSourceAction.add, events);
-        notifed = true;
+        notified = true;
       }
     }
-    if (notifed == false) {
+    if (!notified) {
       notifyListeners(CalendarDataSourceAction.add, []);
     }
   }

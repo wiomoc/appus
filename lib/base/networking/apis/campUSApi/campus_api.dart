@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
-
+import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:intl/intl.dart';
@@ -303,12 +303,13 @@ class CampusApi {
         options: Options(followRedirects: false, validateStatus: (status) => true, headers: headers));
     var responseObject = response.data;
     final Map<String, Cookie> cookies = Map.fromIterable(
-        response.headers[HttpHeaders.setCookieHeader]!.map(Cookie.fromSetCookieValue),
+        response.headers[HttpHeaders.setCookieHeader]?.map(Cookie.fromSetCookieValue) ?? [],
         key: (cookie) => cookie.name);
 
     if (response.statusCode == 302) {
-      final secondResponse = await dioClient.get(response.headers["location"]!.first,
-          options: Options(followRedirects: false, headers: headers));
+      final location = path.url.join(campusBaseUrl, response.headers["location"]!.first);
+      final secondResponse = await dioClient.get(location,
+          options: Options(followRedirects: false, validateStatus: (status) => true, headers: headers));
       responseObject = secondResponse.data;
     }
 
@@ -392,7 +393,7 @@ class CampusApi {
         ));
     print(response.headers);
     if (response.statusCode == 401 && appendAccessToken) {
-      if(suppressTokenRefresh) {
+      if (suppressTokenRefresh) {
         throw CampusApiException("Could not refresh access token");
       }
       await _refreshToken();
@@ -626,5 +627,11 @@ class CampusApi {
           localizedName: _getLocalized(study["studyName"])!,
           localizedDegree: _getLocalized(study["basicStudyProgrammeLibDto"]["degreeType"]["name"])!);
     }).toList();
+  }
+
+  void logout() {
+    isAuthenticated.value = false;
+    currentAuthTokens = null;
+    _storeAuthTokens();
   }
 }

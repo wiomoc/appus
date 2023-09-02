@@ -78,13 +78,16 @@ class OrganisationView extends StatelessWidget {
             ),
           HorizontalSlider(
               data: organisation.news,
-              leadingTrailingPadding: false,
-              height: organisation.news.firstOrNull?.localizedTitle == null ? 170 : 250,
+              leadingTrailingPadding: true,
+              height: organisation.news.firstOrNull?.localizedTitle == null
+                  ? 180
+                  : (organisation.news.firstOrNull?.image == null ? 160 : 250),
               child: (item) {
-                return SizedBox(
-                    width: 170,
-                    child: Card(
-                        elevation: 2,
+                return Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 2,
+                    child: SizedBox(
+                        width: 180,
                         child: InkWell(
                           onTap: () {
                             UrlLauncher.urlString(item.href);
@@ -98,7 +101,9 @@ class OrganisationView extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10.0),
                                     child: Image.network(
                                       item.image!.toString(),
-                                      fit: BoxFit.fitWidth,
+                                      fit: BoxFit.cover,
+                                      width: 180,
+                                      height: 180,
                                       loadingBuilder: (context, child, loadingProgress) {
                                         if (loadingProgress == null) return child;
                                         return const Center(
@@ -107,21 +112,26 @@ class OrganisationView extends StatelessWidget {
                                       },
                                     )),
                               if (item.localizedTitle != null)
-                                Padding(
+                                Expanded(
+                                    child: Padding(
                                   padding: const EdgeInsets.all(5),
-                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                    Text(
-                                      item.localizedTitle!,
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
-                                    Text(
-                                      DateFormat.yMMMd().format(item.date),
-                                      style: Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ]),
-                                )
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                            child: Text(
+                                          item.localizedTitle!,
+                                          maxLines: item.image == null ? 5 : 3,
+                                          overflow: TextOverflow.ellipsis,
+                                        )),
+                                        const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
+                                        Text(
+                                          DateFormat.yMMMd().format(item.date),
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      ]),
+                                ))
                             ],
                           ),
                         )));
@@ -179,7 +189,8 @@ class OrganisationsState extends State<OrganisationsView> {
   void initState() {
     super.initState();
 
-    _organisationsRetryable = Retryable(() => OrganisationsService().fetchOrganisations(["stuvus", "fius", "uni"]));
+    _organisationsRetryable =
+        Retryable(() => OrganisationsService().fetchOrganisations(["stuvus", "fius", "mach", "uni"]));
   }
 
   @override

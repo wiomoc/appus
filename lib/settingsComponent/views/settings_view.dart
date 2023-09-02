@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:campus_flutter/base/helpers/hyperlink_text.dart';
 import 'package:campus_flutter/base/helpers/padded_divider.dart';
+import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
-import 'package:campus_flutter/loginComponent/views/permission_check_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class SettingsView extends ConsumerWidget {
           title: const Text("Settings"),
         ),
         body: ListView(children: [
-          _generalSettings(context, ref),
+          if (!kIsWeb && Platform.isIOS) _generalSettings(context, ref),
           _appearance(context, ref),
           _contact(ref),
           _authentication(context, ref),
@@ -34,25 +34,8 @@ class SettingsView extends ConsumerWidget {
     return WidgetFrameView(
         title: "General Settings",
         child: Column(children: [
-          _tokenPermission(context),
           if (!kIsWeb && Platform.isIOS) _useWebView(context, ref)
         ]));
-  }
-
-  Widget _tokenPermission(BuildContext context) {
-    return GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                const PermissionCheckView(isSettingsView: true))),
-        child: Card(
-            child: ListTile(
-          dense: true,
-          leading:
-              Icon(Icons.key, size: 20, color: Theme.of(context).primaryColor),
-          title: Text("Token Permissions",
-              style: Theme.of(context).textTheme.bodyMedium),
-          trailing: const Icon(Icons.arrow_forward_ios, size: 15),
-        )));
   }
 
   Widget _useWebView(BuildContext context, WidgetRef ref) {
@@ -133,19 +116,20 @@ class SettingsView extends ConsumerWidget {
   }
 
   Widget _authentication(BuildContext context, WidgetRef ref) {
-    final login = ref.read(loginViewModel).credentials.value;
+    final campusApi = getIt<CampusApi>();
+    final isAuthenticated = campusApi.isAuthenticated.value;
     return WidgetFrameView(
         child: GestureDetector(
             onTap: () {
-              if (login != Credentials.none) {
-                ref.read(loginViewModel).logout(ref);
+              if (isAuthenticated) {
+                campusApi.logout();
               }
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: Card(
                 child: ListTile(
               dense: true,
-              title: login != Credentials.tumId
+              title: !isAuthenticated
                   ? Text("Login",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.green, fontWeight: FontWeight.w500),

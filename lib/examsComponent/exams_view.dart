@@ -4,7 +4,6 @@ import 'package:campus_flutter/base/views/generic_stream_builder.dart';
 import 'package:campus_flutter/examsComponent/grade_view.dart';
 import 'package:campus_flutter/mapComponent/map_view.dart';
 import 'package:collection/collection.dart';
-import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -95,7 +94,7 @@ class ExamsState extends State<ExamsView> {
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(),
-          title: Text("Exams & Grades"),
+          title: const Text("Exams & Grades"),
         ),
         body: GenericStreamBuilder(
             stream: _examsRetryable.stream,

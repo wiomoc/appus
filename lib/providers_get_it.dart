@@ -3,9 +3,6 @@ import 'package:campus_flutter/calendarComponent/viewModels/calendar_viewmodel.d
 import 'package:campus_flutter/departuresComponent/viewModel/departures_viewmodel.dart';
 import 'package:campus_flutter/gradeComponent/viewModels/grade_viewmodel.dart';
 import 'package:campus_flutter/homeComponent/split_view_viewmodel.dart';
-import 'package:campus_flutter/lectureComponent/model/lecture.dart';
-import 'package:campus_flutter/lectureComponent/viewModels/lecture_details_viewmodel.dart';
-import 'package:campus_flutter/lectureComponent/viewModels/lecture_viewmodel.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
 import 'package:campus_flutter/movieComponent/viewModel/movies_viewmodel.dart';
 import 'package:campus_flutter/navigatumComponent/viewModels/navigatum_viewmodel.dart';
@@ -30,7 +27,6 @@ import 'package:get_it/get_it.dart';
 final getIt = GetIt.instance;
 
 /// state providers for user interaction
-final selectedLecture = StateProvider<Lecture?>((ref) => null);
 final selectedEvent = StateProvider<CalendarEvent?>((ref) => null);
 final selectedProfile = StateProvider<Profile?>((ref) => null);
 final useWebView = StateProvider<bool>((ref) => true);
@@ -75,14 +71,6 @@ final newsViewModel = Provider((ref) => NewsViewModel());
 /// view model for movies
 final movieViewModel = Provider((ref) => MovieViewModel());
 
-/// view model for lectures
-final lectureViewModel = Provider((ref) => LectureViewModel());
-final lectureDetailsViewModel = Provider((ref) {
-  final event = ref.watch(selectedEvent);
-  final lecture = ref.watch(selectedLecture);
-  return LectureDetailsViewModel(event: event, lecture: lecture);
-});
-
 /// view model for grades
 final gradeViewModel = Provider((ref) => GradeViewModel(ref));
 
@@ -101,7 +89,6 @@ final lectureSplitViewModel = Provider((ref) => SplitViewViewModel());
 /// search view models
 final searchViewModel = Provider((ref) => SearchViewModel(ref));
 final gradesSearchViewModel = Provider((ref) => GradesSearchViewModel());
-final lectureSearchViewModel = Provider((ref) => LectureSearchViewModel());
 final cafeteriaSearchViewModel = Provider((ref) => CafeteriaSearchViewModel());
 final movieSearchViewModel = Provider((ref) => MovieSearchViewModel());
 final calendarSearchViewModel = Provider((ref) => CalendarSearchViewModel());
