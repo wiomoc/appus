@@ -20,7 +20,7 @@ class StudentIdBalanceView extends StatefulWidget {
 
 class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
   bool? _isNfcAvailable;
-  double? _balance = 999.99;
+  double? _balance;
   String? _error;
 
   Future<void> _onDiscovered(NfcTag tag) async {
@@ -105,7 +105,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.tap_and_play_outlined, size: 100),
+              const Icon(Icons.contactless_outlined, size: 100),
               Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
               Text(
                 "Tap Student ID to check balance",

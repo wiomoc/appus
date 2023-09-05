@@ -5,6 +5,7 @@ import 'package:campus_flutter/routes.dart';
 import 'package:campus_flutter/theme.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -13,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'base/helpers/delayed_loading_indicator.dart';
+import 'base/networking/protocols/main_api.dart';
 import 'login2Component/login_view.dart';
 
 main() async {
@@ -20,8 +22,8 @@ main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   getIt.registerSingleton<ConnectivityResult>(await Connectivity().checkConnectivity());
   getIt.registerSingleton<CampusApi>(CampusApi(Dio()));
-
-/*  if (kIsWeb) {
+/*
+  if (kIsWeb) {
     getIt.registerSingleton<MainApi>(MainApi.webCache());
   } else {
     final directory = await getTemporaryDirectory();

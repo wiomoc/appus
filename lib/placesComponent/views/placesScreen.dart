@@ -15,32 +15,13 @@ class PlacesScreen extends ConsumerStatefulWidget {
 class _PlacesScreenState extends ConsumerState<PlacesScreen> {
   @override
   void initState() {
-    ref.read(placesViewModel).fetch(false);
+    //ref.read(placesViewModel).fetch(false);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Future.wait([
-          ref.watch(studyRoomsViewModel).fetch(false),
-          ref.watch(cafeteriasViewModel).fetch(false),
-          ref.watch(placesViewModel).fetch(false)
-        ]),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const PlacesView();
-          } else if (snapshot.hasError) {
-            return ErrorHandlingView(
-              error: snapshot.error!,
-              errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-              retry: ref.read(placesViewModel).fetch,
-            );
-          } else {
-            return const DelayedLoadingIndicator(
-                name: "Cafeterias & Study Rooms");
-          }
-        });
+    return  const PlacesView();
     /*
     return StreamBuilder(
         stream: ref.watch(placesViewModel).status,

@@ -35,6 +35,9 @@ class CourseState extends State<CoursesView> {
     return GenericStreamBuilder(
         stream: _coursesRetryable.stream,
         dataBuilder: (context, courses) {
+          if (courses.isEmpty) {
+            return const Center(child: Text("No courses selected for the current semester yet."));
+          }
           return ListView.separated(
               itemBuilder: (context, index) => ListTile(
                     title: Text(courses[index].localizedTitle),

@@ -1,4 +1,5 @@
 import 'package:campus_flutter/courseComponent/courses_view.dart';
+import 'package:campus_flutter/examsComponent/exams_view.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
@@ -79,7 +80,7 @@ class _NavigationState extends State<Navigation> {
                         fit: BoxFit.cover, height: 20);
                   }
                 case 1:
-                  return Text("Organisations",
+                  return Text("Updates",
                       style: Theme.of(context).textTheme.titleLarge);
                 case 2:
                   return Text("Lectures",
@@ -135,7 +136,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return HomeScreen();
+        return OrganisationsView();
       case 1:
         return const OrganisationsView();
       case 2:
@@ -145,7 +146,7 @@ class _NavigationState extends State<Navigation> {
       case 4:
         return const PlacesScreen();
       default:
-        return HomeScreen();
+        return OrganisationsView();
     }
   }
 
@@ -186,7 +187,7 @@ class _NavigationState extends State<Navigation> {
             NavigationDestination(
               icon: Icon(Icons.feed_outlined),
               selectedIcon: Icon(Icons.feed),
-              label: 'Organisations'
+              label: 'Updates'
             ),
             NavigationDestination(
               icon: Icon(Icons.class_outlined),

@@ -25,51 +25,39 @@ class PlacesView extends ConsumerWidget {
                 child: CardWithPadding(
                     child: Row(
                   children: [
-                    IconText(
-                        iconData: Icons.school,
-                        label: "Study Rooms",
-                        iconSize: 24),
+                    IconText(iconData: Icons.school, label: "Study Rooms", iconSize: 24),
                     Spacer(),
                     Icon(Icons.arrow_forward_ios, size: 15)
                   ],
                 ))),
-            action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const StudyRoomsScaffold()))),
+            action: () =>
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const StudyRoomsScaffold()))),
         Tapable(
             child: const AspectRatio(
                 aspectRatio: 6,
                 child: CardWithPadding(
                     child: Row(
                   children: [
-                    IconText(
-                        iconData: Icons.restaurant,
-                        label: "Cafeterias",
-                        iconSize: 24),
+                    IconText(iconData: Icons.restaurant, label: "Cafeterias", iconSize: 24),
                     Spacer(),
                     Icon(Icons.arrow_forward_ios, size: 15)
                   ],
                 ))),
-            action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const MensasPageView()))),
+            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MensasPageView()))),
         Tapable(
             child: const AspectRatio(
                 aspectRatio: 6,
                 child: CardWithPadding(
                     child: Row(
-                      children: [
-                        IconText(
-                            iconData: Icons.train,
-                            label: "ÖPNV",
-                            iconSize: 24),
-                        Spacer(),
-                        Icon(Icons.arrow_forward_ios, size: 15)
-                      ],
-                    ))),
-            action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const VVSPageView()))),
+                  children: [
+                    IconText(iconData: Icons.train, label: "ÖPNV", iconSize: 24),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 15)
+                  ],
+                ))),
+            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VVSPageView()))),
         const PaddedDivider(),
-        for (var campus in ref.watch(placesViewModel).campuses)
-          CampusCardView(campus: campus),
+        for (var campus in ref.watch(placesViewModel).campuses) CampusCardView(campus: campus),
       ],
     ));
   }

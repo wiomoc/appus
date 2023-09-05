@@ -35,11 +35,13 @@ class Event {
 class News {
   @JsonKey(name: "localized_title")
   final String? localizedTitle;
+  @JsonKey(name: "localized_text")
+  final String? localizedText;
   final String? image;
   final String href;
   final DateTime date;
 
-  News({this.localizedTitle, this.image, required this.href, required this.date});
+  News({this.localizedTitle, this.localizedText, this.image, required this.href, required this.date});
 
   factory News.fromJson(Map<String, dynamic> json) => _$NewsFromJson(json);
 

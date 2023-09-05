@@ -32,13 +32,14 @@ class LayerPlanState extends State<FloorPlanView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     if (widget.floor.planImageUrl == null) {
-      return Center(child: Text("Kein Plan vorhanden"));
+      return const Center(child: Text("Kein Plan vorhanden"));
     }
     return Container(
         child: Image.network(
       widget.floor.planImageUrl!,
-      fit: BoxFit.fill,
+      fit: BoxFit.fitWidth,
       excludeFromSemantics: true,
       loadingBuilder: (context, child, loadingProgress) =>
           loadingProgress != null ? const DelayedLoadingIndicator(name: "Flurplan") : child,
@@ -91,7 +92,7 @@ class RoomInformationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           BasicCourseInfoRowView(
             iconData: Icons.numbers_outlined,
@@ -205,6 +206,7 @@ class MapPageView extends StatefulWidget {
 
 class MapPageState extends State<MapPageView> with TickerProviderStateMixin {
   late Retryable<RoomLocation> _roomLocationRetryable;
+  bool showFloorPlan = true;
 
   @override
   void initState() {
@@ -214,6 +216,7 @@ class MapPageState extends State<MapPageView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return DefaultTabController(
         initialIndex: 0,
         length: 3,
@@ -221,13 +224,36 @@ class MapPageState extends State<MapPageView> with TickerProviderStateMixin {
           stream: _roomLocationRetryable.stream,
           builder: (context, snapshot) {
             Widget body;
+            Widget? bottomSheet;
+            Widget? floatingActionButton;
             if (snapshot.hasData) {
               final roomLocation = snapshot.data!;
-              body = TabBarView(physics: const NeverScrollableScrollPhysics(), children: [
-                RoomInformationView(roomLocation),
-                FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id),
-                MapWidget(roomLocation.building)
-              ]);
+              if (roomLocation.floor.planImageUrl == null) {
+                showFloorPlan = false;
+              } else {
+                floatingActionButton = FloatingActionButton.small(
+                  onPressed: () {
+                    setState(() {
+                      showFloorPlan = !showFloorPlan;
+                    });
+                  },
+                  child: Icon(showFloorPlan ? Icons.map_outlined : Icons.layers_outlined),
+                );
+              }
+
+              body = showFloorPlan
+                  ? FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id)
+                  : MapWidget(roomLocation.building);
+
+              bottomSheet = DraggableScrollableSheet(
+                  minChildSize: 50 / screenHeight,
+                  maxChildSize: 200 / screenHeight,
+                  initialChildSize: 120 / screenHeight,
+                  expand: false,
+                  builder: (context, scrollController) => SingleChildScrollView(
+                      controller: scrollController,
+                      physics: ClampingScrollPhysics(),
+                      child: RoomInformationView(roomLocation)));
             } else if (snapshot.hasError) {
               body = ErrorHandlingView(
                 error: snapshot.error!,
@@ -244,23 +270,11 @@ class MapPageState extends State<MapPageView> with TickerProviderStateMixin {
               appBar: AppBar(
                 leading: const BackButton(),
                 title: Text(snapshot.hasData ? snapshot.data!.room.number : "Map"),
-                bottom: snapshot.hasData
-                    ? const TabBar(
-                        tabs: [
-                          Tab(
-                            icon: Icon(Icons.info_outline),
-                          ),
-                          Tab(
-                            icon: Icon(Icons.layers_outlined),
-                          ),
-                          Tab(
-                            icon: Icon(Icons.map_outlined),
-                          ),
-                        ],
-                      )
-                    : null,
               ),
               body: body,
+              floatingActionButton: floatingActionButton,
+              floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+              bottomSheet: bottomSheet,
             );
           },
         ));

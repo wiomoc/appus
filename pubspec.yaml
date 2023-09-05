@@ -55,6 +55,9 @@ dependencies:
   zoom_widget: ^2.0.1
   flutter_osm_plugin: ^0.60.4
   nfc_manager: ^3.3.0
+  flutter_html: ^3.0.0-beta.2
+  flutter_rating_bar: ^4.0.1
+  image_picker: ^1.0.4
 
 dependency_overrides:
   xml2json:
@@ -84,17 +87,9 @@ flutter:
     - assets/images/errors/error.png
     - assets/images/errors/error_crop.png
     - assets/images/errors/error_square.png
-    - assets/lottieFiles/gradient_background_blue_red.json
-    - assets/lottieFiles/gradient_background_blue_white.json
-    - assets/lottieFiles/gradient_background_blue_white_speedup.json
-    - assets/lottieFiles/gradient_background_silver_white.json
     - assets/images/tower.png
-    - assets/videos/token-tutorial.mp4
     - assets/images/campus/campus-freising.jpg
     - assets/images/campus/campus-garching.jpeg
     - assets/images/campus/campus-klinikum.jpg
     - assets/images/campus/campus-olympia.jpg
     - assets/images/campus/campus-stamm.jpeg
-    - assets/models/english_bert_30.tflite
-    - assets/models/english_bert_vocab.txt
-    - assets/models/myfile.txt
