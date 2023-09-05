@@ -136,7 +136,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return OrganisationsView();
+        return HomeScreen();
       case 1:
         return const OrganisationsView();
       case 2:

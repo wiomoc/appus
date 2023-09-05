@@ -97,7 +97,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
         const Icon(Icons.wifi_off, size: 100),
         Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-        Text("NFC not available", style: Theme.of(context).textTheme.titleLarge)
+        Text("NFC not available", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
       ]);
     } else {
       if (_balance == null) {
@@ -109,6 +109,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
               Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
               Text(
                 "Tap Student ID to check balance",
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               if (_error != null)
@@ -117,11 +118,9 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
       } else {
         body = CardWithPadding(
             color: _balanceColor,
-            child: SizedBox(
-                height: 95,
-                width: 150,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     IconText(
                         iconData: Icons.credit_card_outlined,
@@ -131,11 +130,12 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
                             .textTheme
                             .titleLarge!
                             .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+                    // Implicit min width of 140 px
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 70)),
                     Text("${_balance!.toStringAsFixed(2).replaceFirst(".", ",")}€",
                         style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.onPrimaryContainer))
                   ],
-                )));
+                ));
       }
     }
     return Scaffold(
