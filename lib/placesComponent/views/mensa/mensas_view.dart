@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_flutter/base/helpers/card_with_padding.dart';
 import 'package:campus_flutter/base/helpers/retryable.dart';
 import 'package:campus_flutter/base/views/generic_stream_builder.dart';
@@ -7,7 +8,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -174,11 +174,10 @@ class MealCard extends StatelessWidget {
               if (photoUrl != null)
                 ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
-                    child: Image.network(
-                      photoUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: photoUrl,
                       fit: BoxFit.fitWidth,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
+                      progressIndicatorBuilder: (context, url, loadingProgress) {
                         return const Center(
                             child: Padding(padding: EdgeInsets.all(25), child: CircularProgressIndicator()));
                       },
@@ -343,11 +342,10 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
               else
                 ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.network(
-                      photoUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: photoUrl,
                       fit: BoxFit.fitWidth,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
+                      progressIndicatorBuilder: (context, url, loadingProgress) {
                         return const Center(
                             child: Padding(padding: EdgeInsets.all(25), child: CircularProgressIndicator()));
                       },
@@ -485,12 +483,12 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                                                 "http://10.53.31.174:8000" + ratingComment.imageUrl!,
                                               ))));
                             },
-                            child: Image.network(
-                              "http://10.53.31.174:8000" + ratingComment.thumbnailImageUrl!,
+                            child: CachedNetworkImage(
+                              imageUrl: "http://10.53.31.174:8000" + ratingComment.thumbnailImageUrl!,
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => Container(),
+                              errorWidget: (context, error, stackTrace) => Container(),
                             )))),
             ]));
   }
@@ -704,7 +702,7 @@ class MensasPageState extends State<MensasPageView> {
                   _mealsRetryable.retry();
                 },
               ),
-          loadingBuilder: (p0) => const DelayedLoadingIndicator(name: "Meals")),
+          loadingBuilder: (context) => const DelayedLoadingIndicator(name: "Meals")),
     );
   }
 }
@@ -723,7 +721,7 @@ class MensaView extends StatefulWidget {
 class MensaViewState extends State<MensaView> with TickerProviderStateMixin {
   late TabController _tabController;
   late DateRangePickerController _datePickerController;
-  Map<String, double?> _mealsStars = {};
+  final Map<String, double?> _mealsStars = {};
 
   @override
   void initState() {
@@ -760,12 +758,12 @@ class MensaViewState extends State<MensaView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery
+    final screenWidth = MediaQuery
         .of(context)
         .size
         .width;
-    final crossAxisCount = screenHeight ~/ 200;
-    final widthOverflow = screenHeight % 200;
+    final crossAxisCount = screenWidth ~/ 200;
+    final widthOverflow = screenWidth % 200;
     final meals = widget.meals;
     final minDate = meals.keys.min;
     final maxDate = meals.keys.max;

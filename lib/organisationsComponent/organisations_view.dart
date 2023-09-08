@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/base/helpers/retryable.dart';
 import 'package:campus_flutter/base/views/error_handling_view.dart';
@@ -18,13 +19,15 @@ class OrganisationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconImage = NetworkImage(organisation.iconUrl );
+    final iconImage = CachedNetworkImageProvider(organisation.iconUrl);
 
     return FutureBuilder(
         future: ColorScheme.fromImageProvider(provider: iconImage),
         builder: (context, snapshot) {
-          Color primaryContainerColor = snapshot.data?.secondaryContainer ?? Theme.of(context).colorScheme.secondaryContainer;
-          Color onPrimaryContainerColor = snapshot.data?.onSecondaryContainer ?? Theme.of(context).colorScheme.onSecondaryContainer;
+          Color primaryContainerColor =
+              snapshot.data?.secondaryContainer ?? Theme.of(context).colorScheme.secondaryContainer;
+          Color onPrimaryContainerColor =
+              snapshot.data?.onSecondaryContainer ?? Theme.of(context).colorScheme.onSecondaryContainer;
           return Card(
               elevation: 0,
               color: primaryContainerColor.withOpacity(0.7),
@@ -44,10 +47,7 @@ class OrganisationView extends StatelessWidget {
                             )),
                         const Padding(padding: EdgeInsets.all(3)),
                         Text(organisation.localizedName,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: onPrimaryContainerColor)),
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: onPrimaryContainerColor)),
                       ],
                     )),
                 ExpansionTile(
@@ -55,17 +55,14 @@ class OrganisationView extends StatelessWidget {
                   collapsedIconColor: onPrimaryContainerColor,
                   leading: Icon(Icons.link, color: onPrimaryContainerColor),
                   title: Text("Links",
-                      style:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(color: onPrimaryContainerColor)),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: onPrimaryContainerColor)),
                   shape: Border.symmetric(horizontal: BorderSide(color: Colors.black12.withOpacity(0.1), width: 1)),
                   children: organisation.links
                       .map((link) => ListTile(
                             leading: Icon(_getIcon(link.icon), color: onPrimaryContainerColor),
                             title: Text(link.localizedTitle,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(color: onPrimaryContainerColor)),
+                                style:
+                                    Theme.of(context).textTheme.titleMedium?.copyWith(color: onPrimaryContainerColor)),
                             onTap: () {
                               UrlLauncher.urlString(link.href);
                             },

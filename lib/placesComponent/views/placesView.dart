@@ -4,6 +4,7 @@ import 'package:campus_flutter/base/helpers/padded_divider.dart';
 import 'package:campus_flutter/base/helpers/tapable.dart';
 import 'package:campus_flutter/placesComponent/views/cafeterias/cafeterias_view.dart';
 import 'package:campus_flutter/placesComponent/views/campuses/campus_card_view.dart';
+import 'package:campus_flutter/placesComponent/views/learningSpaces/learning_spaces_view.dart';
 import 'package:campus_flutter/placesComponent/views/mensa/mensas_view.dart';
 import 'package:campus_flutter/placesComponent/views/studyGroups/study_rooms_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
@@ -19,20 +20,20 @@ class PlacesView extends ConsumerWidget {
     return SingleChildScrollView(
         child: Column(
       children: [
-        Tapable(
+        InkWell(
             child: const AspectRatio(
                 aspectRatio: 6,
                 child: CardWithPadding(
                     child: Row(
                   children: [
-                    IconText(iconData: Icons.school, label: "Study Rooms", iconSize: 24),
+                    IconText(iconData: Icons.school, label: "Learning Spaces", iconSize: 24),
                     Spacer(),
                     Icon(Icons.arrow_forward_ios, size: 15)
                   ],
                 ))),
-            action: () =>
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const StudyRoomsScaffold()))),
-        Tapable(
+            onTap: () =>
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LearningSpacesView()))),
+        InkWell(
             child: const AspectRatio(
                 aspectRatio: 6,
                 child: CardWithPadding(
@@ -43,8 +44,8 @@ class PlacesView extends ConsumerWidget {
                     Icon(Icons.arrow_forward_ios, size: 15)
                   ],
                 ))),
-            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MensasPageView()))),
-        Tapable(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MensasPageView()))),
+        InkWell(
             child: const AspectRatio(
                 aspectRatio: 6,
                 child: CardWithPadding(
@@ -55,7 +56,7 @@ class PlacesView extends ConsumerWidget {
                     Icon(Icons.arrow_forward_ios, size: 15)
                   ],
                 ))),
-            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VVSPageView()))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const VVSPageView()))),
         const PaddedDivider(),
         for (var campus in ref.watch(placesViewModel).campuses) CampusCardView(campus: campus),
       ],
