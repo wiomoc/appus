@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-const Color _primaryLightColor = Color(0xff0064BC);
+const Color _primaryLightColor = Color(0xff004191);
 const Color _primaryDarkColor = Color(0xff3070B3);
 const Color _lightBackground = Color(0xfff2f2f7);
-const Color _darkBackground = Color(0xff191919);
+const Color _darkBackground = Color(0xff323232);
 const Color _lightGray = Color(0xffAAAAAA);
 const Color _navigationIconGrayLight = Color(0xffA0A0A1);
 const Color _navigationIconGrayDark = Color(0xff808080);
 const Color _darkGray = Color(0xff555555);
-const Color _almostBlack = Color(0xff1a1c1e);
+const Color _almostBlack = Color(0xff323232);
 const Color _almostWhite = Color(0xffe3e2e6);
 
 extension ContextTheme on BuildContext {
@@ -29,7 +29,7 @@ ThemeData lightTheme(BuildContext context) {
           primary: _primaryLightColor,
           onPrimary: Colors.white,
           secondary: _darkGray,
-          onSecondary: _almostBlack,
+          onSecondary: _almostWhite,
           error: Colors.red,
           onError: _almostBlack,
           background: _lightBackground,
@@ -41,8 +41,8 @@ ThemeData lightTheme(BuildContext context) {
       primaryColor: _primaryLightColor,
 
       /// remove splash effect on e.g. IconButtons
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
+      //splashColor: Colors.transparent,
+      //highlightColor: Colors.transparent,
 
       /// custom elevated button styling
       elevatedButtonTheme: ElevatedButtonThemeData(

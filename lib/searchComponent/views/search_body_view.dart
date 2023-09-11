@@ -4,7 +4,6 @@ import 'package:campus_flutter/searchComponent/viewmodels/search_viewmodel.dart'
 import 'package:campus_flutter/searchComponent/views/resultViews/cafeteria_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/resultViews/calendar_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/resultViews/grade_search_result_view.dart';
-import 'package:campus_flutter/searchComponent/views/resultViews/movie_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/resultViews/study_room_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/search_textfield_view.dart';
 import 'package:flutter/material.dart';
@@ -100,13 +99,11 @@ Widget _searchResultViewBuilder(SearchCategory searchCategory) {
       return const CafeteriasSearchResultView();
     case SearchCategory.calendar:
       return const CalendarSearchResultView();
-    case SearchCategory.movie:
-      return const MovieSearchResultView();
     case SearchCategory.news:
       // TODO:
       return Container();
-    case SearchCategory.studyRoom:
-      return const StudyRoomSearchResultView();
+    //case SearchCategory.studyRoom:
+    //  return const StudyRoomSearchResultView();
     //case SearchCategory.lectures:
     //  return const LectureSearchResultView();
     case SearchCategory.persons:

@@ -65,22 +65,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  barcode:
-    dependency: transitive
-    description:
-      name: barcode
-      sha256: "789f898eef0bd88312470bdb2cc996f895ad7dd5f89e9adde84b204546a90b45"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.4"
-  barcode_widget:
-    dependency: "direct main"
-    description:
-      name: barcode_widget
-      sha256: "6f2c5b08659b1a5f4d88d183e6007133ea2f96e50e7b8bb628f03266c3931427"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -353,6 +337,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -1128,14 +1120,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  qr:
-    dependency: transitive
-    description:
-      name: qr
-      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
   quiver:
     dependency: transitive
     description:
@@ -1341,6 +1325,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  stash:
+    dependency: "direct main"
+    description:
+      name: stash
+      sha256: "01566ce6773fddbd7cb839d0514770159919253de518ef1031c29a28919b20e6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  stash_hive:
+    dependency: "direct main"
+    description:
+      name: stash_hive
+      sha256: "603b497b89ad89023775b69a8030f0d9e79f1f9c755e607aea8c3ca6954f12f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  stash_memory:
+    dependency: "direct main"
+    description:
+      name: stash_memory
+      sha256: ddbdd222fdf16a00822a55114f4370480b6bc638cf8081bfb4a34701b87b64b1
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
   state_notifier:
     dependency: transitive
     description:
@@ -1493,6 +1501,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+  universal_platform:
+    dependency: transitive
+    description:
+      name: universal_platform
+      sha256: d315be0f6641898b280ffa34e2ddb14f3d12b1a37882557869646e0cc363d0cc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1573,46 +1589,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  video_player:
-    dependency: "direct main"
-    description:
-      name: video_player
-      sha256: "3fd106c74da32f336dc7feb65021da9b0207cb3124392935f1552834f7cce822"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.7.0"
-  video_player_android:
-    dependency: transitive
-    description:
-      name: video_player_android
-      sha256: f338a5a396c845f4632959511cad3542cdf3167e1b2a1a948ef07f7123c03608
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.9"
-  video_player_avfoundation:
-    dependency: transitive
-    description:
-      name: video_player_avfoundation
-      sha256: f5f5b7fe8c865be8a57fe80c2dca130772e1db775b7af4e5c5aa1905069cfc6c
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.9"
-  video_player_platform_interface:
-    dependency: transitive
-    description:
-      name: video_player_platform_interface
-      sha256: "1ca9acd7a0fb15fb1a990cb554e6f004465c6f37c99d2285766f08a4b2802988"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.2.0"
-  video_player_web:
-    dependency: transitive
-    description:
-      name: video_player_web
-      sha256: "44ce41424d104dfb7cf6982cc6b84af2b007a24d126406025bf40de5d481c74c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.16"
   vm_service:
     dependency: transitive
     description:
@@ -1710,22 +1686,13 @@ packages:
     source: hosted
     version: "1.0.2"
   xml:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: xml
       sha256: "5bc72e1e45e941d825fd7468b9b4cc3b9327942649aeb6fc5cdbf135f0a86e84"
       url: "https://pub.dev"
     source: hosted
     version: "6.3.0"
-  xml2json:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: master
-      resolved-ref: "8b3e01a9f0b9bcd0a588809212bf0d74ca83eb47"
-      url: "https://github.com/jakobkoerber/xml2json.git"
-    source: git
-    version: "6.1.0"
   yaml:
     dependency: transitive
     description:

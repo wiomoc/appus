@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -96,7 +95,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
       body =
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
         const Icon(Icons.wifi_off, size: 100),
-        Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
         Text("NFC not available", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
       ]);
     } else {
@@ -106,7 +105,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.contactless_outlined, size: 100),
-              Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
               Text(
                 "Tap Student ID to check balance",
                 textAlign: TextAlign.center,

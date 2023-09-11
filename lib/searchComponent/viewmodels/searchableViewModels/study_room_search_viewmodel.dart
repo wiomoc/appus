@@ -1,14 +1,10 @@
-import 'package:campus_flutter/placesComponent/model/studyRooms/study_room.dart';
-import 'package:campus_flutter/placesComponent/model/studyRooms/study_room_data.dart';
-import 'package:campus_flutter/placesComponent/model/studyRooms/study_room_group.dart';
-import 'package:campus_flutter/placesComponent/services/study_rooms_service.dart';
 import 'package:campus_flutter/searchComponent/model/comparison_token.dart';
 import 'package:campus_flutter/searchComponent/model/search_exception.dart';
 import 'package:campus_flutter/searchComponent/protocols/global_search.dart';
 import 'package:campus_flutter/searchComponent/protocols/searchable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:rxdart/rxdart.dart';
-
+/*
 class StudyRoomSearchViewModel {
   BehaviorSubject<List<(StudyRoomSearchResult, Distances)>?> searchResults =
       BehaviorSubject.seeded(null);
@@ -65,3 +61,4 @@ class StudyRoomSearchResult extends Searchable {
         ...studyRooms.expand((element) => element.comparisonTokens)
       ];
 }
+*/

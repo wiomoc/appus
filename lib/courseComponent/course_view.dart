@@ -1,20 +1,20 @@
 import 'dart:math';
 
-import 'package:campus_flutter/base/helpers/retryable.dart';
+import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/url_launcher.dart';
 import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
+import 'package:campus_flutter/courseComponent/api/course_detail.dart';
 import 'package:campus_flutter/mapComponent/map_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../base/helpers/card_with_padding.dart';
-import '../base/helpers/delayed_loading_indicator.dart';
 import '../base/helpers/horizontal_slider.dart';
 import '../base/helpers/icon_text.dart';
-import '../base/views/error_handling_view.dart';
-import '../providers_get_it.dart';
 import 'basic_course_info_view.dart';
 import 'detailed_course_info_view.dart';
+import 'model/course_detail.dart';
+import 'model/course_group_detail.dart';
 
 class CourseAppointmentsView extends StatefulWidget {
   final List<Appointment> appointments;
@@ -23,12 +23,12 @@ class CourseAppointmentsView extends StatefulWidget {
   const CourseAppointmentsView(this.appointments, {this.selectedDate, super.key});
 
   @override
-  CourseAppointsmentsState createState() {
-    return CourseAppointsmentsState();
+  State<CourseAppointmentsView> createState() {
+    return _CourseAppointmentsViewState();
   }
 }
 
-class CourseAppointsmentsState extends State<CourseAppointmentsView> {
+class _CourseAppointmentsViewState extends State<CourseAppointmentsView> {
   late ScrollController _scrollController;
 
   @override
@@ -107,81 +107,31 @@ class CourseAppointsmentsState extends State<CourseAppointmentsView> {
   }
 }
 
-class CourseView extends StatefulWidget {
+class CoursePage extends StatefulWidget {
   final int courseId;
   final DateTime? selectedDate;
 
-  const CourseView({required this.courseId, this.selectedDate, super.key});
+  const CoursePage({required this.courseId, this.selectedDate, super.key});
 
   @override
-  CourseState createState() {
-    return CourseState();
+  CoursePageState createState() {
+    return CoursePageState();
   }
 }
 
-class CourseState extends State<CourseView> {
-  late Retryable<(CourseDetail, CourseGroupDetail)> _courseRetryable;
-
+class CoursePageState extends ApiBackedState<(CourseDetail, CourseGroupDetail), CoursePage>
+    with ApiBackedPageState<(CourseDetail, CourseGroupDetail), CoursePage> {
   @override
   void initState() {
     super.initState();
-
-    _courseRetryable = Retryable(() async {
-      final api = getIt<CampusApi>();
-
-      return (await api.course(widget.courseId), await api.courseGroup(widget.courseId));
-    });
+    load(CourseDetailApiOperation(widget.courseId), const Duration(hours: 1));
   }
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-
-    return StreamBuilder(
-      stream: _courseRetryable.stream,
-      builder: (context, snapshot) {
-        Widget body;
-
-        if (snapshot.hasData) {
-          final courseDetails = snapshot.data!.$1;
-          final courseGroupDetails = snapshot.data!.$2;
-          body = ListView(children: [
-            _infoCard(Icons.info_outline_rounded, "Basic Lecture Information",
-                BasicCourseInfoView(courseDetails: courseDetails, lecturerNames: courseGroupDetails.lecturerNames)),
-            if (courseGroupDetails.appointments.isNotEmpty)
-              CourseAppointmentsView(courseGroupDetails.appointments, selectedDate: widget.selectedDate),
-            if (courseDetails.localizedCourseContent != null || courseDetails.localizedCourseObjective != null)
-              _infoCard(
-                  Icons.folder, "Detailed Lecture Information", DetailedCourseInfoView(courseDetails: courseDetails)),
-            ListTile(
-              leading: const Icon(Icons.link),
-              title: const Text("Ilias"),
-              trailing: const Icon(Icons.arrow_forward_outlined),
-              onTap: () {
-                UrlLauncher.urlString("https://ilias3.uni-stuttgart.de/ecsredi.php?cmsid=${courseDetails.id}");
-              },
-            )
-          ]);
-        } else if (snapshot.hasError) {
-          body = ErrorHandlingView(
-            error: snapshot.error!,
-            errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-            retry: (force) {
-              _courseRetryable.retry();
-            },
-          );
-        } else {
-          body = const DelayedLoadingIndicator(name: "Course");
-        }
-
-        return Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(),
-            title: Text(snapshot.hasData ? snapshot.data!.$1.localizedTitle : "Course"),
-          ),
-          body: body,
-        );
-      },
+    return Scaffold(
+      appBar: appBar(),
+      body: body(),
     );
   }
 
@@ -196,4 +146,35 @@ class CourseState extends State<CourseView> {
       ],
     ));
   }
+
+  @override
+  Widget buildAppBarTitle((CourseDetail, CourseGroupDetail) data) {
+    return Text(data.$1.localizedTitle);
+  }
+
+  @override
+  Widget buildBody((CourseDetail, CourseGroupDetail) data) {
+    final courseDetails = data.$1;
+    final courseGroupDetails = data.$2;
+    return ListView(children: [
+      _infoCard(Icons.info_outline_rounded, "Basic Lecture Information",
+          BasicCourseInfoView(courseDetails: courseDetails, lecturerNames: courseGroupDetails.lecturerNames)),
+      if (courseGroupDetails.appointments.isNotEmpty)
+        CourseAppointmentsView(courseGroupDetails.appointments, selectedDate: widget.selectedDate),
+      if (courseDetails.localizedCourseContent != null || courseDetails.localizedCourseObjective != null)
+        _infoCard(Icons.folder, "Detailed Lecture Information", DetailedCourseInfoView(courseDetails: courseDetails)),
+      ListTile(
+        leading: const Icon(Icons.link),
+        title: const Text("Ilias"),
+        trailing: const Icon(Icons.arrow_forward_outlined),
+        onTap: () {
+          UrlLauncher.urlString("https://ilias3.uni-stuttgart.de/ecsredi.php?cmsid=${courseDetails.id}");
+        },
+      )
+    ]);
+  }
+
+  @override
+  // TODO: implement resourceName
+  String get resourceName => "Course";
 }

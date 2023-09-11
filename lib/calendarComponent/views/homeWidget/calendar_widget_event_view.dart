@@ -1,5 +1,4 @@
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
-import 'package:campus_flutter/calendarComponent/views/calendars_view.dart';
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +23,7 @@ class CalendarHomeWidgetEventView extends ConsumerWidget {
     return GestureDetector(
         onTap: () {
           if (MediaQuery.orientationOf(context) == Orientation.portrait) {
-            showModalSheet(null, calendarEvent, context, ref);
+            //showModalSheet(null, calendarEvent, context, ref);
           } else {
             ref.read(selectedEvent.notifier).state = calendarEvent;
             //ref.read(selectedLecture.notifier).state = null;

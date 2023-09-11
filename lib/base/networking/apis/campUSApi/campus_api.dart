@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
@@ -13,20 +14,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'campus_api_exception.dart';
 
 class AuthTokens {
+  final String username;
+  final String password;
   final String profile;
   final String psessionid;
   final String accessToken;
 
-  AuthTokens({required this.profile, required this.psessionid, required this.accessToken});
+  AuthTokens(
+      {required this.username,
+      required this.password,
+      required this.profile,
+      required this.psessionid,
+      required this.accessToken});
 
-  factory AuthTokens.fromJson(Map<String, dynamic> json) =>
-      AuthTokens(profile: json["profile"]!, psessionid: json["psessionid"]!, accessToken: json["accessToken"]!);
+  factory AuthTokens.fromJson(Map<String, dynamic> json) => AuthTokens(
+      username: json["username"]!,
+      password: json["password"]!,
+      profile: json["profile"]!,
+      psessionid: json["psessionid"]!,
+      accessToken: json["accessToken"]!);
 
-  Map<String, String> toJson() => {"profile": profile, "psessionid": psessionid, "accessToken": accessToken};
+  Map<String, String> toJson() => {
+        "username": username,
+        "password": password,
+        "profile": profile,
+        "psessionid": psessionid,
+        "accessToken": accessToken
+      };
 
   @override
   String toString() {
-    return 'AuthState{profile: $profile, psessionid: $psessionid, accessToken: $accessToken}';
+    return 'AuthState{username: $username, profile: $profile, psessionid: $psessionid, accessToken: $accessToken}';
   }
 }
 
@@ -74,118 +92,7 @@ class CalendarEvent {
   }
 }
 
-class CourseSummary {
-  final int id;
-  final String localizedTitle;
-  final String localizedType;
-  final int groupId;
-  final String localizedStudyProgramme;
-  final int? semesterHours;
 
-  String get iliasUrl => "https://ilias3.uni-stuttgart.de/ecsredi.php?cmsid=$id";
-
-  CourseSummary(
-      {required this.id,
-      required this.localizedTitle,
-      required this.localizedType,
-      required this.groupId,
-      required this.localizedStudyProgramme,
-      this.semesterHours});
-
-  @override
-  String toString() {
-    return 'CourseSummary{id: $id, localizedTitle: $localizedTitle, localizedType: $localizedType, groupId: $groupId, localizedStudyProgramme: $localizedStudyProgramme, semesterHours: $semesterHours}';
-  }
-}
-
-class Appointment {
-  final int id;
-  final CalendarEventType type;
-  final CalendarEventStatus status;
-  final int courseId;
-  final DateTime startDate;
-  final DateTime endDate;
-  final String? roomName;
-  final int? roomId;
-
-  Appointment(
-      {required this.id,
-      required this.type,
-      required this.status,
-      required this.courseId,
-      required this.startDate,
-      required this.endDate,
-      required this.roomName,
-      required this.roomId});
-
-  String? get cleanRoomName => roomName?.split(" (")[0];
-}
-
-class CourseDetail {
-  final int id;
-  final String courseNumber;
-  final String localizedTitle;
-  final int? semesterHours;
-  final String localizedType;
-  final String localizedSemester;
-  final String localizedOrganisation;
-  final String localizedLanguage;
-  final String? localizedCourseContent;
-  final String? localizedCourseObjective;
-
-  CourseDetail(
-      {required this.id,
-      required this.courseNumber,
-      required this.localizedTitle,
-      required this.semesterHours,
-      required this.localizedType,
-      required this.localizedSemester,
-      required this.localizedOrganisation,
-      required this.localizedLanguage,
-      this.localizedCourseContent,
-      this.localizedCourseObjective});
-}
-
-class CourseGroupDetail {
-  final int courseId;
-  final int groupId;
-  final List<String> lecturerNames;
-  final List<Appointment> appointments;
-
-  CourseGroupDetail(
-      {required this.courseId, required this.groupId, required this.lecturerNames, required this.appointments});
-
-  @override
-  String toString() {
-    return 'CourseGroupDetail{id: $courseId, groupId: $groupId, lecturerNames: $lecturerNames, appointments: $appointments}';
-  }
-}
-
-class PlannedExam {
-  final int id;
-  final int courseId;
-  final String courseName;
-  final DateTime? date;
-  final List<String> examers;
-  final String? roomName;
-  final int? roomId;
-  final DateTime? deregistrationEnd;
-
-  PlannedExam(
-      {required this.id,
-      required this.courseId,
-      required this.courseName,
-      required this.date,
-      required this.examers,
-      required this.roomName,
-      required this.roomId,
-      required this.deregistrationEnd});
-
-  @override
-  String toString() {
-    return 'PlannedExam{id: $id, courseId: $courseId, courseName: $courseName, date: $date, examer: $examers, roomName: $roomName, roomId: $roomId, registrationEnd: $deregistrationEnd}';
-  }
-}
 
 class Study {
   final int id;
@@ -201,35 +108,6 @@ class Study {
   }
 }
 
-class Achievement {
-  final int id;
-  final String localizedCourseName;
-  final String localizedStudyName;
-  final String localizedDegreeName;
-  final int courseId;
-  final String grade;
-  final bool valid;
-  final bool passed;
-  final String localizedSemester;
-  final DateTime dateTime;
-
-  Achievement(
-      {required this.id,
-      required this.localizedCourseName,
-      required this.localizedStudyName,
-      required this.localizedDegreeName,
-      required this.courseId,
-      required this.grade,
-      required this.valid,
-      required this.passed,
-      required this.localizedSemester,
-      required this.dateTime});
-
-  @override
-  String toString() {
-    return 'Achievement{id: $id, localizedCourseName: $localizedCourseName, courseId: $courseId, grade: $grade, semester: $localizedSemester, dateTime: $dateTime}';
-  }
-}
 
 class CampusApi {
   static const String authTokenPrefKey = "campus_auth_token";
@@ -327,11 +205,15 @@ class CampusApi {
 
     isAuthenticated.value = true;
     currentAuthTokens = AuthTokens(
-        profile: cookies["CO_PROFILE"]!.value, psessionid: cookies["PSESSIONID"]!.value, accessToken: accessToken);
+        username: username,
+        password: password,
+        profile: cookies["CO_PROFILE"]!.value,
+        psessionid: cookies["PSESSIONID"]!.value,
+        accessToken: accessToken);
     _storeAuthTokens();
   }
 
-  Future<List<dynamic>> _callRestApi(String path,
+  Future<List<dynamic>> callRestApi(String path,
       {Map<String, dynamic>? params, bool requireAuth = true, String resourcesKey = "resource"}) async {
     final response = await _call("ee/rest/$path", params, requireAuth: requireAuth, appendAccessToken: requireAuth);
     final Map<String, dynamic> responseData = response.data;
@@ -344,15 +226,31 @@ class CampusApi {
 
   Future<void> _refreshToken() async {
     final response = await _call("ee/rest/auth/token/refresh", null, method: "post", suppressTokenRefresh: true);
-    final Map<String, dynamic> responseData = response.data;
-    final newAccessToken = responseData["accessToken"];
-    if (newAccessToken == null) {
-      throw CampusApiException("Could not refresh access token");
+    final responseData = response.data;
+    String? newAccessToken;
+    if (response is Map<String, dynamic>) {
+      newAccessToken = responseData["accessToken"];
     }
-
-    currentAuthTokens = AuthTokens(
-        profile: currentAuthTokens!.profile, psessionid: currentAuthTokens!.psessionid, accessToken: newAccessToken);
-    _storeAuthTokens();
+    if (newAccessToken != null) {
+      currentAuthTokens = AuthTokens(
+          username: currentAuthTokens!.username,
+          password: currentAuthTokens!.password,
+          profile: currentAuthTokens!.profile,
+          psessionid: currentAuthTokens!.psessionid,
+          accessToken: newAccessToken);
+      _storeAuthTokens();
+    } else {
+      try {
+        await login(currentAuthTokens!.username, currentAuthTokens!.password);
+      } on InvalidCampusCredentialsException catch (_) {
+        currentAuthTokens = null;
+        isAuthenticated.value = false;
+        _storeAuthTokens();
+        return;
+      } catch (_) {
+        throw CampusApiException("Could not refresh access token");
+      }
+    }
   }
 
   Future<Response<dynamic>> _call(String path, Map<String, dynamic>? params,
@@ -473,159 +371,25 @@ class CampusApi {
     }).toList(growable: false);
   }
 
-  String? _getLocalized(Map<String, dynamic> translatable) {
+  static String? getLocalized(Map<String, dynamic> translatable) {
     final expectedLang = "de";
     final List<dynamic> translationList = translatable["translations"]["translation"]!;
     return translationList.where((translation) => translation["lang"] == expectedLang).firstOrNull?["value"] ??
         translationList.first["value"];
   }
 
-  Future<List<CourseSummary>> myCourses() async {
-    final List<dynamic> courseResources = await _callRestApi("slc.tm.cp/student/myCourses",
-        params: {"\$orderBy": "title=ascnf", "\$skip": 0, "\$top": 20});
 
-    return courseResources.map((courseResource) {
-      final courseRegistration = courseResource["content"]["cpCourseGroupRegistrationDto"];
-      final semesterHoursString = (courseRegistration["courseNormConfigs"] as List<dynamic>)
-          .where((element) => element["key"] == "SST")
-          .firstOrNull?["value"];
-
-      return CourseSummary(
-          id: courseRegistration["course"]["id"],
-          localizedTitle: _getLocalized(courseRegistration["course"]["courseTitle"])!,
-          localizedType: _getLocalized(courseRegistration["course"]["courseTypeDto"]["courseTypeName"])!,
-          groupId: courseRegistration["courseGroupId"],
-          localizedStudyProgramme: _getLocalized(courseRegistration["studyProgramme"]["studyName"])!,
-          semesterHours: (semesterHoursString != null) ? int.parse(semesterHoursString) : null);
-    }).toList(growable: false);
-  }
-
-  Future<List<Achievement>> myAchievements() async {
-    final List<dynamic> achievementResources =
-        await _callRestApi("slc.xm.ac/achievements", params: {"\$orderBy": "acDate=descnf"});
-
-    return achievementResources.map((achievementResource) {
-      final achievement = achievementResource["content"]["achievementDto"];
-      return Achievement(
-          id: achievement["id"],
-          localizedCourseName: _getLocalized(achievement["cpCourseLibDto"]["courseTitle"])!,
-          localizedStudyName: _getLocalized(achievement["studyBasicInfoLibDto"]["studyName"])!,
-          localizedDegreeName:
-              _getLocalized(achievement["studyBasicInfoLibDto"]["basicStudyProgrammeLibDto"]["degreeType"]["name"])!,
-          courseId: achievement["cpCourseLibDto"]["id"],
-          grade: achievement["gradeDto"]["value"],
-          valid: achievement["achievementStatusType"] == "FINAL",
-          passed: achievement["gradeDto"]["isPositive"],
-          localizedSemester: _getLocalized(achievement["semesterLibDto"]["semesterDesignation"])!,
-          dateTime: DateTime.parse(achievement["achievementDate"]["value"]));
-    }).toList(growable: false);
-  }
-
-  Future<CourseDetail> course(int id) async {
-    final resource = await _callRestApi("slc.tm.cp/student/courses/$id");
-    final Map<String, dynamic> courseDetail = resource[0]["content"]["cpCourseDetailDto"];
-
-    final semesterHoursString = (courseDetail["cpCourseDto"]["courseNormConfigs"] as List<dynamic>)
-        .where((element) => element["key"] == "SST")
-        .firstOrNull?["value"];
-
-    return CourseDetail(
-        id: courseDetail["cpCourseDto"]["id"],
-        courseNumber: courseDetail["cpCourseDto"]["courseNumber"]["courseNumber"],
-        localizedTitle: _getLocalized(courseDetail["cpCourseDto"]["courseTitle"])!,
-        semesterHours: (semesterHoursString != null) ? int.parse(semesterHoursString) : null,
-        localizedType: _getLocalized(courseDetail["cpCourseDto"]["courseTypeDto"]["courseTypeName"])!,
-        localizedSemester: _getLocalized(courseDetail["cpCourseDto"]["semesterDto"]["semesterDesignation"])!,
-        localizedOrganisation: _getLocalized(courseDetail["cpCourseDto"]["organisationResponsibleDto"]["name"])!,
-        localizedLanguage: (courseDetail["cpCourseDto"]["courseLanguageDtos"] as List<dynamic>)
-            .map((language) => _getLocalized(language["languageDto"]["name"])!)
-            .join(", "),
-        localizedCourseContent: _getLocalized(courseDetail["cpCourseDescriptionDto"]["courseContent"]),
-        localizedCourseObjective: _getLocalized(courseDetail["cpCourseDescriptionDto"]["courseObjective"]));
-  }
-
-  Future<CourseGroupDetail> courseGroup(int courseId) async {
-    final resource = await _callRestApi("slc.tm.cp/student/courseGroups/firstGroups/$courseId");
-    final Map<String, dynamic> courseGroup = resource[0]["content"]["cpCourseGroupDto"];
-
-    CalendarEventStatus decodeAppointmentStatus(String str) {
-      switch (str) {
-        case "CANCELLED":
-          return CalendarEventStatus.canceled;
-        case "CONFIRMED":
-          return CalendarEventStatus.fixed;
-        default:
-          return CalendarEventStatus.unknown;
-      }
-    }
-
-    int? getRoomId(String? resourcePath) {
-      if (resourcePath == null) return null;
-      final resourcePathParts = resourcePath.split("?");
-      if (resourcePathParts.length != 2) return null;
-      final raumKey = Uri.splitQueryString(resourcePathParts[1])["raumKey"];
-      if (raumKey == null) return null;
-      return int.tryParse(raumKey);
-    }
-
-    return CourseGroupDetail(
-        courseId: courseGroup["courseId"],
-        groupId: courseGroup["id"],
-        lecturerNames: (courseGroup["lectureshipDtos"] as List<dynamic>)
-            .where((lectureship) => lectureship["teachingFunction"]["key"] == "V")
-            .map((lectureship) =>
-                "${lectureship["identityLibDto"]["firstName"]} ${lectureship["identityLibDto"]["lastName"]}")
-            .toList(),
-        appointments: (courseGroup["appointmentDtos"] as List<dynamic>)
-            .map((appointment) => Appointment(
-                id: appointment["id"],
-                type: CalendarEventType.lecture,
-                status: decodeAppointmentStatus(appointment["appointmentStatusType"]),
-                courseId: courseGroup["courseId"],
-                startDate: DateTime.parse(appointment["timestampFrom"]["value"]),
-                endDate: DateTime.parse(appointment["timestampTo"]["value"]),
-                roomName: appointment["resourceName"],
-                roomId: getRoomId(appointment["resourceUrl"])))
-            .toList());
-  }
-
-  Future<List<PlannedExam>> myRegisteredExams() async {
-    final examOffers = await _callRestApi("slc.xm.exr/registered-exams", resourcesKey: "examOffers");
-    return examOffers.map((exam) {
-      final appointment = (exam["appointments"] as List<dynamic>?)?.firstOrNull;
-      final String? roomId = appointment?["url"]?["href"]?.split("/")?.last;
-
-      DateTime? date;
-      if (exam["examDate"] != null && exam["examStart"] != null) {
-        date = DateTime.parse(exam["examDate"]["value"] + "T" + exam["examStart"]["value"]);
-      }
-
-      return PlannedExam(
-          id: exam["examId"],
-          courseId: exam["courseId"],
-          courseName: _getLocalized(exam["courseName"])!,
-          roomName: appointment?["displayName"],
-          roomId: roomId != null ? int.tryParse(roomId) : null,
-          deregistrationEnd: DateTime.parse(exam["deRegistrationEnd"]["value"]),
-          examers: (exam["examPersons"] as List<dynamic>)
-              .where((examPerson) => examPerson["functionName"]["value"] == "Prüfer*in")
-              .expand((examPerson) => (examPerson["identities"] as List<dynamic>)
-                  .map((identity) => "${identity["firstName"]} ${identity["lastName"]}"))
-              .toList(),
-          date: date);
-    }).toList();
-  }
 
   Future<List<Study>> myStudies() async {
-    final resources = await _callRestApi("slc.lib.sm/allStudies");
+    final resources = await callRestApi("slc.lib.sm/allStudies");
     return resources.map((resource) {
       final study = resource["content"]["studyBasicDto"];
 
       return Study(
           id: study["id"],
           germanName: study["studyName"]["value"],
-          localizedName: _getLocalized(study["studyName"])!,
-          localizedDegree: _getLocalized(study["basicStudyProgrammeLibDto"]["degreeType"]["name"])!);
+          localizedName: getLocalized(study["studyName"])!,
+          localizedDegree: getLocalized(study["basicStudyProgrammeLibDto"]["degreeType"]["name"])!);
     }).toList();
   }
 

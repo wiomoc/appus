@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
-import 'package:campus_flutter/base/helpers/retryable.dart';
-import 'package:campus_flutter/base/views/error_handling_view.dart';
-import 'package:campus_flutter/base/views/generic_stream_builder.dart';
+import 'package:campus_flutter/base/helpers/api_backed_state.dart';
+import 'package:campus_flutter/organisationsComponent/api/organisations_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 
 import '../base/helpers/horizontal_slider.dart';
 import '../base/helpers/url_launcher.dart';
-import 'models.dart';
-import 'organisations_service.dart';
+import 'model/organisation.dart';
 
 class OrganisationView extends StatelessWidget {
   final Organisation organisation;
@@ -193,12 +190,12 @@ class OrganisationView extends StatelessWidget {
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                             if (newsItem.localizedTitle != null)
                               Padding(
-                                  padding: EdgeInsets.all(5),
+                                  padding: const EdgeInsets.all(5),
                                   child:
                                       Text(newsItem.localizedTitle!, style: Theme.of(context).textTheme.titleMedium)),
                             if (newsItem.localizedText != null)
                               Padding(
-                                  padding: EdgeInsets.all(1),
+                                  padding: const EdgeInsets.all(1),
                                   child: Html(
                                     data: newsItem.localizedText!,
                                   )),
@@ -220,12 +217,12 @@ class OrganisationView extends StatelessWidget {
   }
 }
 
-class OrganisationsView extends StatefulWidget {
-  const OrganisationsView({super.key});
+class UpdatesPage extends StatefulWidget {
+  const UpdatesPage({super.key});
 
   @override
-  OrganisationsState createState() {
-    return OrganisationsState();
+  State<UpdatesPage> createState() {
+    return _UpdatesPageState();
   }
 }
 
@@ -261,37 +258,28 @@ IconData? _getIcon(String? name) {
   }
 }
 
-class OrganisationsState extends State<OrganisationsView> {
-  late Retryable<List<Organisation>> _organisationsRetryable;
-
+class _UpdatesPageState extends ApiBackedState<List<Organisation>, UpdatesPage> with ApiPullRefresh {
   @override
   void initState() {
     super.initState();
-
-    _organisationsRetryable =
-        Retryable(() => OrganisationsService().fetchOrganisations(["stuvus", "fius", "mach", "uni"]));
+    load(OrganisationsApiOperation(["stuvus", "fius", "mach", "uni"]), Duration(minutes: 5));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GenericStreamBuilder(
-        stream: _organisationsRetryable.stream,
-        dataBuilder: (context, organisations) {
-          return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              itemBuilder: (context, index) => OrganisationView(
-                    organisations[index],
-                    key: ValueKey(organisations[index].id),
-                  ),
-              itemCount: organisations.length);
-        },
-        errorBuilder: (context, error) => ErrorHandlingView(
-              error: error,
-              errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-              retry: (force) {
-                _organisationsRetryable.retry();
-              },
+  Widget build(BuildContext context) => body();
+
+  @override
+  Widget buildBody(List<Organisation> organisations) {
+    return ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        itemBuilder: (context, index) => OrganisationView(
+              organisations[index],
+              key: ValueKey(organisations[index].id),
             ),
-        loadingBuilder: (context) => const DelayedLoadingIndicator(name: "Organisations"));
+        itemCount: organisations.length);
   }
+
+  @override
+  // TODO: implement resourceName
+  String get resourceName => "Updates";
 }

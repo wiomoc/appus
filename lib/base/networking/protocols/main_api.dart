@@ -10,7 +10,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/foundation.dart';
-import 'package:xml2json/xml2json.dart';
 
 class MainApi {
   late Dio dio;
@@ -31,14 +30,7 @@ class MainApi {
 
     dio.options = BaseOptions(responseDecoder: (data, options, body) {
       final decoded = utf8.decoder.convert(data);
-      if (body.headers["content-type"]?.first.contains("xml") ?? false) {
-        final transformer = Xml2Json();
-        transformer.parse(decoded);
-        return transformer
-            .toParkerWithAttrsCustom(array: ["row", "event", "studium"]);
-      } else {
         return decoded;
-      }
     });
 
     this.dio = dio;
@@ -63,14 +55,7 @@ class MainApi {
     /// avoid conversion everytime it's loaded out of cache
     dio.options = BaseOptions(responseDecoder: (data, options, body) {
       final decoded = utf8.decoder.convert(data);
-      if (body.headers["content-type"]?.first.contains("xml") ?? false) {
-        final transformer = Xml2Json();
-        transformer.parse(decoded);
-        return transformer
-            .toParkerWithAttrsCustom(array: ["row", "event", "studium"]);
-      } else {
         return decoded;
-      }
     });
 
     this.dio = dio;

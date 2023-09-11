@@ -1,24 +1,25 @@
+import 'package:campus_flutter/base/helpers/api_backed_state.dart';
+import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/base/helpers/retryable.dart';
-import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
-import 'package:campus_flutter/base/views/generic_stream_builder.dart';
+import 'package:campus_flutter/examsComponent/api/my_achievements.dart';
+import 'package:campus_flutter/examsComponent/api/my_registered_exams.dart';
 import 'package:campus_flutter/examsComponent/grade_view.dart';
+import 'package:campus_flutter/examsComponent/model/achievement.dart';
+import 'package:campus_flutter/examsComponent/model/planned_exam.dart';
 import 'package:campus_flutter/mapComponent/map_view.dart';
 import 'package:collection/collection.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../base/helpers/delayed_loading_indicator.dart';
 import '../base/helpers/icon_text.dart';
-import '../base/views/error_handling_view.dart';
-import '../providers_get_it.dart';
 
 class ExamsView extends StatefulWidget {
   const ExamsView({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return ExamsState();
+    return _ExamsPageState();
   }
 }
 
@@ -76,59 +77,48 @@ class PlannedExamRow extends StatelessWidget {
   }
 }
 
-class ExamsState extends State<ExamsView> {
-  late Retryable<(List<PlannedExam>, List<Achievement>)> _examsRetryable;
+class _ExamsPageState extends ApiBackedState<(List<PlannedExam>?, List<Achievement>?), ExamsView>
+    with ApiBackedPageState {
 
   @override
   void initState() {
     super.initState();
-    _examsRetryable = Retryable(() async {
-      final api = getIt<CampusApi>();
-
-      return (await api.myRegisteredExams(), await api.myAchievements());
-    });
+    load(MergedApiOperation(MyRegisteredExamsApiOperation(), MyAchievementsApiOperation()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: const Text("Exams & Grades"),
-        ),
-        body: GenericStreamBuilder(
-            stream: _examsRetryable.stream,
-            dataBuilder: (context, exams) {
-              if (exams.$1.isEmpty && exams.$2.isEmpty) {
-                return const Center(child: Text("No exams yet"));
-              }
-              return ListView(
-                children: [
-                  if (exams.$1.isNotEmpty)
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: Text("Angemeldet")),
-                  ...exams.$1.mapIndexedAndLast((i, plannedExam, last) => Column(children: [
-                        PlannedExamRow(plannedExam),
-                        if (!last)
-                          Divider(
-                            height: 1,
-                            color: Colors.black.withOpacity(0.08),
-                          )
-                      ])),
-                  ...exams.$2.groupListsBy((element) => element.localizedSemester).entries.expand((entry) => [
-                        Divider(),
-                        Padding(padding: const EdgeInsets.symmetric(horizontal: 5), child: Text(entry.key)),
-                        ...entry.value.map((achievement) => AchievementRow(achievement))
-                      ])
-                ],
-              );
-            },
-            errorBuilder: (context, error) => ErrorHandlingView(
-                  error: error,
-                  errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-                  retry: (force) {
-                    _examsRetryable.retry();
-                  },
-                ),
-            loadingBuilder: (context) => const DelayedLoadingIndicator(name: "Exams")));
+    return Scaffold(appBar: appBar(), body: body());
   }
+
+  @override
+  Widget buildBody((List<PlannedExam>?, List<Achievement>?) data) {
+    if (data.$1?.isEmpty ?? true && (data.$2?.isEmpty ?? true)) {
+      return const Center(child: Text("No exams yet"));
+    }
+    return ListView(
+      children: [
+        if (data.$1 != null && data.$1!.isNotEmpty)
+          const Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: Text("Angemeldet")),
+        if (data.$1 != null && data.$1!.isNotEmpty)
+          ...data.$1!.mapIndexedAndLast((i, plannedExam, last) => Column(children: [
+                PlannedExamRow(plannedExam),
+                if (!last)
+                  Divider(
+                    height: 1,
+                    color: Colors.black.withOpacity(0.08),
+                  )
+              ])),
+        if (data.$2 != null)
+          ...data.$2!.groupListsBy((element) => element.localizedSemester).entries.expand((entry) => [
+                Divider(),
+                Padding(padding: const EdgeInsets.symmetric(horizontal: 5), child: Text(entry.key)),
+                ...entry.value.map((achievement) => AchievementRow(achievement))
+              ])
+      ],
+    );
+  }
+
+  @override
+  String get resourceName => "Exams & Grades";
 }

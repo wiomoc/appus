@@ -1,7 +1,7 @@
-import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
 import 'package:flutter/material.dart';
 
 import 'detailed_course_info_row_view.dart';
+import 'model/course_detail.dart';
 
 class DetailedCourseInfoView extends StatelessWidget {
   final CourseDetail courseDetails;

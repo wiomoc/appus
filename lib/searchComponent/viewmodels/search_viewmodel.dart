@@ -182,24 +182,23 @@ class SearchViewModel {
         ref
             .read(cafeteriaSearchViewModel)
             .cafeteriaSearch(query: this.searchString);
-        ref
+        /*ref
             .read(studyRoomSearchViewModel)
-            .studyRoomSearch(query: this.searchString);
+            .studyRoomSearch(query: this.searchString);*/
       default:
         ref.read(gradesSearchViewModel).gradesSearch(query: this.searchString);
       //  ref
       //      .read(lectureSearchViewModel)
       //      .personalLectureSearch(query: this.searchString);
-        ref.read(movieSearchViewModel).movieSearch(query: this.searchString);
         ref
             .read(calendarSearchViewModel)
             .calendarSearch(query: this.searchString);
         ref
             .read(cafeteriaSearchViewModel)
             .cafeteriaSearch(query: this.searchString);
-        ref
+        /*ref
             .read(studyRoomSearchViewModel)
-            .studyRoomSearch(query: this.searchString);
+            .studyRoomSearch(query: this.searchString);*/
     }
   }
 }

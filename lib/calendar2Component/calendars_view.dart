@@ -50,7 +50,7 @@ class _CalendarsViewState extends State<CalendarsView> {
         final calendarEvent = details.appointments!.first as CalendarEvent;
         if (calendarEvent.courseId != null) {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CourseView(courseId: calendarEvent.courseId!, selectedDate: calendarEvent.startDate),
+            builder: (context) => CoursePage(courseId: calendarEvent.courseId!, selectedDate: calendarEvent.startDate),
           ));
         } else {
           showModalBottomSheet(

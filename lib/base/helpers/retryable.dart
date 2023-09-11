@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-
 class Retryable<T> {
   late Stream<T> stream;
   late VoidCallback retry;
@@ -17,9 +16,9 @@ class Retryable<T> {
         streamController.addError(error!, stackTrace);
       });
     }
+
     retry();
     stream = streamController.stream;
     this.retry = retry;
   }
 }
-

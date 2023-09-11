@@ -3,12 +3,9 @@ import 'package:campus_flutter/examsComponent/exams_view.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
-import 'package:campus_flutter/providers_get_it.dart';
-import 'package:campus_flutter/searchComponent/views/search_body_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:campus_flutter/settingsComponent/views/settings_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
@@ -138,15 +135,15 @@ class _NavigationState extends State<Navigation> {
       case 0:
         return ExamsView();
       case 1:
-        return const OrganisationsView();
+        return const UpdatesPage();
       case 2:
-        return const CoursesView();
+        return const CoursesPage();
       case 3:
         return const CalendarsView();
       case 4:
         return const PlacesScreen();
       default:
-        return OrganisationsView();
+        return UpdatesPage();
     }
   }
 

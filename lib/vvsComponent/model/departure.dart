@@ -1,6 +1,7 @@
-import 'package:campus_flutter/base/helpers/string_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'departure.g.dart';
 
 enum VehicleType {
   ubahn,
@@ -33,22 +34,23 @@ enum VehicleType {
   Color get color {
     switch (this) {
       case VehicleType.ubahn:
-        return const Color.fromARGB(255, 0x0b, 0xa1, 0xe2);
+        return const Color(0xff0ba1e2);
       case VehicleType.sbahn:
       case VehicleType.sev:
-        return const Color.fromARGB(255, 0x53, 0xb3, 0x30);
+        return const Color(0xff53b330);
       case VehicleType.regio:
-        return const Color.fromARGB(255, 0x8F, 0x90, 0x8F);
+        return const Color(0xff8f908f);
       case VehicleType.bus:
-        return const Color.fromARGB(255, 0xC3, 0x19, 0x24);
+        return const Color(0xffc31924);
       case VehicleType.onDemandCab:
-        return const Color.fromARGB(255, 0x18, 0x3F, 0x8A);
+        return const Color(0xff183f8a);
       default:
-        return const Color.fromARGB(255, 0x8F, 0x90, 0x8F);
+        return const Color(0xff8f908f);
     }
   }
 }
 
+@JsonSerializable()
 class Departure {
   final DateTime timePlanned;
   final DateTime? timeEstimated;
@@ -72,4 +74,8 @@ class Departure {
       return null;
     }
   }
+
+  factory Departure.fromJson(Map<String, dynamic> json) => _$DepartureFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DepartureToJson(this);
 }

@@ -1,3 +1,4 @@
+/*
 import 'package:campus_flutter/base/enums/campus.dart';
 import 'package:campus_flutter/base/services/location_service.dart';
 import 'package:campus_flutter/placesComponent/model/studyRooms/study_room.dart';
@@ -137,3 +138,4 @@ class StudyRoomsViewModel {
     return data.where((element) => element.localizedStatus == "Free").length;
   }
 }
+*/

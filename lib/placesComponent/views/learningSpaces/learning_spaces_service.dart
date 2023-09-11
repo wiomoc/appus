@@ -7,11 +7,16 @@ import 'learning_spaces_model.dart';
 import 'dart:async';
 import 'dart:io';
 
+const learningSpacesBaseUrl = "https://lernraeume.stuvus.uni-stuttgart.de";
+
 class LearningSpacesService {
   Future<LearningSpaces> fetchLearningSpaces() async {
-    final learningSpacesJSON =
-        await File("C:/Users/Christoph Walcher/Share/STUVUS/Lernraum/dist/data.json").readAsString();
-    return LearningSpaces.fromJson(const JsonDecoder().convert(learningSpacesJSON));
+    final client = Dio();
+    final response = await client.get("${learningSpacesBaseUrl}/data.json",
+        options: Options(
+          responseType: ResponseType.json,
+        ));
+    return LearningSpaces.fromJson(response.data);
   }
 
   Future<Map<String, double>> fetchOccupation() async {

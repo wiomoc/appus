@@ -1,16 +1,14 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:campus_flutter/mapComponent/map_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:zoom_widget/zoom_widget.dart';
 
+import '../base/helpers/api_backed_state.dart';
 import '../base/helpers/delayed_loading_indicator.dart';
-import '../base/helpers/retryable.dart';
-import '../base/views/error_handling_view.dart';
 import '../courseComponent/basic_course_info_row_view.dart';
-import 'models.dart';
+import 'api/room_location_api.dart';
+import 'model/room_location.dart';
 
 class FloorPlanView extends StatefulWidget {
   final Floor floor;
@@ -26,13 +24,9 @@ class FloorPlanView extends StatefulWidget {
 
 class LayerPlanState extends State<FloorPlanView> {
   double _markerScale = 1;
-  late ImageStream _imageStream;
-  late ImageStreamListener _imageListener;
-  ImageInfo? _imageInfo;
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     if (widget.floor.planImageUrl == null) {
       return const Center(child: Text("Kein Plan vorhanden"));
     }
@@ -73,14 +67,6 @@ class LayerPlanState extends State<FloorPlanView> {
             ));
       },
     ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _imageStream.removeListener(_imageListener);
-    _imageInfo?.dispose();
-    _imageInfo = null;
   }
 }
 
@@ -196,7 +182,7 @@ class MapState extends State<MapWidget> {
 class MapPageView extends StatefulWidget {
   final int roomId;
 
-  const MapPageView({super.key, this.roomId = 7054});
+  const MapPageView({super.key, required this.roomId});
 
   @override
   MapPageState createState() {
@@ -204,79 +190,61 @@ class MapPageView extends StatefulWidget {
   }
 }
 
-class MapPageState extends State<MapPageView> with TickerProviderStateMixin {
-  late Retryable<RoomLocation> _roomLocationRetryable;
+class MapPageState extends ApiBackedState<RoomLocation, MapPageView>
+    with TickerProviderStateMixin, ApiBackedPageState<RoomLocation, MapPageView> {
   bool showFloorPlan = true;
 
   @override
   void initState() {
-    _roomLocationRetryable = Retryable(() => MapService().fetchRoomLocation(widget.roomId));
+    load(RoomLocationApiOperation(widget.roomId), const Duration(hours: 6));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    return DefaultTabController(
-        initialIndex: 0,
-        length: 3,
-        child: StreamBuilder(
-          stream: _roomLocationRetryable.stream,
-          builder: (context, snapshot) {
-            Widget body;
-            Widget? bottomSheet;
-            Widget? floatingActionButton;
-            if (snapshot.hasData) {
-              final roomLocation = snapshot.data!;
-              if (roomLocation.floor.planImageUrl == null) {
-                showFloorPlan = false;
-              } else {
-                floatingActionButton = FloatingActionButton.small(
+
+    return ScaffoldMessenger(
+        key: scaffoldMessengerKey,
+        child: Scaffold(
+          appBar: appBar(),
+          body: body(),
+          floatingActionButton: data != null && data!.floor.planImageUrl != null
+              ? FloatingActionButton.small(
                   onPressed: () {
                     setState(() {
                       showFloorPlan = !showFloorPlan;
                     });
                   },
                   child: Icon(showFloorPlan ? Icons.map_outlined : Icons.layers_outlined),
-                );
-              }
-
-              body = showFloorPlan
-                  ? FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id)
-                  : MapWidget(roomLocation.building);
-
-              bottomSheet = DraggableScrollableSheet(
+                )
+              : null,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          bottomSheet: data != null
+              ? DraggableScrollableSheet(
                   minChildSize: 50 / screenHeight,
                   maxChildSize: 200 / screenHeight,
                   initialChildSize: 120 / screenHeight,
                   expand: false,
-                  builder: (context, scrollController) => SingleChildScrollView(
-                      controller: scrollController,
-                      physics: ClampingScrollPhysics(),
-                      child: RoomInformationView(roomLocation)));
-            } else if (snapshot.hasError) {
-              body = ErrorHandlingView(
-                error: snapshot.error!,
-                errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-                retry: (force) {
-                  _roomLocationRetryable.retry();
-                },
-              );
-            } else {
-              body = const DelayedLoadingIndicator(name: "Room");
-            }
-
-            return Scaffold(
-              appBar: AppBar(
-                leading: const BackButton(),
-                title: Text(snapshot.hasData ? snapshot.data!.room.number : "Map"),
-              ),
-              body: body,
-              floatingActionButton: floatingActionButton,
-              floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-              bottomSheet: bottomSheet,
-            );
-          },
+                  builder: (context, scrollController) =>
+                      SingleChildScrollView(controller: scrollController, child: RoomInformationView(data!)))
+              : null,
         ));
   }
+
+  @override
+  Widget buildAppBarTitle(RoomLocation data) {
+    return Text(data.room.number);
+  }
+
+  @override
+  Widget buildBody(RoomLocation roomLocation) {
+    return showFloorPlan && roomLocation.floor.planImageUrl != null
+        ? FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id)
+        : MapWidget(roomLocation.building);
+    ;
+  }
+
+  @override
+  String get resourceName => "Room";
 }

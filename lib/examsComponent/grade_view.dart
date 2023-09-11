@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../base/helpers/icon_text.dart';
 import '../base/helpers/string_parser.dart';
 import '../gradeComponent/viewModels/grade_viewmodel.dart';
+import 'model/achievement.dart';
 
 class AchievementRow extends StatelessWidget {
   final Achievement grade;

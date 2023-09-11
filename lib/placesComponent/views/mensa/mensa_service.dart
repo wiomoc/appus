@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../base/networking/apis/appusBackendApi/appus_backend_api.dart';
 import 'meal_model.dart';
 
 Future<Map<DateTime, List<Meal>>> fetchMeals(String mensaId) async {
@@ -14,7 +15,7 @@ Future<Map<DateTime, List<Meal>>> fetchMeals(String mensaId) async {
       (key, value) => MapEntry(DateTime.parse(key), (value as List<dynamic>).map((m) => Meal.fromJson(m)).toList()));
 }
 
-const String ratingBaseUrl = "http://10.53.31.174:8000/meals";
+const String ratingBaseUrl = "$appusBackendBaseUrl/meals";
 
 Future<double> sendRating({required String mealName, required double stars, String? comment, Uint8List? image}) async {
   if (comment?.isEmpty == true) {

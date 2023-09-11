@@ -1,66 +1,51 @@
-import 'package:campus_flutter/base/helpers/retryable.dart';
-import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
-import 'package:campus_flutter/base/views/generic_stream_builder.dart';
+import 'package:campus_flutter/base/helpers/api_backed_state.dart';
+import 'package:campus_flutter/courseComponent/model/course_summary.dart';
 import 'package:flutter/material.dart';
 
-import '../base/helpers/delayed_loading_indicator.dart';
-import '../base/views/error_handling_view.dart';
-import '../providers_get_it.dart';
+import 'api/my_courses.dart';
 import 'course_view.dart';
 
-class CoursesView extends StatefulWidget {
-  const CoursesView({super.key});
+class CoursesPage extends StatefulWidget {
+  const CoursesPage({super.key});
 
   @override
-  CourseState createState() {
-    return CourseState();
+  State<CoursesPage> createState() {
+    return _CoursePageState();
   }
 }
 
-class CourseState extends State<CoursesView> {
-  late Retryable<List<CourseSummary>> _coursesRetryable;
-
+class _CoursePageState extends ApiBackedState<List<CourseSummary>, CoursesPage> with ApiPullRefresh  {
   @override
   void initState() {
     super.initState();
-
-    _coursesRetryable = Retryable(() async {
-      final api = getIt<CampusApi>();
-      return await api.myCourses();
-    });
+    load(MyCoursesApiOperation(), const Duration(hours: 1));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GenericStreamBuilder(
-        stream: _coursesRetryable.stream,
-        dataBuilder: (context, courses) {
-          if (courses.isEmpty) {
-            return const Center(child: Text("No courses selected for the current semester yet."));
-          }
-          return ListView.separated(
-              itemBuilder: (context, index) => ListTile(
-                    title: Text(courses[index].localizedTitle),
-                    subtitle: Text(
-                      "${courses[index].localizedType} - ${courses[index].localizedStudyProgramme}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => CourseView(courseId: courses[index].id)));
-                    },
-                  ),
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: courses.length);
-        },
-        errorBuilder: (context, error) => ErrorHandlingView(
-              error: error,
-              errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-              retry: (force) {
-                _coursesRetryable.retry();
+  Widget build(BuildContext context) => body();
+
+  @override
+  Widget buildBody(List<CourseSummary> courses) {
+    if (courses.isEmpty) {
+      return const Center(child: Text("No courses selected for the current semester yet."));
+    }
+    return ListView.separated(
+        itemBuilder: (context, index) => ListTile(
+              title: Text(courses[index].localizedTitle),
+              subtitle: Text(
+                "${courses[index].localizedType} - ${courses[index].localizedStudyProgramme}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CoursePage(courseId: courses[index].id)));
               },
             ),
-        loadingBuilder: (context) => const DelayedLoadingIndicator(name: "Courses"));
+        separatorBuilder: (context, index) => const Divider(),
+        itemCount: courses.length);
   }
+
+  @override
+  String get resourceName => "Courses";
 }

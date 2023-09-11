@@ -13,6 +13,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../base/helpers/delayed_loading_indicator.dart';
+import '../../../base/networking/apis/appusBackendApi/appus_backend_api.dart';
 import '../../../base/views/error_handling_view.dart';
 import 'meal_model.dart';
 import 'mensa_service.dart';
@@ -290,7 +291,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
         ratingsWidget = SliverList.list(children: [
           Align(
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 25),
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 25),
                   child: Text(
                     "No ratings yet",
                     style: Theme
@@ -312,7 +313,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
     } else if (_ratingsSnapshot.hasError) {
       ratingsWidget = SliverList.list(children: [
         Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(children: [
               Text(
                 "Could not load Ratings",
@@ -321,8 +322,8 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                     .textTheme
                     .bodyLarge,
               ),
-              Padding(padding: EdgeInsets.all(5)),
-              ElevatedButton(onPressed: () => _ratingsRetryable.retry(), child: Text("Retry")),
+              const Padding(padding: EdgeInsets.all(5)),
+              ElevatedButton(onPressed: () => _ratingsRetryable.retry(), child: const Text("Retry")),
             ]))
       ]);
     } else {
@@ -391,7 +392,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                 ),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               ] else
-                Divider()
+                const Divider()
             ]),
             ratingsWidget
           ]);
@@ -425,7 +426,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                                       .bodyMedium)
                             ])),
                         Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7),
+                            padding: const EdgeInsets.symmetric(horizontal: 7),
                             child: Text("${meal.price}€",
                                 style: Theme
                                     .of(context)
@@ -465,10 +466,10 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                               ],
                             )
                           ]))),
-              Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 2)),
               if (ratingComment.imageUrl != null)
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: InkWell(
@@ -480,11 +481,11 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                                           child: ClipRRect(
                                               borderRadius: BorderRadius.circular(10),
                                               child: Image.network(
-                                                "http://10.53.31.174:8000" + ratingComment.imageUrl!,
+                                                "$appusBackendBaseUrl${ratingComment.imageUrl!}",
                                               ))));
                             },
                             child: CachedNetworkImage(
-                              imageUrl: "http://10.53.31.174:8000" + ratingComment.thumbnailImageUrl!,
+                              imageUrl: "$appusBackendBaseUrl${ratingComment.thumbImageUrl!}",
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,

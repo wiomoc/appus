@@ -1,6 +1,5 @@
 import 'package:campus_flutter/base/enums/home_widget.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/recommender/widget_recommender_strategy.dart';
-import 'package:campus_flutter/movieComponent/service/movie_service.dart';
 
 class TimeStrategy implements WidgetRecommenderStrategy {
   @override
@@ -77,14 +76,14 @@ class TimeStrategy implements WidgetRecommenderStrategy {
           priority += 1;
         }
 
-      case HomeWidget.movies:
+      /*case HomeWidget.movies:
         await MovieService.fetchMovies(false).then((value) {
           if (value.$2
               .where((element) => element.date.isAfter(DateTime.now()))
               .isEmpty) {
             priority = 0;
           }
-        }, onError: (_) => priority = 0);
+        }, onError: (_) => priority = 0);*/
     }
 
     return priority;

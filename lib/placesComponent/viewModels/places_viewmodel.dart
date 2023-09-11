@@ -2,7 +2,6 @@ import 'package:campus_flutter/base/enums/campus.dart';
 import 'package:campus_flutter/base/networking/protocols/view_model.dart';
 import 'package:campus_flutter/base/services/location_service.dart';
 import 'package:campus_flutter/placesComponent/model/cafeterias/cafeteria.dart';
-import 'package:campus_flutter/placesComponent/model/studyRooms/study_room_data.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -11,7 +10,6 @@ class PlacesViewModel implements ViewModel {
   List<Campus> campuses = [];
   List<Cafeteria> cafeterias = [];
 
-  StudyRoomData? studyRoomData;
 
   @override
   Future fetch(bool forcedRefresh) {

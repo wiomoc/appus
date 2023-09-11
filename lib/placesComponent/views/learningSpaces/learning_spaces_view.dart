@@ -4,11 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/placesComponent/views/learningSpaces/learning_spaces_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import '../../../base/helpers/retryable.dart';
 import '../../../base/views/error_handling_view.dart';
-import '../../../base/views/generic_stream_builder.dart';
 import 'learning_spaces_model.dart';
 
 class LearningSpacesView extends StatefulWidget {
@@ -169,7 +167,7 @@ class RoomCard extends StatelessWidget {
               ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: CachedNetworkImage(
-                      imageUrl: "https://lernraeume.stuvus.uni-stuttgart.de/${room.thumbnail!}",
+                      imageUrl: "$learningSpacesBaseUrl/${room.thumbnail!}",
                       fit: BoxFit.cover,
                       height: 140,
                       width: double.infinity,

@@ -43,18 +43,16 @@ class Meal {
   Map<String, dynamic> toJson() => _$MealToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class RatingComment {
   final double stars;
   final String? comment;
   final DateTime date;
-  @JsonKey(name: "image_url")
   final String? imageUrl;
-  @JsonKey(name: "thumb_image_url")
-  final String? thumbnailImageUrl;
+  final String? thumbImageUrl;
 
   RatingComment(
-      {required this.stars, required this.comment, required this.date, this.imageUrl, this.thumbnailImageUrl});
+      {required this.stars, required this.comment, required this.date, this.imageUrl, this.thumbImageUrl});
 
   factory RatingComment.fromJson(Map<String, dynamic> json) => _$RatingCommentFromJson(json);
 

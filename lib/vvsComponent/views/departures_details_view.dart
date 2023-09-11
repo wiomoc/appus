@@ -1,13 +1,10 @@
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
+import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/icon_text.dart';
-import 'package:campus_flutter/base/views/error_handling_view.dart';
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 
 import '../../base/helpers/retryable.dart';
-import '../../base/views/generic_stream_builder.dart';
+import '../api/vvs_api.dart';
 import '../model/departure.dart';
-import '../services/departures_service.dart';
 import 'departures_details_row_view.dart';
 
 class Station {
@@ -23,23 +20,23 @@ const stations = [
   Station("de:08111:2603", "Schrane"),
 ];
 
-class VVSPageView extends StatefulWidget {
-  const VVSPageView({super.key});
+class VVSPage extends StatefulWidget {
+  const VVSPage({super.key});
 
   @override
-  VVSPageState createState() {
-    return VVSPageState();
+  State<VVSPage> createState() {
+    return _VVSPageState();
   }
 }
 
-class VVSPageState extends State<VVSPageView> {
+class _VVSPageState extends ApiBackedState<List<Departure>, VVSPage> with ApiPullRefresh {
   Station _currentStation = stations.first;
   late Retryable<List<Departure>> _departuresRetryable;
 
   @override
   void initState() {
     super.initState();
-    _departuresRetryable = Retryable(() => DeparturesService.fetchDepartures(_currentStation));
+    load(DeparturesApiOperation(_currentStation));
   }
 
   @override
@@ -52,38 +49,34 @@ class VVSPageState extends State<VVSPageView> {
           items: stations
               .map((location) => DropdownMenuItem(
                     value: location,
-                    child: Text(location.name, style: TextStyle(fontSize: 18)),
+                    child: Text(location.name, style: const TextStyle(fontSize: 18)),
                   ))
               .toList(),
           onChanged: (value) {
             setState(() {
               if (_currentStation != value) {
                 _currentStation = value!;
-                _departuresRetryable.retry();
+                load(DeparturesApiOperation(_currentStation));
               }
             });
           },
         ),
       ),
-      body: GenericStreamBuilder(
-          stream: _departuresRetryable.stream,
-          dataBuilder: (context, departures) {
-            return DeparturesDetailsView(
-              key: ValueKey(_currentStation),
-              departures: departures,
-              station: _currentStation,
-            );
-          },
-          errorBuilder: (context, error) => ErrorHandlingView(
-                error: error,
-                errorHandlingViewType: ErrorHandlingViewType.fullScreen,
-                retry: (force) {
-                  _departuresRetryable.retry();
-                },
-              ),
-          loadingBuilder: (p0) => const DelayedLoadingIndicator(name: "Departures")),
+      body: body(),
     );
   }
+
+  @override
+  Widget buildBody(List<Departure> departures) {
+    return DeparturesDetailsView(
+      key: ValueKey(_currentStation),
+      departures: departures,
+      station: _currentStation,
+    );
+  }
+
+  @override
+  String get resourceName => "Departures";
 }
 
 class DeparturesDetailsView extends StatelessWidget {

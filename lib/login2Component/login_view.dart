@@ -58,7 +58,7 @@ class _LoginViewState extends State<LoginView> {
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(4.0),
             child: TextField(
               decoration: const InputDecoration(hintText: "Username", border: OutlineInputBorder()),
               inputFormatters: [LengthLimitingTextInputFormatter(8)],

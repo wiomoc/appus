@@ -27,10 +27,10 @@ class _WidgetScreenState extends ConsumerState<WidgetScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const CafeteriaWidgetView(),
+      //const CafeteriaWidgetView(),
       const CalendarHomeWidgetView(),
       const DeparturesHomeWidget(),
-      const StudyRoomWidgetView.closest()
+      //const StudyRoomWidgetView.closest()
     ]);
   }
 }

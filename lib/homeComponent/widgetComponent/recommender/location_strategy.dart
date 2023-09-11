@@ -4,7 +4,6 @@ import 'package:campus_flutter/base/enums/home_widget.dart';
 import 'package:campus_flutter/base/services/location_service.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/recommender/widget_recommender_strategy.dart';
 import 'package:campus_flutter/placesComponent/services/cafeterias_service.dart';
-import 'package:campus_flutter/placesComponent/services/study_rooms_service.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationStrategy implements WidgetRecommenderStrategy {
@@ -40,7 +39,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
             }
           }
 
-        case HomeWidget.studyRoom:
+/*        case HomeWidget.studyRoom:
           final locations = await _getStudyRoomLocations();
 
           for (var distance in [closeDistance, veryCloseDistance]) {
@@ -52,7 +51,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
             if (locations.isNotEmpty) {
               priority++;
             }
-          }
+          }*/
 
         case HomeWidget.departures:
           List<Campus> locations = Campus.values.toList();
@@ -91,7 +90,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
     }
   }
 
-  Future<List<Location>> _getStudyRoomLocations() async {
+  /*Future<List<Location>> _getStudyRoomLocations() async {
     try {
       List<Location> locations = [];
       final response = await StudyRoomsService.fetchStudyRooms(false);
@@ -110,5 +109,5 @@ class LocationStrategy implements WidgetRecommenderStrategy {
     } catch (_) {
       return [];
     }
-  }
+  }*/
 }
