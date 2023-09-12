@@ -5,7 +5,7 @@ import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_
 import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+/*
 class CafeteriasSearchResultView extends ConsumerWidget {
   const CafeteriasSearchResultView({super.key});
 
@@ -42,3 +42,4 @@ class CafeteriasSearchResultView extends ConsumerWidget {
         )));
   }
 }
+*/

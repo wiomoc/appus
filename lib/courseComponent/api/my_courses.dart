@@ -4,7 +4,6 @@ import '../../providers_get_it.dart';
 import '../model/course_summary.dart';
 
 class MyCoursesApiOperation extends ApiOperation<List<CourseSummary>> {
-
   @override
   String get cacheKey => "myCourses";
 
@@ -19,8 +18,8 @@ class MyCoursesApiOperation extends ApiOperation<List<CourseSummary>> {
   @override
   Future<List<CourseSummary>> fetchOnline() async {
     final campusApi = getIt.get<CampusApi>();
-    final List<dynamic> courseResources = await campusApi.callRestApi("slc.tm.cp/student/myCourses",
-        params: {"\$orderBy": "title=ascnf", "\$skip": 0, "\$top": 20});
+    final List<dynamic> courseResources = await campusApi
+        .callRestApi("slc.tm.cp/student/myCourses", params: {"\$orderBy": "title=ascnf", "\$skip": 0, "\$top": 20});
 
     return courseResources.map((courseResource) {
       final courseRegistration = courseResource["content"]["cpCourseGroupRegistrationDto"];
@@ -30,11 +29,12 @@ class MyCoursesApiOperation extends ApiOperation<List<CourseSummary>> {
 
       return CourseSummary(
           id: courseRegistration["course"]["id"],
+          courseNumber: courseRegistration["course"]["courseNumber"]["courseNumber"],
           localizedTitle: CampusApi.getLocalized(courseRegistration["course"]["courseTitle"])!,
           localizedType: CampusApi.getLocalized(courseRegistration["course"]["courseTypeDto"]["courseTypeName"])!,
           groupId: courseRegistration["courseGroupId"],
-          localizedStudyProgramme: CampusApi.getLocalized(courseRegistration["studyProgramme"]["studyName"])!,
-          semesterHours: (semesterHoursString != null) ? int.parse(semesterHoursString) : null);
+          localizedStudyProgramme: CampusApi.getLocalized(courseRegistration["studyProgramme"]["studyName"]),
+          semesterHours: (semesterHoursString != null) ? int.tryParse(semesterHoursString) : null);
     }).toList(growable: false);
   }
 }

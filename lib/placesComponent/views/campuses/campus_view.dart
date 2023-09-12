@@ -21,9 +21,9 @@ class _CampusViewState extends ConsumerState<CampusView> {
 
   @override
   void initState() {
-    ref
-        .read(navigaTumViewModel)
-        .mostSearched(widget.campus.searchStringRooms, false);
+   // ref
+    //    .read(navigaTumViewModel)
+     //   .mostSearched(widget.campus.searchStringRooms, false);
     super.initState();
   }
 
@@ -33,7 +33,7 @@ class _CampusViewState extends ConsumerState<CampusView> {
         child: Column(
       children: [
         const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-        const CampusMostSearchedView()
+       // const CampusMostSearchedView()
       ],
     ));
   }

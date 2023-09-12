@@ -14,13 +14,11 @@ abstract class Searchable {
                 .trim()
                 .toLowerCase()
                 .removeDiacritics()
-                .keepValidChars()
-                .split(" ");
+                .keepValidChars();
           } else {
-            return [comparisonToken.value];
+            return comparisonToken.value;
           }
         })
-        .expand((element) => element)
         .toList();
   }
 }

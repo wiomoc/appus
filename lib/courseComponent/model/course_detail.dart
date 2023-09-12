@@ -10,7 +10,7 @@ class CourseDetail {
   final int? semesterHours;
   final String localizedType;
   final String localizedSemester;
-  final String localizedOrganisation;
+  final String? localizedOrganisation;
   final String localizedLanguage;
   final String? localizedCourseContent;
   final String? localizedCourseObjective;
@@ -21,7 +21,7 @@ class CourseDetail {
     required this.semesterHours,
     required this.localizedType,
     required this.localizedSemester,
-    required this.localizedOrganisation,
+    this.localizedOrganisation,
     required this.localizedLanguage,
     this.localizedCourseContent,
     this.localizedCourseObjective});
@@ -29,4 +29,9 @@ class CourseDetail {
   factory CourseDetail.fromJson(Map<String, dynamic> json) => _$CourseDetailFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseDetailToJson(this);
+
+  @override
+  String toString() {
+    return 'CourseDetail{courseNumber: $courseNumber, localizedTitle: $localizedTitle}';
+  }
 }

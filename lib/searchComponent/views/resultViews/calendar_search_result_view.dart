@@ -7,7 +7,7 @@ import 'package:campus_flutter/providers_get_it.dart';
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+/*
 class CalendarSearchResultView extends ConsumerWidget {
   const CalendarSearchResultView({super.key});
 
@@ -81,3 +81,4 @@ class CalendarSearchResultView extends ConsumerWidget {
         )));
   }
 }
+*/

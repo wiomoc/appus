@@ -23,7 +23,8 @@ class BasicCourseInfoView extends StatelessWidget {
       const Divider(),
       BasicCourseInfoRowView(information: courseDetails.localizedSemester, iconData: Icons.school),
       const Divider(),
-      BasicCourseInfoRowView(information: courseDetails.localizedOrganisation, iconData: Icons.account_tree),
+      if (courseDetails.localizedOrganisation != null)
+        BasicCourseInfoRowView(information: courseDetails.localizedOrganisation!, iconData: Icons.account_tree),
       const Divider(),
       BasicCourseInfoRowView(information: courseDetails.localizedLanguage, iconData: Icons.translate),
     ]);

@@ -4,16 +4,11 @@ import 'package:campus_flutter/departuresComponent/viewModel/departures_viewmode
 import 'package:campus_flutter/gradeComponent/viewModels/grade_viewmodel.dart';
 import 'package:campus_flutter/homeComponent/split_view_viewmodel.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
-import 'package:campus_flutter/navigatumComponent/viewModels/navigatum_viewmodel.dart';
 import 'package:campus_flutter/newsComponent/viewModel/news_viewmodel.dart';
 import 'package:campus_flutter/personDetailedComponent/viewModel/person_details_viewmodel.dart';
 import 'package:campus_flutter/placesComponent/viewModels/places_viewmodel.dart';
 import 'package:campus_flutter/profileComponent/model/profile.dart';
 import 'package:campus_flutter/profileComponent/viewModel/profile_viewmodel.dart';
-import 'package:campus_flutter/searchComponent/viewmodels/search_viewmodel.dart';
-import 'package:campus_flutter/searchComponent/viewmodels/searchableViewModels/cafeteria_search_viewmodel.dart';
-import 'package:campus_flutter/searchComponent/viewmodels/searchableViewModels/calendar_search_viewmodel.dart';
-import 'package:campus_flutter/searchComponent/viewmodels/searchableViewModels/grades_search_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
@@ -53,9 +48,6 @@ final personDetailsViewModel = Provider((ref) {
 
 /// view model for places
 final placesViewModel = Provider((ref) => PlacesViewModel());
-final navigaTumViewModel = Provider((ref) => NavigaTumViewModel());
-//final cafeteriaWidgetViewModel = Provider((ref) => CafeteriaWidgetViewModel());
-//final studyRoomWidgetViewModel = Provider((ref) => StudyRoomWidgetViewModel());
 
 /// view model for news
 final newsViewModel = Provider((ref) => NewsViewModel());
@@ -68,17 +60,7 @@ final gradeViewModel = Provider((ref) => GradeViewModel(ref));
 /// view model for calendar
 final calendarViewModel = Provider((ref) => CalendarViewModel());
 
-/// view model for departures
 final departureViewModel = Provider((ref) => DeparturesViewModel());
 
 /// view model for landscape mode
 final homeSplitViewModel = Provider((ref) => SplitViewViewModel());
-
-/// view model for landscape mode of lectures
-final lectureSplitViewModel = Provider((ref) => SplitViewViewModel());
-
-/// search view models
-final searchViewModel = Provider((ref) => SearchViewModel(ref));
-final gradesSearchViewModel = Provider((ref) => GradesSearchViewModel());
-final cafeteriaSearchViewModel = Provider((ref) => CafeteriaSearchViewModel());
-final calendarSearchViewModel = Provider((ref) => CalendarSearchViewModel());

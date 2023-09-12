@@ -12,7 +12,7 @@ const learningSpacesBaseUrl = "https://lernraeume.stuvus.uni-stuttgart.de";
 class LearningSpacesService {
   Future<LearningSpaces> fetchLearningSpaces() async {
     final client = Dio();
-    final response = await client.get("${learningSpacesBaseUrl}/data.json",
+    final response = await client.get("$learningSpacesBaseUrl/data.json",
         options: Options(
           responseType: ResponseType.json,
         ));

@@ -13,14 +13,13 @@ import 'package:stash/stash_api.dart';
 import 'base/helpers/delayed_loading_indicator.dart';
 import 'login2Component/login_view.dart';
 import 'package:stash_hive/stash_hive.dart';
-import 'package:stash_memory/stash_memory.dart';
 
 main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   getIt.registerSingleton<ConnectivityResult>(await Connectivity().checkConnectivity());
   getIt.registerSingleton<CampusApi>(CampusApi(Dio()));
-  final store = await newHiveDefaultCacheStore(path: (await getTemporaryDirectory()).path + "\\cache");
+  final store = await newHiveDefaultCacheStore(path: "${(await getTemporaryDirectory()).path}\\cache");
   final cache = await store.cache<Map>(name: "cache", maxEntries: 60);
   //cache.on<CacheEntryCreatedEvent<Map<String, dynamic>>>().listen(
   //        (event) => print('Key "${event.entry.key}" added to the cache'));
@@ -48,7 +47,7 @@ class CampusApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightTheme(context),
         darkTheme: darkTheme(context),
-        home: AuthenticationRouter());
+        home: const AuthenticationRouter());
   }
 }
 

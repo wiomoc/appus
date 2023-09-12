@@ -54,7 +54,7 @@ class LearningSpacesViewState extends State<LearningSpacesView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(leading: const BackButton(), title: Text("Learning Spaces")), body: _body());
+    return Scaffold(appBar: AppBar(leading: const BackButton(), title: const Text("Learning Spaces")), body: _body());
   }
 
   Widget _body() {

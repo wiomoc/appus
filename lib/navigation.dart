@@ -1,6 +1,5 @@
 import 'package:campus_flutter/courseComponent/courses_view.dart';
 import 'package:campus_flutter/examsComponent/exams_view.dart';
-import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
 import 'calendar2Component/calendars_view.dart';
+import 'searchComponent/views/search_body_view.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -24,14 +24,12 @@ class _NavigationState extends State<Navigation> {
   bool _isSearching = false;
   bool showContent = false;
 
-  /*
   void _toggleSearch() {
     setState(() {
-      ref.read(searchViewModel).clear();
+      //ref.read(searchViewModel).clear();
       showContent = false;
       _isSearching = !_isSearching;
-      _searchAreaHeight =
-          _isSearching ? MediaQuery.sizeOf(context).height : 0.0;
+      _searchAreaHeight = _isSearching ? MediaQuery.sizeOf(context).height : 0.0;
     });
   }
 
@@ -41,7 +39,7 @@ class _NavigationState extends State<Navigation> {
       _isSearching = false;
       _searchAreaHeight = 0.0;
     });
-  }*/
+  }
 
   @override
   void initState() {
@@ -61,64 +59,53 @@ class _NavigationState extends State<Navigation> {
             leading: (kIsWeb && isLandScape)
                 ? Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Image.asset('assets/images/logos/tum-logo-blue.png',
-                        fit: BoxFit.scaleDown))
-                : /*IconButton(
+                    child: Image.asset('assets/images/logos/tum-logo-blue.png', fit: BoxFit.scaleDown))
+                : IconButton(
                     onPressed: () => _toggleSearch(),
-                    icon: const Icon(Icons.search))*/ null,
+                    icon: _isSearching ? const Icon(Icons.arrow_back) : const Icon(Icons.search)),
             title: (() {
               switch (currentPageIndex) {
                 case 0:
                   if (kIsWeb && isLandScape) {
-                    return Text("Home",
-                        style: Theme.of(context).textTheme.titleLarge);
+                    return Text("Home", style: Theme.of(context).textTheme.titleLarge);
                   } else {
-                    return Image.asset('assets/images/logos/tum-logo-blue.png',
-                        fit: BoxFit.cover, height: 20);
+                    return Image.asset('assets/images/logos/tum-logo-blue.png', fit: BoxFit.cover, height: 20);
                   }
                 case 1:
-                  return Text("Updates",
-                      style: Theme.of(context).textTheme.titleLarge);
+                  return Text("Updates", style: Theme.of(context).textTheme.titleLarge);
                 case 2:
-                  return Text("Lectures",
-                      style: Theme.of(context).textTheme.titleLarge);
+                  return Text("Lectures", style: Theme.of(context).textTheme.titleLarge);
                 case 3:
-                  return Text("Calendar",
-                      style: Theme.of(context).textTheme.titleLarge);
+                  return Text("Calendar", style: Theme.of(context).textTheme.titleLarge);
                 case 4:
-                  return Text("Places",
-                      style: Theme.of(context).textTheme.titleLarge);
+                  return Text("Places", style: Theme.of(context).textTheme.titleLarge);
                 default:
-                  return Image.asset('assets/images/logos/tum-logo-blue.png',
-                      fit: BoxFit.contain, height: 20);
+                  return Image.asset('assets/images/logos/tum-logo-blue.png', fit: BoxFit.contain, height: 20);
               }
             }()),
             actions: <Widget>[
-              if (kIsWeb && isLandScape)
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+              if (kIsWeb && isLandScape) IconButton(onPressed: () => _toggleSearch(), icon: const Icon(Icons.search)),
               IconButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SettingsView()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsView()));
                   },
                   icon: const Icon(Icons.settings)),
             ],
           ), //: null,
-          bottomNavigationBar:
-              (kIsWeb && isLandScape) ? null : _bottomNavigationBar(),
+          bottomNavigationBar: (kIsWeb && isLandScape) ? null : _bottomNavigationBar(),
           body: Stack(
             children: [
-              SafeArea(
-                  child: (kIsWeb && isLandScape)
-                      ? _webNavigationRail()
-                      : _navigationBody()),
+              SafeArea(child: (kIsWeb && isLandScape) ? _webNavigationRail() : _navigationBody()),
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 200),
                 height: _searchAreaHeight,
-                child: /*_isSearching
-                    ? SearchView(
-                        index: currentPageIndex, showContent: showContent)
-                    : */null,
+                child: SafeArea(
+                    child: Container(
+                  color: Theme.of(context).canvasColor,
+                  child: showContent
+                      ? SearchView(index: currentPageIndex) //)
+                      : Container(),
+                )),
                 onEnd: () {
                   setState(() {
                     showContent = !showContent;
@@ -133,7 +120,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return ExamsView();
+        return const ExamsView();
       case 1:
         return const UpdatesPage();
       case 2:
@@ -143,7 +130,7 @@ class _NavigationState extends State<Navigation> {
       case 4:
         return const PlacesScreen();
       default:
-        return UpdatesPage();
+        return const UpdatesPage();
     }
   }
 
@@ -161,8 +148,7 @@ class _NavigationState extends State<Navigation> {
         ),
         child: NavigationBar(
           onDestinationSelected: (int index) {
-            //_closeSearch();
-            //ref.read(searchViewModel).clear();
+            _closeSearch();
             setState(() {
               currentPageIndex = index;
             });
@@ -181,11 +167,7 @@ class _NavigationState extends State<Navigation> {
               selectedIcon: Icon(Icons.house),
               label: 'Home',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.feed_outlined),
-              selectedIcon: Icon(Icons.feed),
-              label: 'Updates'
-            ),
+            NavigationDestination(icon: Icon(Icons.feed_outlined), selectedIcon: Icon(Icons.feed), label: 'Updates'),
             NavigationDestination(
               icon: Icon(Icons.class_outlined),
               selectedIcon: Icon(Icons.class_),
@@ -212,6 +194,7 @@ class _NavigationState extends State<Navigation> {
         NavigationRail(
           selectedIndex: currentPageIndex,
           onDestinationSelected: (int index) {
+            _closeSearch();
             setState(() {
               currentPageIndex = index;
             });

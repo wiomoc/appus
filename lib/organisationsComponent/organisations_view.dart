@@ -37,7 +37,7 @@ class OrganisationView extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(10)),
                             child: Image(
                               image: iconImage,
-                              errorBuilder: (context, error, stackTrace) => SizedBox(height: 50, width: 10),
+                              errorBuilder: (context, error, stackTrace) => const SizedBox(height: 50, width: 10),
                               height: 50,
                               width: 50,
                               fit: BoxFit.cover,
@@ -93,7 +93,7 @@ class OrganisationView extends StatelessWidget {
                         .toList(),
                   ),
                 _newsSlider(context),
-                Padding(padding: const EdgeInsets.symmetric(vertical: 2))
+                const Padding(padding: EdgeInsets.symmetric(vertical: 2))
               ]));
         });
   }
@@ -204,7 +204,7 @@ class OrganisationView extends StatelessWidget {
                                   UrlLauncher.urlString(newsItem.href);
                                 },
                                 leading: Icon(isInstagram ? Icons.photo_outlined : Icons.language),
-                                trailing: Icon(Icons.open_in_new),
+                                trailing: const Icon(Icons.open_in_new),
                                 title: Text(
                                   isInstagram ? "Instagram" : newsItem.href,
                                   maxLines: 1,
@@ -262,7 +262,7 @@ class _UpdatesPageState extends ApiBackedState<List<Organisation>, UpdatesPage> 
   @override
   void initState() {
     super.initState();
-    load(OrganisationsApiOperation(["stuvus", "fius", "mach", "uni"]), Duration(minutes: 5));
+    load(OrganisationsApiOperation(["stuvus", "fius", "mach", "uni"]), const Duration(minutes: 5));
   }
 
   @override

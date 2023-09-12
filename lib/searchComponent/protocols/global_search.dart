@@ -7,7 +7,7 @@ import 'package:collection/collection.dart';
 typedef Distances = List<int>;
 
 class GlobalSearch {
-  static List<(T, Distances)>? tokenSearch<T extends Searchable>(
+  static List<(T, Distances)> tokenSearch<T extends Searchable>(
       String query, List<T> searchables) {
     final tokens = tokenize(query);
 

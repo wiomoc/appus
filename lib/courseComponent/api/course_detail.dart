@@ -1,5 +1,6 @@
 import 'package:campus_flutter/courseComponent/model/course_group_detail.dart';
 
+import '../../base/extensions/cast.dart';
 import '../../base/helpers/api_operation.dart';
 import '../../base/networking/apis/campUSApi/campus_api.dart';
 import '../../providers_get_it.dart';
@@ -71,9 +72,8 @@ class CourseDetailApiOperation extends ApiOperation<(CourseDetail, CourseGroupDe
   Future<CourseDetail> _fetchCourse(CampusApi campusApi) async {
     final resource = await campusApi.callRestApi("slc.tm.cp/student/courses/$id");
     final Map<String, dynamic> courseDetail = resource[0]["content"]["cpCourseDetailDto"];
-
-    final semesterHoursString = (courseDetail["cpCourseDto"]["courseNormConfigs"] as List<dynamic>)
-        .where((element) => element["key"] == "SST")
+    final semesterHoursString = cast<List<dynamic>?>(courseDetail["cpCourseDto"]?["courseNormConfigs"])
+        ?.where((element) => element["key"] == "SST")
         .firstOrNull?["value"];
 
     return CourseDetail(
@@ -84,12 +84,12 @@ class CourseDetailApiOperation extends ApiOperation<(CourseDetail, CourseGroupDe
         localizedType: CampusApi.getLocalized(courseDetail["cpCourseDto"]["courseTypeDto"]["courseTypeName"])!,
         localizedSemester: CampusApi.getLocalized(courseDetail["cpCourseDto"]["semesterDto"]["semesterDesignation"])!,
         localizedOrganisation:
-            CampusApi.getLocalized(courseDetail["cpCourseDto"]["organisationResponsibleDto"]["name"])!,
+        CampusApi.getLocalized(courseDetail["cpCourseDto"]?["organisationResponsibleDto"]?["name"]),
         localizedLanguage: (courseDetail["cpCourseDto"]["courseLanguageDtos"] as List<dynamic>)
             .map((language) => CampusApi.getLocalized(language["languageDto"]["name"])!)
             .join(", "),
-        localizedCourseContent: CampusApi.getLocalized(courseDetail["cpCourseDescriptionDto"]["courseContent"]),
-        localizedCourseObjective: CampusApi.getLocalized(courseDetail["cpCourseDescriptionDto"]["courseObjective"]));
+        localizedCourseContent: CampusApi.getLocalized(courseDetail["cpCourseDescriptionDto"]?["courseContent"]),
+        localizedCourseObjective: CampusApi.getLocalized(courseDetail["cpCourseDescriptionDto"]?["courseObjective"]));
   }
 
   @override
@@ -99,3 +99,4 @@ class CourseDetailApiOperation extends ApiOperation<(CourseDetail, CourseGroupDe
     return (course as CourseDetail, groups as CourseGroupDetail);
   }
 }
+

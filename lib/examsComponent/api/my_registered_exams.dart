@@ -3,7 +3,6 @@ import 'package:campus_flutter/examsComponent/model/planned_exam.dart';
 import '../../base/helpers/api_operation.dart';
 import '../../base/networking/apis/campUSApi/campus_api.dart';
 import '../../providers_get_it.dart';
-import '../model/achievement.dart';
 
 class MyRegisteredExamsApiOperation extends ApiOperation<List<PlannedExam>> {
   @override

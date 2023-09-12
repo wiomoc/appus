@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
@@ -371,11 +370,11 @@ class CampusApi {
     }).toList(growable: false);
   }
 
-  static String? getLocalized(Map<String, dynamic> translatable) {
+  static String? getLocalized(Map<String, dynamic>? translatable) {
     final expectedLang = "de";
-    final List<dynamic> translationList = translatable["translations"]["translation"]!;
-    return translationList.where((translation) => translation["lang"] == expectedLang).firstOrNull?["value"] ??
-        translationList.first["value"];
+    final List<dynamic>? translationList = translatable?["translations"]?["translation"];
+    return translationList?.where((translation) => translation["lang"] == expectedLang).firstOrNull?["value"] ??
+        translationList?.first["value"];
   }
 
 

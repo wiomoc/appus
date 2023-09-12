@@ -242,7 +242,6 @@ class MapPageState extends ApiBackedState<RoomLocation, MapPageView>
     return showFloorPlan && roomLocation.floor.planImageUrl != null
         ? FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id)
         : MapWidget(roomLocation.building);
-    ;
   }
 
   @override

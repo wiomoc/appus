@@ -327,7 +327,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
             ]))
       ]);
     } else {
-      ratingsWidget = SliverList.list(children: [const DelayedLoadingIndicator(name: "Ratings")]);
+      ratingsWidget = SliverList.list(children: const [DelayedLoadingIndicator(name: "Ratings")]);
     }
 
     return DraggableScrollableSheet(

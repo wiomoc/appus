@@ -1,6 +1,5 @@
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/api_operation.dart';
-import 'package:campus_flutter/base/helpers/retryable.dart';
 import 'package:campus_flutter/examsComponent/api/my_achievements.dart';
 import 'package:campus_flutter/examsComponent/api/my_registered_exams.dart';
 import 'package:campus_flutter/examsComponent/grade_view.dart';
@@ -111,7 +110,7 @@ class _ExamsPageState extends ApiBackedState<(List<PlannedExam>?, List<Achieveme
               ])),
         if (data.$2 != null)
           ...data.$2!.groupListsBy((element) => element.localizedSemester).entries.expand((entry) => [
-                Divider(),
+                const Divider(),
                 Padding(padding: const EdgeInsets.symmetric(horizontal: 5), child: Text(entry.key)),
                 ...entry.value.map((achievement) => AchievementRow(achievement))
               ])

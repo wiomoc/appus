@@ -34,8 +34,6 @@ class DeparturesViewModel extends ViewModel {
     updatePreference();
   }
 
-  DeparturesViewModel() {
-  }
 
   void calculateClosestCampus() async {
     final location = await LocationService.getLastKnown();

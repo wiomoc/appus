@@ -71,7 +71,7 @@ class _LoginViewState extends State<LoginView> {
               enableSuggestions: false,
             )),
         Padding(
-            padding: EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(4.0),
             child: TextField(
               decoration: const InputDecoration(hintText: "Password", border: OutlineInputBorder()),
               obscureText: true,

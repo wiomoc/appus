@@ -17,11 +17,14 @@ sealed class ApiResult<T> {
   final ApiResponseData<T>? cached;
 
   const ApiResult([this.cached]);
+
+  ApiResult<T> withCached(ApiResponseData<T> cached);
 }
 
 class LoadingApiResult<T> extends ApiResult<T> {
   const LoadingApiResult([super.cached]);
 
+  @override
   LoadingApiResult<T> withCached(ApiResponseData<T> cached) => LoadingApiResult(cached);
 }
 
@@ -30,6 +33,7 @@ class ErrorApiResult<T> extends ApiResult<T> {
 
   const ErrorApiResult(this.error, [super.cached]);
 
+  @override
   ErrorApiResult<T> withCached(ApiResponseData<T> cached) => ErrorApiResult(this.error, cached);
 }
 
@@ -37,6 +41,9 @@ class FinalApiResult<T> extends ApiResult<T> {
   final ApiResponseData<T>? response;
 
   FinalApiResult(this.response) : super(response);
+
+  @override
+  ApiResult<T> withCached(ApiResponseData<T> cached) => FinalApiResult(cached);
 }
 
 class SimpleApiOperation<T> extends ApiOperation<T> {
@@ -73,6 +80,7 @@ abstract class AbstractApiOperation<T> implements ValueListenable<ApiResult<T>> 
 abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperation<T> {
   ApiResult<T> _currentResult = LoadingApiResult<T>();
   CancelToken cancelToken = CancelToken();
+  bool disposed = false;
 
   String get cacheKey;
 
@@ -101,7 +109,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
     }
 
     if (_currentResult.cached == null) {
-      _fetchCached(cache).then((data) {
+      _fetchCached(cache).catchError((error) => null).then((data) {
         if (data != null) {
           final currentResult = _currentResult;
           if (maxAge != null) {
@@ -111,9 +119,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
               _setResult(LoadingApiResult(data));
               fetchOnlineAndStoreToCache();
             }
-          } else if (currentResult is LoadingApiResult<T>) {
-            _setResult(currentResult.withCached(data));
-          } else if (currentResult is ErrorApiResult<T>) {
+          } else if (currentResult is LoadingApiResult<T> || currentResult is ErrorApiResult<T>) {
             _setResult(currentResult.withCached(data));
           }
         } else if (maxAge != null) {
@@ -127,6 +133,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
     }
   }
 
+  @override
   void retry() {
     cancelToken.cancel("retrying");
     cancelToken = CancelToken();
@@ -135,6 +142,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
   }
 
   void _setResult(ApiResult<T> newResult) {
+    if (disposed) return;
     _currentResult = newResult;
     notifyListeners();
   }
@@ -150,6 +158,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
 
   @override
   void dispose() {
+    disposed = true;
     super.dispose();
     cancelToken.cancel("disposed");
   }

@@ -1,35 +1,31 @@
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SearchTextField extends ConsumerStatefulWidget {
-  const SearchTextField(
-      {super.key, required this.textEditingController, required this.index});
-
-  final TextEditingController textEditingController;
+class SearchTextField extends StatefulWidget {
+  final void Function(String search) onTextUpdate;
   final int index;
 
+  const SearchTextField({super.key, required this.onTextUpdate, required this.index});
+
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SearchTextFieldState();
+  State<StatefulWidget> createState() => _SearchTextFieldState();
 }
 
-class _SearchTextFieldState extends ConsumerState<SearchTextField> {
+class _SearchTextFieldState extends State<SearchTextField> {
   bool showIcon = false;
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: context.padding),
         child: TextField(
-          controller: widget.textEditingController,
+          controller: textEditingController,
+          autofocus: true,
           onChanged: (searchString) {
-            ref
-                .read(searchViewModel)
-                .triggerSearchAfterUpdate(searchString, widget.index);
+            widget.onTextUpdate(searchString);
             setState(() {
-              showIcon = widget.textEditingController.value.text.isNotEmpty;
+              showIcon = searchString.isNotEmpty;
             });
           },
           decoration: InputDecoration(
@@ -37,8 +33,8 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
             suffixIcon: showIcon
                 ? GestureDetector(
                     onTap: () {
-                      ref.read(searchViewModel).clear();
-                      widget.textEditingController.clear();
+                      textEditingController.clear();
+                      widget.onTextUpdate("");
                       setState(() {
                         showIcon = false;
                       });

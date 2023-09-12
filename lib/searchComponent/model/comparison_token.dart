@@ -3,7 +3,7 @@ class ComparisonToken {
   final ComparisonTokenType type;
 
   ComparisonToken(
-      {required this.value, this.type = ComparisonTokenType.tokenized});
+      {required this.value, this.type = ComparisonTokenType.raw});
 
   static bool isEqual(ComparisonToken lhs, ComparisonToken rhs) {
     if (lhs.value.length != rhs.value.length) {
