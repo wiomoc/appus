@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../base/extensions/cast.dart';
-import '../base/networking/apis/campUSApi/campus_api.dart';
 import 'model/calendar_event.dart';
 
 class CampusCalendarDatasource extends CalendarDataSource {

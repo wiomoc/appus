@@ -100,7 +100,7 @@ abstract class ApiOperation<T> with ChangeNotifier implements AbstractApiOperati
         _setResult(FinalApiResult(response));
         final cachedMap = toCached(data);
         cachedMap["lastRefresh"] = response.fetchTime.toIso8601String();
-        return cache.put(cacheKey, cachedMap, delegate: (builder) => builder..expiryDuration = Duration(days: 1));
+        return cache.put(cacheKey, cachedMap, delegate: (builder) => builder..expiryDuration = const Duration(days: 1));
       }).onError((error, stackTrace) {
         if (!(error is DioException && error.type == DioExceptionType.cancel)) {
           _setResult(ErrorApiResult(error!, _currentResult.cached));
@@ -180,7 +180,7 @@ class MergedApiOperation<A, B> with ChangeNotifier implements AbstractApiOperati
   final AbstractApiOperation<A> firstOperation;
   final AbstractApiOperation<B> secondOperation;
 
-  ApiResult<(A?, B?)> _currentResult = LoadingApiResult<(A?, B?)>();
+  ApiResult<(A?, B?)> _currentResult = const LoadingApiResult<(A?, B?)>();
 
   MergedApiOperation(this.firstOperation, this.secondOperation) {
     firstOperation.addListener(_onApiResultChange);

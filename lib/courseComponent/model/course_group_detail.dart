@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../base/networking/apis/campUSApi/campus_api.dart';
 import '../../calendarComponent/model/calendar_event.dart';
 
 part 'course_group_detail.g.dart';

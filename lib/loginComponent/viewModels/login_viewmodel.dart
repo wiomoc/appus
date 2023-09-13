@@ -121,11 +121,9 @@ class LoginViewModel {
     /*ProviderContainer()
       ..invalidate(profileViewModel)
       ..invalidate(personDetailsViewModel);*/
-    ref.invalidate(profileViewModel);
     ref.invalidate(personDetailsViewModel);
     await getIt<MainApi>().clearCache();
     await _storage.delete(key: "token");
-    Api.tumToken = "";
     //profileViewModel.
     //personDetailsViewModel.overrideWithValue(PersonDetailsViewModel(null));
     credentials.add(Credentials.none);

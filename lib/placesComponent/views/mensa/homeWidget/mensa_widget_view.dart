@@ -1,13 +1,9 @@
 import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/card_with_padding.dart';
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/base/helpers/horizontal_slider.dart';
 import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
-import 'package:campus_flutter/placesComponent/model/cafeterias/cafeteria.dart';
-import 'package:campus_flutter/placesComponent/model/cafeterias/cafeteria_menu.dart';
-import 'package:campus_flutter/placesComponent/model/cafeterias/dish.dart';
 import 'package:flutter/material.dart';
 
 import '../api/sws_meals.dart';

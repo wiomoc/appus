@@ -1,5 +1,4 @@
 import 'package:campus_flutter/courseComponent/courses_view.dart';
-import 'package:campus_flutter/examsComponent/exams_view.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';

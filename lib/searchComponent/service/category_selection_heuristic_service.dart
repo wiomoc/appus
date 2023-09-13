@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:flutter/services.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../model/vocab.dart';

@@ -1,15 +1,11 @@
 import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/card_with_padding.dart';
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
-import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/calendarComponent/api/my_events.dart';
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'calendar_widget_event_view.dart';

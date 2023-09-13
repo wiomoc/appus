@@ -1,5 +1,4 @@
 import 'package:campus_flutter/base/extensions/date_day.dart';
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

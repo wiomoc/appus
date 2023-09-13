@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../base/networking/apis/appusBackendApi/appus_backend_api.dart';
-import 'model/meal.dart';
 import 'model/rating.dart';
 
 class MensaLocation {

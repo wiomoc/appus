@@ -1,10 +1,4 @@
 import 'package:campus_flutter/base/enums/campus.dart';
-import 'package:campus_flutter/base/helpers/card_with_padding.dart';
-import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
-import 'package:campus_flutter/placesComponent/model/cafeterias/cafeteria.dart';
-import 'package:campus_flutter/placesComponent/views/campuses/campus_most_searched_view.dart';
-import 'package:campus_flutter/placesComponent/views/homeWidget/study_room_widget_view.dart';
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,10 +23,10 @@ class _CampusViewState extends ConsumerState<CampusView> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return const SliverToBoxAdapter(
         child: Column(
       children: [
-        const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+        Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
        // const CampusMostSearchedView()
       ],
     ));

@@ -1,9 +1,6 @@
 import 'package:campus_flutter/base/enums/home_widget.dart';
-import 'package:campus_flutter/homeComponent/widgetComponent/recommender/spatial_temporal_strategy.dart';
-import 'package:campus_flutter/homeComponent/widgetComponent/recommender/widget_recommender.dart';
 import 'package:campus_flutter/placesComponent/views/mensa/homeWidget/mensa_widget_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../calendarComponent/homeWidget/calendar_widget_view.dart';
 import '../../../vvsComponent/views/homeWidget/departures_widget_view.dart';

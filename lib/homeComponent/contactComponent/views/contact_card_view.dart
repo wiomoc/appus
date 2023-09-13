@@ -1,6 +1,5 @@
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/api_operation.dart';
-import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/homeComponent/contactComponent/api/my_name.dart';
 import 'package:campus_flutter/homeComponent/contactComponent/api/my_studies.dart';
 import 'package:campus_flutter/homeComponent/contactComponent/model/study.dart';
@@ -16,7 +15,7 @@ class ContactCardView extends StatefulWidget {
 class _ContactCardViewState extends ApiBackedState<(String?, List<Study>?), ContactCardView> {
   @override
   void initState() {
-    load(MergedApiOperation(MyNameApiOperation(), MyStudiesApiOperation()), Duration(days: 1));
+    load(MergedApiOperation(MyNameApiOperation(), MyStudiesApiOperation()), const Duration(days: 1));
     super.initState();
   }
 

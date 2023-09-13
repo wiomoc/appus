@@ -1,13 +1,7 @@
-import 'dart:math';
-
 import 'package:campus_flutter/mapComponent/views/map_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:zoom_widget/zoom_widget.dart';
 
 import '../base/helpers/api_backed_state.dart';
-import '../base/helpers/delayed_loading_indicator.dart';
-import '../courseComponent/basic_course_info_row_view.dart';
 import 'api/room_location_api.dart';
 import 'model/room_location.dart';
 import 'views/floor_plan_view.dart';
