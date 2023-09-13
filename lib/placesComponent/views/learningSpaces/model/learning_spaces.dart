@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'learning_spaces_model.g.dart';
+part 'learning_spaces.g.dart';
 
 @JsonSerializable()
 class Translatable {

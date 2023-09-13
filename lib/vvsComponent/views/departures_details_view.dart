@@ -2,8 +2,7 @@ import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:flutter/material.dart';
 
-import '../../base/helpers/retryable.dart';
-import '../api/vvs_api.dart';
+import '../api/vvs_departures.dart';
 import '../model/departure.dart';
 import 'departures_details_row_view.dart';
 
@@ -20,18 +19,17 @@ const stations = [
   Station("de:08111:2603", "Schrane"),
 ];
 
-class VVSPage extends StatefulWidget {
-  const VVSPage({super.key});
+class DeparturesPage extends StatefulWidget {
+  const DeparturesPage({super.key});
 
   @override
-  State<VVSPage> createState() {
-    return _VVSPageState();
+  State<DeparturesPage> createState() {
+    return _DeparturesPageState();
   }
 }
 
-class _VVSPageState extends ApiBackedState<List<Departure>, VVSPage> with ApiPullRefresh {
+class _DeparturesPageState extends ApiBackedState<List<Departure>, DeparturesPage> with ApiPullRefresh, ApiBackedPageState {
   Station _currentStation = stations.first;
-  late Retryable<List<Departure>> _departuresRetryable;
 
   @override
   void initState() {
@@ -44,6 +42,7 @@ class _VVSPageState extends ApiBackedState<List<Departure>, VVSPage> with ApiPul
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
+        bottom: bottomLoadingIndicator(),
         title: DropdownButton(
           value: _currentStation,
           items: stations

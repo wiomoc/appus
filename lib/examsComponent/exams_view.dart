@@ -5,20 +5,20 @@ import 'package:campus_flutter/examsComponent/api/my_registered_exams.dart';
 import 'package:campus_flutter/examsComponent/grade_view.dart';
 import 'package:campus_flutter/examsComponent/model/achievement.dart';
 import 'package:campus_flutter/examsComponent/model/planned_exam.dart';
-import 'package:campus_flutter/mapComponent/map_view.dart';
 import 'package:collection/collection.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../base/helpers/icon_text.dart';
+import '../mapComponent/room_location_page.dart';
 
-class ExamsView extends StatefulWidget {
-  const ExamsView({super.key});
+class ExamsScreen extends StatefulWidget {
+  const ExamsScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _ExamsPageState();
+    return _ExamsScreenState();
   }
 }
 
@@ -61,7 +61,7 @@ class PlannedExamRow extends StatelessWidget {
             if (exam.roomName != null)
               InkWell(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MapPageView(roomId: exam.roomId!),
+                        builder: (context) => RoomLocationPage(roomId: exam.roomId!),
                       )),
                   child: IconText(
                       iconData: Icons.room,
@@ -76,7 +76,7 @@ class PlannedExamRow extends StatelessWidget {
   }
 }
 
-class _ExamsPageState extends ApiBackedState<(List<PlannedExam>?, List<Achievement>?), ExamsView>
+class _ExamsScreenState extends ApiBackedState<(List<PlannedExam>?, List<Achievement>?), ExamsScreen>
     with ApiBackedPageState {
 
   @override

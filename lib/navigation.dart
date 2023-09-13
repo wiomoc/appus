@@ -120,7 +120,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return const ExamsView();
+        return const ExamsScreen();
       case 1:
         return const UpdatesPage();
       case 2:

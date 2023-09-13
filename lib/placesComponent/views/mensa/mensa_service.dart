@@ -4,16 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../base/networking/apis/appusBackendApi/appus_backend_api.dart';
-import 'meal_model.dart';
+import 'model/meal.dart';
+import 'model/rating.dart';
 
-Future<Map<DateTime, List<Meal>>> fetchMeals(String mensaId) async {
-  final client = Dio();
-  final response = await client.get("https://sws.maxmanager.xyz/extern/$mensaId.json",
-      options: Options(responseType: ResponseType.json));
-  final Map<String, dynamic> mealsByDate = response.data.values.first;
-  return mealsByDate.map(
-      (key, value) => MapEntry(DateTime.parse(key), (value as List<dynamic>).map((m) => Meal.fromJson(m)).toList()));
+class MensaLocation {
+  final String id;
+  final String name;
+  final int? aref;
+
+  const MensaLocation(this.id, this.name, [this.aref]);
 }
+
+const mensaLocations = [
+  MensaLocation("mensa_stuttgart-vaihingen", "Mensa Stuttgart Vaihingen", 962),
+  MensaLocation("mensa_central", "Mensa Central"),
+];
+
 
 const String ratingBaseUrl = "$appusBackendBaseUrl/meals";
 
@@ -70,4 +76,18 @@ Future<void> setRated(String mealName, DateTime today) async {
     await sharedPreferences.setStringList(
         lastRatingsKey, (sharedPreferences.getStringList(lastRatingsKey) ?? []) + [mealName]);
   }
+}
+
+
+const lastMensaLocationKey = "lastMensaLocation";
+
+Future<void> setLastMensaLocation(MensaLocation mensaLocation) async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  await sharedPreferences.setString(lastMensaLocationKey, mensaLocation.id);
+}
+
+Future<MensaLocation> getLastMensaLocation() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final lastMensaLocationId = sharedPreferences.getString(lastMensaLocationKey);
+  return mensaLocations.firstWhere((mensaLocation) => mensaLocation.id == lastMensaLocationId, orElse: () => mensaLocations.first);
 }

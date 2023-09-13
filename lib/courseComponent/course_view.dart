@@ -4,13 +4,13 @@ import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/base/helpers/url_launcher.dart';
 import 'package:campus_flutter/base/networking/apis/campUSApi/campus_api.dart';
 import 'package:campus_flutter/courseComponent/api/course_detail.dart';
-import 'package:campus_flutter/mapComponent/map_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../base/helpers/card_with_padding.dart';
 import '../base/helpers/horizontal_slider.dart';
 import '../base/helpers/icon_text.dart';
+import '../mapComponent/room_location_page.dart';
 import 'basic_course_info_view.dart';
 import 'detailed_course_info_view.dart';
 import 'model/course_detail.dart';
@@ -80,7 +80,7 @@ class _CourseAppointmentsViewState extends State<CourseAppointmentsView> {
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MapPageView(roomId: appointment.roomId!),
+                                builder: (context) => RoomLocationPage(roomId: appointment.roomId!),
                               ));
                             },
                             child: Text(

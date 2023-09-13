@@ -11,7 +11,7 @@ abstract class ApiBackedState<T, W extends StatefulWidget> extends State<W> {
 
   String get resourceName;
 
-  Widget buildBody(T data);
+  Widget? buildBody(T data);
 
   T? get data => _apiOperation?.value.cached?.data;
 
@@ -35,7 +35,8 @@ abstract class ApiBackedState<T, W extends StatefulWidget> extends State<W> {
     final apiResult = _apiOperation?.value;
 
     if (apiResult?.cached != null) {
-      return buildBody(apiResult!.cached!.data);
+      final body = buildBody(apiResult!.cached!.data);
+      return body ?? DelayedLoadingIndicator(name: resourceName);
     } else if (apiResult is ErrorApiResult<T>) {
       return ErrorHandlingView(
         error: apiResult.error,
@@ -91,19 +92,23 @@ mixin ApiBackedPageState<T, W extends StatefulWidget> on ApiBackedState<T, W> {
     return AppBar(
       leading: const BackButton(),
       title: titleWidget ?? Text(resourceName),
-      bottom: apiResult is LoadingApiResult<T> && apiResult.cached != null
-          ? const PreferredSize(
-              preferredSize: Size.fromHeight(6.0),
-              child: LinearProgressIndicator(),
-            )
-          : null,
+      bottom: bottomLoadingIndicator(),
     );
+  }
+
+  PreferredSizeWidget? bottomLoadingIndicator() {
+    final apiResult = _apiOperation?.value;
+    if (apiResult is LoadingApiResult<T> && apiResult.cached != null) {
+      return const PreferredSize(
+        preferredSize: Size.fromHeight(6.0),
+        child: LinearProgressIndicator(),
+      );
+    }
+    return null;
   }
 }
 
 mixin ApiPullRefresh<T, W extends StatefulWidget> on ApiBackedState<T, W> {
-
-
   @override
   Widget body() {
     if (_apiOperation?.value.cached != null || _apiOperation?.value is ErrorApiResult<T>) {
@@ -117,6 +122,7 @@ mixin ApiPullRefresh<T, W extends StatefulWidget> on ApiBackedState<T, W> {
               _apiOperation?.removeListener(onChange);
             }
           }
+
           _apiOperation?.addListener(onChange);
           _apiOperation?.retry();
           return completer.future;

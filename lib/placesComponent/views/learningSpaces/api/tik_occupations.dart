@@ -1,25 +1,23 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/src/adapters/io_adapter.dart';
 
-import 'learning_spaces_model.dart';
-import 'dart:async';
-import 'dart:io';
 
-const learningSpacesBaseUrl = "https://lernraeume.stuvus.uni-stuttgart.de";
+class TikOccupationsApiOperation extends ApiOperation<Map<String, double>> {
+  @override
+  String get cacheKey => "occupations";
 
-class LearningSpacesService {
-  Future<LearningSpaces> fetchLearningSpaces() async {
-    final client = Dio();
-    final response = await client.get("$learningSpacesBaseUrl/data.json",
-        options: Options(
-          responseType: ResponseType.json,
-        ));
-    return LearningSpaces.fromJson(response.data);
-  }
+  @override
+  Map<String, double> fromCached(Map<String, dynamic> map) => map.cast<String, double>();
 
-  Future<Map<String, double>> fetchOccupation() async {
+  @override
+  Map<String, dynamic> toCached(Map<String, double> object) => object.cast<String, dynamic>();
+
+  @override
+  Future<Map<String, double>> fetchOnline() async {
     final client = Dio();
     (client.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
         () => HttpClient()..badCertificateCallback = (X509Certificate cert, String host, int port) => true;

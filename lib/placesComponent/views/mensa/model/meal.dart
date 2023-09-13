@@ -1,11 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'meal_model.g.dart';
+part 'meal.g.dart';
 
 List<String> _splitString(String? string) {
   if (string == null) return [];
   return string.split(",");
 }
+
+String _joinString(List<String> strings) => strings.join(",");
+
 
 @JsonSerializable()
 class Meal {
@@ -17,7 +20,7 @@ class Meal {
   @JsonKey(name: "foto")
   final String? photoPath;
 
-  @JsonKey(fromJson: _splitString)
+  @JsonKey(fromJson: _splitString, toJson: _joinString)
   final List<String> additives;
 
   Meal(
@@ -43,30 +46,4 @@ class Meal {
   Map<String, dynamic> toJson() => _$MealToJson(this);
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class RatingComment {
-  final double stars;
-  final String? comment;
-  final DateTime date;
-  final String? imageUrl;
-  final String? thumbImageUrl;
 
-  RatingComment(
-      {required this.stars, required this.comment, required this.date, this.imageUrl, this.thumbImageUrl});
-
-  factory RatingComment.fromJson(Map<String, dynamic> json) => _$RatingCommentFromJson(json);
-
-  Map<String, dynamic> toJson() => _$RatingCommentToJson(this);
-}
-
-@JsonSerializable()
-class Rating {
-  final double? stars;
-  final List<RatingComment> comments;
-
-  Rating({required this.stars, required this.comments});
-
-  factory Rating.fromJson(Map<String, dynamic> json) => _$RatingFromJson(json);
-
-  Map<String, dynamic> toJson() => _$RatingToJson(this);
-}

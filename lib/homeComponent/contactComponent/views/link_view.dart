@@ -19,7 +19,7 @@ class LinkView extends ConsumerWidget {
                 aspectRatio: 3,
                 child: GestureDetector(
                     onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamsView()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamsScreen()));
                     },
                     child: const Card(
                         margin: EdgeInsets.only(

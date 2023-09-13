@@ -1,4 +1,3 @@
-import 'package:campus_flutter/base/extensions/base_64_decode_image_data.dart';
 import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/homeComponent/contactComponent/views/contact_card_loading_view.dart';
 import 'package:campus_flutter/personDetailedComponent/model/person_details.dart';
@@ -35,9 +34,9 @@ class _ContactCardViewState extends ConsumerState<ContactCardView> {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: data?.imageData != null
+          backgroundImage: /*data?.imageData != null
               ? Image.memory(base64DecodeImageData(data!.imageData!)).image
-              : const AssetImage('assets/images/placeholders/portrait_placeholder.png'),
+              : */const AssetImage('assets/images/placeholders/portrait_placeholder.png'),
           backgroundColor: Colors.white,
           radius: 50,
         ),
