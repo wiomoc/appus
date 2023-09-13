@@ -1,10 +1,11 @@
-import 'package:campus_flutter/calendar2Component/calendar_datasource.dart';
+import 'package:campus_flutter/calendarComponent/calendar_datasource.dart';
 import 'package:campus_flutter/courseComponent/course_view.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../base/networking/apis/campUSApi/campus_api.dart';
 import '../providers_get_it.dart';
+import 'model/calendar_event.dart';
 
 class CalendarsView extends StatefulWidget {
   const CalendarsView({super.key});
@@ -24,8 +25,7 @@ class _CalendarsViewState extends State<CalendarsView> {
   @override
   void initState() {
     super.initState();
-    final api = getIt<CampusApi>();
-    _calendarDatasource = CampusCalendarDatasource(api, context);
+    _calendarDatasource = CampusCalendarDatasource(context);
   }
 
   @override

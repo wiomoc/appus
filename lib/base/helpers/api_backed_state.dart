@@ -11,6 +11,8 @@ abstract class ApiBackedState<T, W extends StatefulWidget> extends State<W> {
 
   String get resourceName;
 
+  ErrorHandlingViewType get errorHandlingViewType => ErrorHandlingViewType.fullScreen;
+
   Widget? buildBody(T data);
 
   T? get data => _apiOperation?.value.cached?.data;
@@ -40,7 +42,7 @@ abstract class ApiBackedState<T, W extends StatefulWidget> extends State<W> {
     } else if (apiResult is ErrorApiResult<T>) {
       return ErrorHandlingView(
         error: apiResult.error,
-        errorHandlingViewType: ErrorHandlingViewType.fullScreen,
+        errorHandlingViewType: errorHandlingViewType,
         retry: (force) {
           _apiOperation?.retry();
         },

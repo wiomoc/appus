@@ -3,6 +3,7 @@ import 'package:campus_flutter/courseComponent/model/course_group_detail.dart';
 import '../../base/extensions/cast.dart';
 import '../../base/helpers/api_operation.dart';
 import '../../base/networking/apis/campUSApi/campus_api.dart';
+import '../../calendarComponent/model/calendar_event.dart';
 import '../../providers_get_it.dart';
 import '../model/course_detail.dart';
 

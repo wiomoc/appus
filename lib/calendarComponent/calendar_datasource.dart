@@ -1,15 +1,16 @@
+import 'package:campus_flutter/calendarComponent/api/my_events.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../base/extensions/cast.dart';
 import '../base/networking/apis/campUSApi/campus_api.dart';
+import 'model/calendar_event.dart';
 
 class CampusCalendarDatasource extends CalendarDataSource {
   final BuildContext context;
-  final CampusApi campusApi;
   final Set<DateTime> loadedWeeks = {};
 
-  CampusCalendarDatasource(this.campusApi, this.context) {
+  CampusCalendarDatasource(this.context) {
     appointments = [];
   }
 
@@ -45,7 +46,7 @@ class CampusCalendarDatasource extends CalendarDataSource {
     bool notified = false;
     for (DateTime week = startWeek; week.isBefore(endDate); week = week.add(const Duration(days: 7))) {
       if (loadedWeeks.add(week)) {
-        final events = await campusApi.calendar(week, week.add(const Duration(days: 7)));
+        final events = await MyEventsApiOperation(week, week.add(const Duration(days: 7))).fetchOnline();
         appointments!.addAll(events);
         notifyListeners(CalendarDataSourceAction.add, events);
         notified = true;

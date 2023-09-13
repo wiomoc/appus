@@ -5,8 +5,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
-import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,64 +47,6 @@ class AuthTokens {
 
 const campusBaseUrl = "https://campus.uni-stuttgart.de/cusonline/";
 const userAgent = "burn-uninow";
-
-enum CalendarEventStatus { fixed, planned, canceled, rejected, deleted, rescheduled, unknown }
-
-enum CalendarEventType {
-  vacation,
-  lecture,
-  examination,
-  personal,
-  nonAcademicEvent,
-  internalTraining,
-  administrative,
-  resourceBooking,
-  blocker,
-  unknown
-}
-
-class CalendarEvent {
-  final String id;
-  final CalendarEventStatus status;
-  final CalendarEventType type;
-  final DateTime startDate;
-  final DateTime endDate;
-  final String summary;
-  final String? location;
-  final int? courseId;
-
-  CalendarEvent(
-      {required this.id,
-      required this.status,
-      required this.type,
-      required this.startDate,
-      required this.endDate,
-      required this.summary,
-      required this.location,
-      this.courseId});
-
-  @override
-  String toString() {
-    return 'CalendarEvent{id: $id, status: $status, type: $type, startDate: $startDate, endDate: $endDate, summary: $summary, location: $location, courseId: $courseId}';
-  }
-}
-
-
-
-class Study {
-  final int id;
-  final String germanName;
-  final String localizedName;
-  final String localizedDegree;
-
-  Study({required this.id, required this.germanName, required this.localizedName, required this.localizedDegree});
-
-  @override
-  String toString() {
-    return 'Study{id: $id, germanName: $germanName, localizedName: $localizedName, localizedDegree: $localizedDegree}';
-  }
-}
-
 
 class CampusApi {
   static const String authTokenPrefKey = "campus_auth_token";
@@ -214,7 +154,7 @@ class CampusApi {
 
   Future<List<dynamic>> callRestApi(String path,
       {Map<String, dynamic>? params, bool requireAuth = true, String resourcesKey = "resource"}) async {
-    final response = await _call("ee/rest/$path", params, requireAuth: requireAuth, appendAccessToken: requireAuth);
+    final response = await call("ee/rest/$path", params, requireAuth: requireAuth, appendAccessToken: requireAuth);
     final Map<String, dynamic> responseData = response.data;
     final resource = responseData[resourcesKey];
     if (resource == null) {
@@ -224,7 +164,7 @@ class CampusApi {
   }
 
   Future<void> _refreshToken() async {
-    final response = await _call("ee/rest/auth/token/refresh", null, method: "post", suppressTokenRefresh: true);
+    final response = await call("ee/rest/auth/token/refresh", null, method: "post", suppressTokenRefresh: true);
     final responseData = response.data;
     String? newAccessToken;
     if (response is Map<String, dynamic>) {
@@ -252,7 +192,7 @@ class CampusApi {
     }
   }
 
-  Future<Response<dynamic>> _call(String path, Map<String, dynamic>? params,
+  Future<Response<dynamic>> call(String path, Map<String, dynamic>? params,
       {String method = "get",
       bool requireAuth = true,
       ResponseType responseType = ResponseType.json,
@@ -294,80 +234,10 @@ class CampusApi {
         throw CampusApiException("Could not refresh access token");
       }
       await _refreshToken();
-      return _call(path, params,
+      return call(path, params,
           requireAuth: requireAuth, responseType: responseType, appendAccessToken: true, suppressTokenRefresh: true);
     }
     return response;
-  }
-
-  Future<List<CalendarEvent>> calendar(DateTime startDate, DateTime endDate) async {
-    final paramDateformat = DateFormat("dd.MM.yyyy");
-
-    final response = await _call(
-        "wbKalender.wbExport",
-        {
-          "pMode": "I",
-          "pInclPruef": "J",
-          "pInclPruefGepl": "J",
-          "pExportBetreff": "J",
-          "pExportAnsprechpartner": "J",
-          "pExportOrt": "J",
-          "pExportTerminTyp": "J",
-          "pExportPublikumIntern": "J",
-          "pDateFrom": paramDateformat.format(startDate),
-          "pDateTo": paramDateformat.format(endDate),
-          "pOutputFormat": "99",
-          "pCharset": "UTF8",
-          "pVortragende": "J",
-          "pMaskAction": "DOWNLOAD"
-        },
-        responseType: ResponseType.plain);
-
-    final ical = ICalendar.fromString(response.data.toString());
-
-    //final icalDateformat = DateFormat("yyyyMMdd'T'hhmmss'Z'");
-
-    return ical.data.map((event) {
-      String? courseId;
-      if (event["url"] != null) {
-        final url = Uri.parse(event["url"]);
-        courseId = url.queryParameters["pStpSpNr"];
-      }
-
-      CalendarEventStatus status = CalendarEventStatus.unknown;
-      CalendarEventType type = CalendarEventType.unknown;
-      final String? description = event["description"];
-      if (description != null && description.isNotEmpty) {
-        final descriptionParts = description.split("\\; ");
-        if (descriptionParts.length > 0) {
-          switch (descriptionParts[0]) {
-            case "fix":
-              status = CalendarEventStatus.fixed;
-              break;
-          }
-        }
-        if (descriptionParts.length > 1) {
-          switch (descriptionParts[1]) {
-            case "Prüfungstermin":
-              type = CalendarEventType.examination;
-              break;
-            case "Abhaltung":
-              type = CalendarEventType.lecture;
-              break;
-          }
-        }
-      }
-
-      return CalendarEvent(
-          id: event["uid"],
-          status: status,
-          type: type,
-          startDate: event["dtstart"].toDateTime()!,
-          endDate: event["dtend"].toDateTime()!,
-          summary: event["summary"],
-          location: event["location"],
-          courseId: courseId != null ? int.parse(courseId) : null);
-    }).toList(growable: false);
   }
 
   static String? getLocalized(Map<String, dynamic>? translatable) {
@@ -375,21 +245,6 @@ class CampusApi {
     final List<dynamic>? translationList = translatable?["translations"]?["translation"];
     return translationList?.where((translation) => translation["lang"] == expectedLang).firstOrNull?["value"] ??
         translationList?.first["value"];
-  }
-
-
-
-  Future<List<Study>> myStudies() async {
-    final resources = await callRestApi("slc.lib.sm/allStudies");
-    return resources.map((resource) {
-      final study = resource["content"]["studyBasicDto"];
-
-      return Study(
-          id: study["id"],
-          germanName: study["studyName"]["value"],
-          localizedName: getLocalized(study["studyName"])!,
-          localizedDegree: getLocalized(study["basicStudyProgrammeLibDto"]["degreeType"]["name"])!);
-    }).toList();
   }
 
   void logout() {

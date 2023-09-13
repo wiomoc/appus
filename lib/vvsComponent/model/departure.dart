@@ -15,6 +15,7 @@ enum VehicleType {
   static VehicleType fromVVSString(String? vvsString) {
     switch (vvsString) {
       case "U-Bahn":
+      case "Stadtbahn":
         return VehicleType.ubahn;
       case "S-Bahn":
         return VehicleType.sbahn;

@@ -1,8 +1,10 @@
 import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/vvsComponent/model/departure.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 
-import '../views/departures_details_view.dart';
+import '../departures_service.dart';
+
 
 class DeparturesApiOperation extends ApiOperation<List<Departure>> {
   final Station station;
@@ -22,16 +24,16 @@ class DeparturesApiOperation extends ApiOperation<List<Departure>> {
 
   @override
   Future<List<Departure>> fetchOnline() async {
-
+    final now = DateTime.now();
     final client = Dio();
     final response = await client.get("https://www3.vvs.de/mngvvs/XML_DM_REQUEST",
         queryParameters: {
           "SpEncId": 0,
           "coordOutputFormat": "EPSG:4326",
           "deleteAssignedStops": 1,
-          "itdDate": "20230902",
-          "itdTime": "1543",
-          "limit": 40,
+          "itdDate":  DateFormat("yyyyMMdd").format(now),
+          "itdTime": DateFormat("HHmm").format(now),
+          "limit": 30,
           "macroWebDep": true,
           "mode": "direct",
           "name_dm": station.id,
@@ -45,9 +47,9 @@ class DeparturesApiOperation extends ApiOperation<List<Departure>> {
 
     return (response.data["stopEvents"]! as List<dynamic>)
         .map((stopEvent) => Departure(
-        timePlanned: DateTime.parse(stopEvent["departureTimePlanned"]),
+        timePlanned: DateTime.parse(stopEvent["departureTimePlanned"]).toLocal(),
         timeEstimated: stopEvent["departureTimeEstimated"] != null
-            ? DateTime.parse(stopEvent["departureTimeEstimated"])
+            ? DateTime.parse(stopEvent["departureTimeEstimated"]).toLocal()
             : null,
         number: stopEvent["transportation"]["number"],
         vehicleType: VehicleType.fromVVSString(stopEvent["transportation"]["product"]["name"]),

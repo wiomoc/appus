@@ -1,5 +1,4 @@
 import 'package:campus_flutter/base/classes/location.dart';
-import 'package:campus_flutter/departuresComponent/model/station.dart';
 
 enum Campus {
   stammgelaende("Stammgelände"),
@@ -85,7 +84,7 @@ extension CampusExtension on Campus {
   Map<Campus, Location> getAll() {
     return Map.fromEntries(Campus.values.map((e) => MapEntry(e, e.location)));
   }
-
+/*
   Station get defaultStation {
     switch (this) {
       case Campus.stammgelaende:
@@ -192,5 +191,5 @@ extension CampusExtension on Campus {
                   latitude: 48.39581877364193, longitude: 11.725859432987532))
         ];
     }
-  }
+  }*/
 }

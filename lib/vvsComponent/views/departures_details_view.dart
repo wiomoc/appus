@@ -3,21 +3,9 @@ import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:flutter/material.dart';
 
 import '../api/vvs_departures.dart';
+import '../departures_service.dart';
 import '../model/departure.dart';
 import 'departures_details_row_view.dart';
-
-class Station {
-  final String id;
-  final String name;
-
-  const Station(this.id, this.name);
-}
-
-const stations = [
-  Station("de:08111:6008", "Universität"),
-  Station("de:08111:6021", "Universität (Schleife)"),
-  Station("de:08111:2603", "Schrane"),
-];
 
 class DeparturesPage extends StatefulWidget {
   const DeparturesPage({super.key});
@@ -28,13 +16,16 @@ class DeparturesPage extends StatefulWidget {
   }
 }
 
-class _DeparturesPageState extends ApiBackedState<List<Departure>, DeparturesPage> with ApiPullRefresh, ApiBackedPageState {
+class _DeparturesPageState extends ApiBackedState<List<Departure>, DeparturesPage>
+    with ApiPullRefresh, ApiBackedPageState {
   Station _currentStation = stations.first;
 
   @override
   void initState() {
     super.initState();
-    load(DeparturesApiOperation(_currentStation));
+    getLastStation().then((value) => setState(() {
+          load(DeparturesApiOperation(_currentStation));
+        }));
   }
 
   @override
@@ -46,7 +37,7 @@ class _DeparturesPageState extends ApiBackedState<List<Departure>, DeparturesPag
         title: DropdownButton(
           value: _currentStation,
           items: stations
-              .map((location) => DropdownMenuItem(
+              .map((location) => DropdownMenuItem<Station>(
                     value: location,
                     child: Text(location.name, style: const TextStyle(fontSize: 18)),
                   ))
@@ -55,7 +46,8 @@ class _DeparturesPageState extends ApiBackedState<List<Departure>, DeparturesPag
             setState(() {
               if (_currentStation != value) {
                 _currentStation = value!;
-                load(DeparturesApiOperation(_currentStation));
+                load(DeparturesApiOperation(value));
+                setLastStation(value);
               }
             });
           },

@@ -1,5 +1,6 @@
 import 'package:campus_flutter/courseComponent/courses_view.dart';
 import 'package:campus_flutter/examsComponent/exams_view.dart';
+import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
-import 'calendar2Component/calendars_view.dart';
+import 'calendarComponent/calendars_view.dart';
 import 'searchComponent/views/search_body_view.dart';
 
 class Navigation extends StatefulWidget {
@@ -120,7 +121,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return const ExamsScreen();
+        return HomeScreen();
       case 1:
         return const UpdatesPage();
       case 2:

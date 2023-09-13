@@ -1,6 +1,4 @@
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
-import 'package:campus_flutter/calendarComponent/viewModels/calendar_viewmodel.dart';
-import 'package:campus_flutter/departuresComponent/viewModel/departures_viewmodel.dart';
 import 'package:campus_flutter/gradeComponent/viewModels/grade_viewmodel.dart';
 import 'package:campus_flutter/homeComponent/split_view_viewmodel.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
@@ -56,11 +54,6 @@ final newsViewModel = Provider((ref) => NewsViewModel());
 
 /// view model for grades
 final gradeViewModel = Provider((ref) => GradeViewModel(ref));
-
-/// view model for calendar
-final calendarViewModel = Provider((ref) => CalendarViewModel());
-
-final departureViewModel = Provider((ref) => DeparturesViewModel());
 
 /// view model for landscape mode
 final homeSplitViewModel = Provider((ref) => SplitViewViewModel());
