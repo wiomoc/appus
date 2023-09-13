@@ -180,7 +180,7 @@ class MergedApiOperation<A, B> with ChangeNotifier implements AbstractApiOperati
   final AbstractApiOperation<A> firstOperation;
   final AbstractApiOperation<B> secondOperation;
 
-  ApiResult<(A?, B?)> _currentResult = const LoadingApiResult<(A?, B?)>();
+  ApiResult<(A?, B?)> _currentResult = LoadingApiResult<(A?, B?)>();
 
   MergedApiOperation(this.firstOperation, this.secondOperation) {
     firstOperation.addListener(_onApiResultChange);
