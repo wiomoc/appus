@@ -56,7 +56,7 @@ jobs:
           ANDROID_KEY_ALIAS: key
           ANDROID_KEYSTORE_FILE: ../release-key.keystore
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
- 
+
       - name: Upload apk to GitHub Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -69,5 +69,5 @@ jobs:
           appId: "1:733151385985:android:383d34852b5f50c589f080"
           serviceCredentialsFileContent: ${{ secrets.GOOGLE_SERVICES_JSON }}
           groups: testers
-          file: build/app/outputs/apk/release/app-release.apk
+          file: build/app/outputs/bundle/release/app-release.aab
 
