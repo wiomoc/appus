@@ -67,10 +67,10 @@ class RoomLocationPageState extends ApiBackedState<RoomLocation, RoomLocationPag
   }
 
   @override
-  Widget buildBody(RoomLocation roomLocation) {
-    return showFloorPlan && roomLocation.floor.planImageUrl != null
-        ? FloorPlanView(roomLocation.floor, focusedRoom: roomLocation.room.id)
-        : MapView(roomLocation.building);
+  Widget buildBody(RoomLocation data) {
+    return showFloorPlan && data.floor.planImageUrl != null
+        ? FloorPlanView(data.floor, focusedRoom: data.room.id)
+        : MapView(data.building);
   }
 
   @override

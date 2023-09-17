@@ -1,8 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -69,7 +70,7 @@ class CampusApi {
         currentAuthTokens = AuthTokens.fromJson(jsonDecode(data));
         isAuthenticated.value = true;
       } catch (error) {
-        print(error);
+        debugPrint(error.toString());
         isAuthenticated.value = false;
       }
     } else {
@@ -112,8 +113,6 @@ class CampusApi {
     };
 
     final headers = {"Accept": "application/json", "User-Agent": userAgent};
-
-    print(Uri.parse("${campusBaseUrl}wbOAuth2.approve").replace(queryParameters: queryParameters).toString());
 
     final response = await dioClient.get("${campusBaseUrl}wbOAuth2.approve",
         queryParameters: queryParameters,
@@ -228,7 +227,6 @@ class CampusApi {
           responseType: responseType,
           validateStatus: (status) => true,
         ));
-    print(response.headers);
     if (response.statusCode == 401 && appendAccessToken) {
       if (suppressTokenRefresh) {
         throw CampusApiException("Could not refresh access token");
@@ -241,7 +239,7 @@ class CampusApi {
   }
 
   static String? getLocalized(Map<String, dynamic>? translatable) {
-    final expectedLang = "de";
+    final expectedLang = Intl.getCurrentLocale().startsWith("de") ? "de" : "en";
     final List<dynamic>? translationList = translatable?["translations"]?["translation"];
     return translationList?.where((translation) => translation["lang"] == expectedLang).firstOrNull?["value"] ??
         translationList?.first["value"];

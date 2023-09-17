@@ -1,20 +1,21 @@
 import 'package:campus_flutter/calendarComponent/calendar_datasource.dart';
-import 'package:campus_flutter/courseComponent/course_view.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../courseComponent/views/course_view.dart';
 import 'model/calendar_event.dart';
 
-class CalendarsView extends StatefulWidget {
-  const CalendarsView({super.key});
+class CalendarsPage extends StatefulWidget {
+  const CalendarsPage({super.key});
 
   @override
-  State<CalendarsView> createState() => _CalendarsViewState();
+  State<CalendarsPage> createState() => _CalendarsPageState();
 }
 
 enum CalendarType { day, week, month }
 
-class _CalendarsViewState extends State<CalendarsView> {
+class _CalendarsPageState extends State<CalendarsPage> {
   CalendarType _selectedCalendarTab = CalendarType.day;
 
   final CalendarController _calendarController = CalendarController();
@@ -62,10 +63,7 @@ class _CalendarsViewState extends State<CalendarsView> {
                     initialChildSize: 0.5,
                     minChildSize: 0.5,
                     builder: (context, scrollController) {
-                      return Column(children: [
-                        Text(calendarEvent.summary),
-                        Text(calendarEvent.startDate.toString())
-                      ]);
+                      return Column(children: [Text(calendarEvent.summary), Text(calendarEvent.startDate.toString())]);
                     });
               });
         }
@@ -108,7 +106,7 @@ class _CalendarsViewState extends State<CalendarsView> {
           //controller: _calendarController,
           view: CalendarView.month,
           monthViewSettings:
-          const MonthViewSettings(showAgenda: true, navigationDirection: MonthNavigationDirection.vertical),
+              const MonthViewSettings(showAgenda: true, navigationDirection: MonthNavigationDirection.vertical),
           dataSource: _calendarDatasource,
           firstDayOfWeek: 1,
           showDatePickerButton: true,
@@ -131,28 +129,32 @@ class _CalendarsViewState extends State<CalendarsView> {
                       _calendarController.displayDate = DateTime.now();
                     });
                   },
-                  child: Text("Today", style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium)),
+                  child: Text(AppLocalizations.of(context)!.calendarToday,
+                      style: Theme.of(context).textTheme.titleMedium)),
               const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
               Expanded(
                   child: SegmentedButton<CalendarType>(
-                    segments: const <ButtonSegment<CalendarType>>[
-                      ButtonSegment<CalendarType>(
-                          value: CalendarType.day, label: Text('Day'), icon: Icon(Icons.calendar_view_day)),
-                      ButtonSegment<CalendarType>(
-                          value: CalendarType.week, label: Text('Week'), icon: Icon(Icons.calendar_view_week)),
-                      ButtonSegment<CalendarType>(
-                          value: CalendarType.month, label: Text('Month'), icon: Icon(Icons.calendar_view_month)),
-                    ],
-                    selected: <CalendarType>{_selectedCalendarTab},
-                    onSelectionChanged: (Set<CalendarType> newSelection) {
-                      setState(() {
-                        _selectedCalendarTab = newSelection.first;
-                      });
-                    },
-                  ))
+                segments: <ButtonSegment<CalendarType>>[
+                  ButtonSegment<CalendarType>(
+                      value: CalendarType.day,
+                      label: Text(AppLocalizations.of(context)!.calendarDay),
+                      icon: const Icon(Icons.calendar_view_day)),
+                  ButtonSegment<CalendarType>(
+                      value: CalendarType.week,
+                      label: Text(AppLocalizations.of(context)!.calendarWeek),
+                      icon: const Icon(Icons.calendar_view_week)),
+                  ButtonSegment<CalendarType>(
+                      value: CalendarType.month,
+                      label: Text(AppLocalizations.of(context)!.calendarMonth),
+                      icon: const Icon(Icons.calendar_view_month)),
+                ],
+                selected: <CalendarType>{_selectedCalendarTab},
+                onSelectionChanged: (Set<CalendarType> newSelection) {
+                  setState(() {
+                    _selectedCalendarTab = newSelection.first;
+                  });
+                },
+              ))
             ],
           )),
       Expanded(child: calendar)

@@ -57,6 +57,8 @@ dependencies:
   stash: ^5.0.1
   stash_hive: ^5.0.1
   stash_memory: ^5.0.1
+  flutter_localizations:
+    sdk: flutter
 
 
 dev_dependencies:
@@ -70,6 +72,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/
     - assets/map_styles/

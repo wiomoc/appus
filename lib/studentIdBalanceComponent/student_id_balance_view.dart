@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -42,7 +43,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
     if (mifareDesfireTagTransceive == null) {
       setState(() {
         _balance = null;
-        _error = "Card is not a correct Student ID";
+        _error = AppLocalizations.of(context)!.studentIdBalanceCardIsNotAID;
       });
       return;
     }
@@ -90,13 +91,14 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
   Widget build(BuildContext context) {
     Widget body;
     if (_isNfcAvailable == null) {
-      body = const Text("Initializing");
+      body = Center(
+          child: Text("Initializing", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge));
     } else if (_isNfcAvailable == false) {
       body =
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
         const Icon(Icons.wifi_off, size: 100),
         const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-        Text("NFC not available", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
+        Text(AppLocalizations.of(context)!.studentIdNFCUnavailable, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
       ]);
     } else {
       if (_balance == null) {
@@ -107,7 +109,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
               const Icon(Icons.contactless_outlined, size: 100),
               const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
               Text(
-                "Tap Student ID to check balance",
+                AppLocalizations.of(context)!.studentIdNFCTapToAction,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
@@ -118,29 +120,29 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
         body = CardWithPadding(
             color: _balanceColor,
             child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconText(
-                        iconData: Icons.credit_card_outlined,
-                        iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                        label: "Balance",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
-                    // Implicit min width of 140 px
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 70)),
-                    Text("${_balance!.toStringAsFixed(2).replaceFirst(".", ",")}€",
-                        style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.onPrimaryContainer))
-                  ],
-                ));
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconText(
+                    iconData: Icons.credit_card_outlined,
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                    label: AppLocalizations.of(context)!.studentIdBalanceBalance,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
+                // Implicit min width of 140 px
+                const Padding(padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 70)),
+                Text("${_balance!.toStringAsFixed(2).replaceFirst(".", ",")}€",
+                    style: TextStyle(fontSize: 40, color: Theme.of(context).colorScheme.onPrimaryContainer))
+              ],
+            ));
       }
     }
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: const Text("Student ID Balance"),
+        title: Text(AppLocalizations.of(context)!.studentIdBalance)
       ),
       body: Center(child: body),
     );
@@ -166,7 +168,7 @@ class _StudentIdBalanceViewState extends State<StudentIdBalanceView> {
       return const Color.fromRGBO(243, 175, 34, 1.0);
     } else if (balance >= 1.5) {
       return const Color.fromRGBO(248, 137, 0, 1.0);
-    } else  {
+    } else {
       return const Color.fromRGBO(236, 60, 26, 1.0);
     }
   }

@@ -1,9 +1,7 @@
-import 'package:campus_flutter/base/classes/location.dart';
 import 'package:campus_flutter/base/enums/campus.dart';
 import 'package:campus_flutter/base/enums/home_widget.dart';
 import 'package:campus_flutter/base/services/location_service.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/recommender/widget_recommender_strategy.dart';
-import 'package:campus_flutter/placesComponent/services/cafeterias_service.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationStrategy implements WidgetRecommenderStrategy {
@@ -24,7 +22,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
 
     if (location != null) {
       switch (homeWidget) {
-        case HomeWidget.cafeteria:
+       /* case HomeWidget.cafeteria:
           final locations = await _getCafeteriaLocations();
 
           for (var distance in [closeDistance, veryCloseDistance]) {
@@ -38,7 +36,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
               priority++;
             }
           }
-
+*/
 /*        case HomeWidget.studyRoom:
           final locations = await _getStudyRoomLocations();
 
@@ -78,7 +76,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
     return priority;
   }
 
-  Future<List<Location>> _getCafeteriaLocations() async {
+  /*Future<List<Location>> _getCafeteriaLocations() async {
     try {
       final cafeterias = await CafeteriasService.fetchCafeterias(false);
       return cafeterias.$2
@@ -88,7 +86,7 @@ class LocationStrategy implements WidgetRecommenderStrategy {
     } catch (_) {
       return [];
     }
-  }
+  }*/
 
   /*Future<List<Location>> _getStudyRoomLocations() async {
     try {

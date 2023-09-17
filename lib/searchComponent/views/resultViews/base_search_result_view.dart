@@ -5,6 +5,7 @@ import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/searchComponent/protocols/searchable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../base/helpers/padded_divider.dart';
 import '../../../base/views/error_handling_view.dart';
@@ -57,12 +58,12 @@ class _BaseSearchResultView<T extends Searchable> extends State<BaseSearchResult
                 ),
             itemCount: min(cachedData.length, 5));
       } else {
-        body = const SizedBox(height: 100, child: Center(child: Text("No Results")));
+        body = SizedBox(height: 100, child: Center(child: Text(AppLocalizations.of(context)!.searchNoResults)));
       }
     } else if (searchResults is ErrorApiResult<List<T>>) {
       body = Column(children: [
         ErrorHandlingView(error: searchResults.error, errorHandlingViewType: ErrorHandlingViewType.descriptionOnly),
-        ElevatedButton(onPressed: _searchOperation?.retry, child: const Text("Retry"))
+        ElevatedButton(onPressed: _searchOperation?.retry, child:  Text(AppLocalizations.of(context)!.retry))
       ]);
     } else {
       body = DelayedLoadingIndicator(name: widget.title);

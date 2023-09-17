@@ -7,6 +7,7 @@ import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'calendar_widget_event_view.dart';
 
@@ -21,14 +22,14 @@ class _CalendarHomeWidgetView extends ApiBackedState<List<CalendarEvent>, Calend
   @override
   void initState() {
     final today = DateTime.now().dateDay;
-    load(MyEventsApiOperation(today, today.add(const Duration(days: 2))), Duration(minutes: 15));
+    load(MyEventsApiOperation(today, today.add(const Duration(days: 2))), const Duration(minutes: 15));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return WidgetFrameView(
-        title: "Calendar",
+        title: AppLocalizations.of(context)!.calendar,
         child: SizedBox(height: MediaQuery.sizeOf(context).height * 0.25, child: CardWithPadding(child: body())));
   }
 
@@ -58,7 +59,7 @@ class _CalendarHomeWidgetView extends ApiBackedState<List<CalendarEvent>, Calend
           Expanded(
               child: (events.$1 != null)
                   ? CalendarHomeWidgetEventView(calendarEvent: events.$1!)
-                  : const Center(child: Text("No Events Today")))
+                  : Center(child: Text(AppLocalizations.of(context)!.calendarNoEventsToday))),
         ])),
         const Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
         Expanded(
@@ -71,7 +72,7 @@ class _CalendarHomeWidgetView extends ApiBackedState<List<CalendarEvent>, Calend
   }
 
   @override
-  String get resourceName => "Events";
+  String get resourceName => AppLocalizations.of(context)!.calendarEvents;
 
   static (CalendarEvent?, List<CalendarEvent>) getWidgetEvents(List<CalendarEvent> events) {
     CalendarEvent? leftColumn;

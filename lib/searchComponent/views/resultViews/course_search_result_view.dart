@@ -3,11 +3,11 @@ import 'package:campus_flutter/courseComponent/model/course_summary.dart';
 import 'package:flutter/material.dart';
 
 import '../../../courseComponent/api/courses_search.dart';
-import '../../../courseComponent/course_view.dart';
+import '../../../courseComponent/views/course_view.dart';
 import 'base_search_result_view.dart';
 
-class LectureSearchResultView extends BaseSearchResultView<CourseSummary> {
-  const LectureSearchResultView({super.key, required super.searchText});
+class CourseSearchResultView extends BaseSearchResultView<CourseSummary> {
+  const CourseSearchResultView({super.key, required super.searchText});
 
   @override
   AbstractApiOperation<List<CourseSummary>> search() => CoursesSearchApiOperation(searchText);

@@ -41,7 +41,7 @@ class CampusCalendarDatasource extends CalendarDataSource {
   @override
   Future<void> handleLoadMore(DateTime startDate, DateTime endDate) async {
     final startWeek = _startOfWeek(startDate);
-    print("Loading more events for week $startWeek");
+    debugPrint("Loading more events for week $startWeek");
     bool notified = false;
     for (DateTime week = startWeek; week.isBefore(endDate); week = week.add(const Duration(days: 7))) {
       if (loadedWeeks.add(week)) {

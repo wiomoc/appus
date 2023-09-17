@@ -121,7 +121,6 @@ class LoginViewModel {
     /*ProviderContainer()
       ..invalidate(profileViewModel)
       ..invalidate(personDetailsViewModel);*/
-    ref.invalidate(personDetailsViewModel);
     await getIt<MainApi>().clearCache();
     await _storage.delete(key: "token");
     //profileViewModel.

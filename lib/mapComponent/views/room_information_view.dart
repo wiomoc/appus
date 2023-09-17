@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../courseComponent/basic_course_info_row_view.dart';
+import '../../courseComponent/views/basic_course_info_row_view.dart';
 import '../model/room_location.dart';
 
 class RoomInformationView extends StatelessWidget {

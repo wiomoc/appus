@@ -2,7 +2,7 @@ import 'package:campus_flutter/mapComponent/views/map_view.dart';
 import 'package:flutter/material.dart';
 
 import '../base/helpers/api_backed_state.dart';
-import '../courseComponent/basic_course_info_row_view.dart';
+import '../courseComponent/views/basic_course_info_row_view.dart';
 import 'api/building_location_api.dart';
 import 'model/room_location.dart';
 

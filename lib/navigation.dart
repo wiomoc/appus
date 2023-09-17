@@ -1,14 +1,15 @@
 import 'package:campus_flutter/courseComponent/courses_view.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
 import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
-import 'package:campus_flutter/placesComponent/views/placesScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:campus_flutter/settingsComponent/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'calendarComponent/calendars_view.dart';
+import 'placesComponent/views/places_page.dart';
 import 'searchComponent/views/search_body_view.dart';
 
 class Navigation extends StatefulWidget {
@@ -74,11 +75,11 @@ class _NavigationState extends State<Navigation> {
                 case 1:
                   return Text("Updates", style: Theme.of(context).textTheme.titleLarge);
                 case 2:
-                  return Text("Lectures", style: Theme.of(context).textTheme.titleLarge);
+                  return Text(AppLocalizations.of(context)!.courses, style: Theme.of(context).textTheme.titleLarge);
                 case 3:
-                  return Text("Calendar", style: Theme.of(context).textTheme.titleLarge);
+                  return Text(AppLocalizations.of(context)!.calendar, style: Theme.of(context).textTheme.titleLarge);
                 case 4:
-                  return Text("Places", style: Theme.of(context).textTheme.titleLarge);
+                  return Text(AppLocalizations.of(context)!.places, style: Theme.of(context).textTheme.titleLarge);
                 default:
                   return Image.asset('assets/images/logos/tum-logo-blue.png', fit: BoxFit.contain, height: 20);
               }
@@ -126,9 +127,9 @@ class _NavigationState extends State<Navigation> {
       case 2:
         return const CoursesPage();
       case 3:
-        return const CalendarsView();
+        return const CalendarsPage();
       case 4:
-        return const PlacesScreen();
+        return const PlacesPage();
       default:
         return const UpdatesPage();
     }
@@ -161,27 +162,27 @@ class _NavigationState extends State<Navigation> {
                   : null
               : null,
           selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
+          destinations: <Widget>[
+            const NavigationDestination(
               icon: Icon(Icons.house_outlined),
               selectedIcon: Icon(Icons.house),
               label: 'Home',
             ),
-            NavigationDestination(icon: Icon(Icons.feed_outlined), selectedIcon: Icon(Icons.feed), label: 'Updates'),
+            const NavigationDestination(icon: Icon(Icons.feed_outlined), selectedIcon: Icon(Icons.feed), label: 'Updates'),
             NavigationDestination(
-              icon: Icon(Icons.class_outlined),
-              selectedIcon: Icon(Icons.class_),
-              label: 'Lectures',
+              icon: const Icon(Icons.class_outlined),
+              selectedIcon: const Icon(Icons.class_),
+              label: AppLocalizations.of(context)!.courses,
             ),
             NavigationDestination(
-              icon: Icon(Icons.calendar_month_outlined),
-              selectedIcon: Icon(Icons.calendar_month),
-              label: 'Calendar',
+              icon: const Icon(Icons.calendar_month_outlined),
+              selectedIcon: const Icon(Icons.calendar_month),
+              label: AppLocalizations.of(context)!.calendar,
             ),
             NavigationDestination(
-              icon: Icon(Icons.place_outlined),
-              selectedIcon: Icon(Icons.place),
-              label: 'Places',
+              icon: const Icon(Icons.place_outlined),
+              selectedIcon: const Icon(Icons.place),
+              label: AppLocalizations.of(context)!.places,
             ),
           ],
         ));
@@ -200,31 +201,31 @@ class _NavigationState extends State<Navigation> {
             });
           },
           labelType: NavigationRailLabelType.all,
-          destinations: const <NavigationRailDestination>[
-            NavigationRailDestination(
+          destinations: <NavigationRailDestination>[
+            const NavigationRailDestination(
               icon: Icon(Icons.home_outlined),
               selectedIcon: Icon(Icons.home),
               label: Text('Home'),
             ),
-            NavigationRailDestination(
+            const NavigationRailDestination(
               icon: Icon(Icons.feed_outlined),
               selectedIcon: Icon(Icons.feed),
-              label: Text('Organisations'),
+              label: Text('Updates'),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.class_outlined),
-              selectedIcon: Icon(Icons.class_),
-              label: Text('Lectures'),
+              icon: const Icon(Icons.class_outlined),
+              selectedIcon: const Icon(Icons.class_),
+              label: Text(AppLocalizations.of(context)!.courses)
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.calendar_month_outlined),
-              selectedIcon: Icon(Icons.calendar_month),
-              label: Text('Calendar'),
+              icon: const Icon(Icons.calendar_month_outlined),
+              selectedIcon: const Icon(Icons.calendar_month),
+              label: Text(AppLocalizations.of(context)!.calendar),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.place_outlined),
-              selectedIcon: Icon(Icons.place),
-              label: Text('Places'),
+              icon: const Icon(Icons.place_outlined),
+              selectedIcon: const Icon(Icons.place),
+              label: Text(AppLocalizations.of(context)!.places),
             ),
           ],
         ),

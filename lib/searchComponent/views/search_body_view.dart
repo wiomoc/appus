@@ -2,6 +2,7 @@ import 'package:campus_flutter/base/helpers/horizontal_slider.dart';
 import 'package:campus_flutter/searchComponent/views/resultViews/room_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/search_textfield_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'resultViews/course_search_result_view.dart';
 
@@ -48,7 +49,7 @@ class _SearchViewState extends State<SearchView> {
   Widget _search() {
     return Expanded(
         child: (_searchText.isEmpty)
-            ? const Center(child: Text("Enter a Query to Start"))
+            ? Center(child: Text(AppLocalizations.of(context)!.searchEnterQuery))
             : (_selectedCategories.isEmpty)
                 ? const Center(child: Text("Select some Categories to Start"))
                 : Scrollbar(
@@ -114,7 +115,7 @@ class _SearchViewState extends State<SearchView> {
       //case SearchCategory.studyRoom:
       //  return const StudyRoomSearchResultView();
       case SearchCategory.lectures:
-        return LectureSearchResultView(searchText: _searchText, key: const ValueKey("lectureSearchResultView"));
+        return CourseSearchResultView(searchText: _searchText, key: const ValueKey("lectureSearchResultView"));
       case SearchCategory.rooms:
         return RoomSearchResultView(searchText: _searchText, key: const ValueKey("roomsSearchResultView"));
       case SearchCategory.persons:

@@ -1,9 +1,10 @@
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/courseComponent/model/course_summary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'api/my_courses.dart';
-import 'course_view.dart';
+import 'views/course_view.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -27,7 +28,7 @@ class _CoursePageState extends ApiBackedState<List<CourseSummary>, CoursesPage> 
   @override
   Widget buildBody(List<CourseSummary> courses) {
     if (courses.isEmpty) {
-      return const Center(child: Text("No courses selected for the current semester yet."));
+      return Center(child: Text(AppLocalizations.of(context)!.courseNotSelectedForCurrentSemester));
     }
     return ListView.separated(
         itemBuilder: (context, index) => ListTile(
@@ -47,5 +48,5 @@ class _CoursePageState extends ApiBackedState<List<CourseSummary>, CoursesPage> 
   }
 
   @override
-  String get resourceName => "Courses";
+  String get resourceName => AppLocalizations.of(context)!.courses;
 }

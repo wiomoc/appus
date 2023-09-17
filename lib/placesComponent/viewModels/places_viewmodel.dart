@@ -1,14 +1,13 @@
 import 'package:campus_flutter/base/enums/campus.dart';
 import 'package:campus_flutter/base/networking/protocols/view_model.dart';
 import 'package:campus_flutter/base/services/location_service.dart';
-import 'package:campus_flutter/placesComponent/model/cafeterias/cafeteria.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlacesViewModel implements ViewModel {
   BehaviorSubject<bool?> status = BehaviorSubject.seeded(null);
   List<Campus> campuses = [];
-  List<Cafeteria> cafeterias = [];
+  //List<Cafeteria> cafeterias = [];
 
 
   @override

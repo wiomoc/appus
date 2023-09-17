@@ -1,6 +1,7 @@
 import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../model/calendar_event.dart';
 
@@ -34,9 +35,9 @@ class CalendarHomeWidgetEventView extends StatelessWidget {
             const Spacer(),
             Text(
                 startDate.isAtSameMomentAs(today)
-                    ? "Today"
+                    ? AppLocalizations.of(context)!.calendarToday
                     : startDate.isAtSameMomentAs(tomorrowDate)
-                        ? "Tomorrow"
+                        ? AppLocalizations.of(context)!.calendarTomorrow
                         : DateFormat("EEEE, d. MMM").format(calendarEvent.startDate),
                 style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
             const Spacer(),

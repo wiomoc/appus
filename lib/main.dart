@@ -5,10 +5,12 @@ import 'package:campus_flutter/theme.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stash/stash_api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'base/helpers/delayed_loading_indicator.dart';
 import 'login2Component/login_view.dart';
@@ -44,6 +46,12 @@ class CampusApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "AppUS",
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          AppLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         theme: lightTheme(context),
         darkTheme: darkTheme(context),

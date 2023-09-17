@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../base/helpers/icon_text.dart';
 import '../base/helpers/string_parser.dart';
@@ -44,7 +45,7 @@ class GradeRectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parsedGrade = grade != null ? StringParser.optStringToOptDouble(grade) ?? grade : "n/a";
+    final parsedGrade = grade != null ? StringParser.optStringToOptDouble(grade) ?? grade : AppLocalizations.of(context)!.examsAndGradesNoGrade;
     return AspectRatio(
         aspectRatio: 1.0,
         child: Container(

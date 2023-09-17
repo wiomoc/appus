@@ -9,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../base/helpers/icon_text.dart';
 import '../mapComponent/room_location_page.dart';
@@ -93,12 +94,12 @@ class _ExamsScreenState extends ApiBackedState<(List<PlannedExam>?, List<Achieve
   @override
   Widget buildBody((List<PlannedExam>?, List<Achievement>?) data) {
     if (data.$1?.isEmpty ?? true && (data.$2?.isEmpty ?? true)) {
-      return const Center(child: Text("No exams yet"));
+      return Center(child: Text(AppLocalizations.of(context)!.examsAndGradesEmpty));
     }
     return ListView(
       children: [
         if (data.$1 != null && data.$1!.isNotEmpty)
-          const Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: Text("Angemeldet")),
+          Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: Text(AppLocalizations.of(context)!.examsAndGradesRegistered)),
         if (data.$1 != null && data.$1!.isNotEmpty)
           ...data.$1!.mapIndexedAndLast((i, plannedExam, last) => Column(children: [
                 PlannedExamRow(plannedExam),
@@ -119,5 +120,5 @@ class _ExamsScreenState extends ApiBackedState<(List<PlannedExam>?, List<Achieve
   }
 
   @override
-  String get resourceName => "Exams & Grades";
+  String get resourceName => AppLocalizations.of(context)!.examsAndGrades;
 }

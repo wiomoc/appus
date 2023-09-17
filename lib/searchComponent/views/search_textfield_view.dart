@@ -1,5 +1,7 @@
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SearchTextField extends StatefulWidget {
   final void Function(String search) onTextUpdate;
@@ -29,7 +31,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             });
           },
           decoration: InputDecoration(
-            hintText: 'Search',
+            hintText: AppLocalizations.of(context)!.search,
             suffixIcon: showIcon
                 ? GestureDetector(
                     onTap: () {
