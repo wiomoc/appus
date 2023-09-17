@@ -2,31 +2,17 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:campus_flutter/base/networking/protocols/custom_cache_interceptor.dart';
 import 'package:campus_flutter/base/networking/protocols/api_exception.dart';
 import 'package:campus_flutter/base/networking/protocols/api_response.dart';
 import 'package:campus_flutter/base/networking/protocols/api.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:flutter/foundation.dart';
 
 class MainApi {
   late Dio dio;
-  late MemCacheStore memCacheStore;
-  late HiveCacheStore hiveCacheStore;
 
   MainApi.webCache() {
-    memCacheStore = MemCacheStore();
 
-    var cacheOptions = CacheOptions(
-        store: memCacheStore,
-        policy: CachePolicy.forceCache,
-        maxStale: const Duration(minutes: 10),
-        hitCacheOnErrorExcept: [401, 404]);
-
-    final dio = Dio()
-      ..interceptors.add(DioCacheInterceptor(options: cacheOptions));
+    final dio = Dio();
 
     dio.options = BaseOptions(responseDecoder: (data, options, body) {
       final decoded = utf8.decoder.convert(data);
@@ -37,19 +23,8 @@ class MainApi {
   }
 
   MainApi.mobileCache(Directory directory) {
-    hiveCacheStore = HiveCacheStore(directory.path);
-
-    /// cache duration is 30 days for offline mode
-    var cacheOptions = CacheOptions(
-        store: hiveCacheStore,
-        policy: CachePolicy.forceCache,
-        maxStale: const Duration(days: 30),
-        hitCacheOnErrorExcept: [401, 404]);
-
     /// add custom cache interceptor to dio
-    final dio = Dio()
-      ..interceptors.add(CustomCacheInterceptor(
-          cacheStore: hiveCacheStore, cacheOptions: cacheOptions));
+    final dio = Dio();
 
     /// convert xml to json first - needs to happen here to
     /// avoid conversion everytime it's loaded out of cache
@@ -119,10 +94,6 @@ class MainApi {
   }
 
   clearCache() async {
-    if (kIsWeb) {
-      memCacheStore.clean();
-    } else {
-      hiveCacheStore.clean();
-    }
+
   }
 }

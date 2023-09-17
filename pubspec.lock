@@ -321,22 +321,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.2"
-  dio_cache_interceptor:
-    dependency: "direct main"
-    description:
-      name: dio_cache_interceptor
-      sha256: a89166e6fb9c90a4bf2b7f20b5c055087969bc445ced3282e32505543e296e0f
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.4.2"
-  dio_cache_interceptor_hive_store:
-    dependency: "direct main"
-    description:
-      name: dio_cache_interceptor_hive_store
-      sha256: "7a376b1db0a153e16ad51ce0cf1d2549ca14a2ddf462523c362fac9e077c5f14"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
   equatable:
     dependency: transitive
     description:
@@ -423,7 +407,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_blurhash:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_blurhash
       sha256: "05001537bd3fac7644fa6558b09ec8c0a3f2eba78c0765f88912882b1331a5c6"
@@ -853,14 +837,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  lottie:
-    dependency: "direct main"
-    description:
-      name: lottie
-      sha256: b8bdd54b488c54068c57d41ae85d02808da09e2bee8b8dd1f59f441e7efa60cd
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.0"
   map_launcher:
     dependency: "direct main"
     description:
@@ -1343,14 +1319,6 @@ packages:
     description:
       name: stash_hive
       sha256: "603b497b89ad89023775b69a8030f0d9e79f1f9c755e607aea8c3ca6954f12f3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.1"
-  stash_memory:
-    dependency: "direct main"
-    description:
-      name: stash_memory
-      sha256: ddbdd222fdf16a00822a55114f4370480b6bc638cf8081bfb4a34701b87b64b1
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
