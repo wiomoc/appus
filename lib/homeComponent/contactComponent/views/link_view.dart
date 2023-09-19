@@ -1,11 +1,10 @@
 import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:campus_flutter/examsComponent/exams_view.dart';
-import 'package:campus_flutter/providers_get_it.dart';
 import 'package:campus_flutter/base/helpers/url_launcher.dart';
-import 'package:campus_flutter/studentIdBalanceComponent/student_id_balance_view.dart';
+import 'package:campus_flutter/studentIdBalanceComponent/student_id_balance_page.dart';
+import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class LinkView extends ConsumerWidget {
   const LinkView({super.key});
@@ -17,66 +16,52 @@ class LinkView extends ConsumerWidget {
         Expanded(
             child: AspectRatio(
                 aspectRatio: 3,
-                child: GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamsScreen()));
-                    },
-                    child: const Card(
-                        margin: EdgeInsets.only(
-                            right: 5.0, top: 5.0, bottom: 5.0, left: 15.0),
-                        child: Center(
+                child: Card(
+                    margin: EdgeInsets.only(right: 5.0, top: 5.0, bottom: 5.0, left: context.halfPadding),
+                    child: InkWell(
+                        onTap: () async {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamsScreen()));
+                        },
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: const Center(
                             child: IconText(
-                              iconData: Icons.school_outlined,
-                              label: "Exams & Grades",
-                              iconSize: 24,
-                            )))))),
+                          iconData: Icons.school_outlined,
+                          label: "Prüfungen",
+                          iconSize: 24,
+                        )))))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 3,
-                child: GestureDetector(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const StudentIdBalanceView()));
-                    },
-                    child: const Card(
-                        margin: EdgeInsets.only(
-                            right: 5.0, top: 5.0, bottom: 5.0, left: 15.0),
-                        child: Center(
+                child: Card(
+                    margin: const EdgeInsets.all(5.0),
+                    child: InkWell(
+                        onTap: () async {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) => const StudentIdBalancePage()));
+                        },
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: const Center(
                             child: IconText(
-                              iconData: Icons.credit_card_outlined,
-                              label: "Student ID Balance",
-                              iconSize: 24,
-                            )))))),
+                          iconData: Icons.credit_card_outlined,
+                          label: "Balance",
+                          iconSize: 24,
+                        )))))),
         Expanded(
             child: AspectRatio(
                 aspectRatio: 3,
-                child: GestureDetector(
-                    onTap: () async {
-                      if (MediaQuery.orientationOf(context) ==
-                          Orientation.portrait) {
-                        UrlLauncher.urlString("https://campus.tum.de", ref);
-                      } else {
-                        final controller = WebViewController()
-                          ..setJavaScriptMode(JavaScriptMode.unrestricted)
-                          ..setBackgroundColor(const Color(0x00000000))
-                          ..setNavigationDelegate(NavigationDelegate(
-                              onNavigationRequest: (request) =>
-                              NavigationDecision.navigate))
-                          ..loadRequest(Uri.parse("https://campus.tum.de"));
-                        ref
-                            .read(homeSplitViewModel)
-                            .selectedWidget
-                            .add(WebViewWidget(controller: controller));
-                      }
-                    },
-                    child: const Card(
-                        margin: EdgeInsets.only(
-                            right: 15.0, top: 5.0, bottom: 5.0, left: 5.0),
-                        child: Center(
+                child: Card(
+                    margin: EdgeInsets.only(right: context.halfPadding, top: 5.0, bottom: 5.0, left: 5.0),
+                    child: InkWell(
+                        onTap: () async {
+                          UrlLauncher.urlString("https://campus.tum.de", ref);
+                        },
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: const Center(
                             child: IconText(
-                              iconData: Icons.language_outlined,
-                              label: "TUMOnline",
-                              iconSize: 24,
-                            ))))))
+                          iconData: Icons.language_outlined,
+                          label: "C@mpus",
+                          iconSize: 24,
+                        ))))))
       ],
     );
   }

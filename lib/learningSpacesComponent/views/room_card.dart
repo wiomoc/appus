@@ -19,6 +19,7 @@ class RoomCard extends StatelessWidget {
           onTap: () {
             _showDetailsBottomSheet(context);
           },
+          borderRadius: BorderRadius.circular(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -18,9 +19,9 @@ class MealBottomSheet extends StatefulWidget {
   final Meal meal;
   final double? stars;
   final DateTime date;
-  final void Function(double?) onStarsUpdate;
+  final void Function(double?)? onStarsUpdate;
 
-  const MealBottomSheet({super.key, required this.meal, this.stars, required this.date, required this.onStarsUpdate});
+  const MealBottomSheet({super.key, required this.meal, this.stars, required this.date, this.onStarsUpdate});
 
   @override
   State<StatefulWidget> createState() {
@@ -43,7 +44,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
         _ratingsSnapshot = AsyncSnapshot.withData(ConnectionState.done, snapshot);
         if (_stars != snapshot.stars) {
           _stars = snapshot.stars;
-          widget.onStarsUpdate(snapshot.stars);
+          widget.onStarsUpdate?.call(snapshot.stars);
         }
       });
     }, onError: (error) {
@@ -51,8 +52,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
         _ratingsSnapshot = AsyncSnapshot.withError(ConnectionState.done, error);
       });
     });
-    final DateTime now = DateTime.now();
-    final DateTime today = DateTime(now.year, now.month, now.day);
+    final DateTime today = DateTime.now().dateDay;
     final isToday = today == widget.date;
     if (isToday) {
       hasAlreadyRated(widget.meal.name, today).then((hasAlreadyRated) {
@@ -162,7 +162,7 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                     setState(() {
                       _allowRating = false;
                       _stars = newAverageStars;
-                      widget.onStarsUpdate(newAverageStars);
+                      widget.onStarsUpdate?.call(newAverageStars);
                     });
                     _ratingsRetryable.retry();
                   },

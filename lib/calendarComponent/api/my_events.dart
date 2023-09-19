@@ -65,7 +65,7 @@ class MyEventsApiOperation extends ApiOperation<List<CalendarEvent>> {
       final String? description = event["description"];
       if (description != null && description.isNotEmpty) {
         final descriptionParts = description.split("\\; ");
-        if (descriptionParts.length > 0) {
+        if (descriptionParts.isNotEmpty) {
           switch (descriptionParts[0]) {
             case "fix":
               status = CalendarEventStatus.fixed;

@@ -11,7 +11,7 @@ import '../../base/helpers/card_with_padding.dart';
 import '../../base/helpers/horizontal_slider.dart';
 import '../../base/helpers/icon_text.dart';
 import '../../calendarComponent/model/calendar_event.dart';
-import '../../mapComponent/room_location_page.dart';
+import '../../mapComponent/views/room_location_page.dart';
 import 'basic_course_info_view.dart';
 import 'detailed_course_info_view.dart';
 import '../model/course_detail.dart';
@@ -63,19 +63,34 @@ class _CourseAppointmentsViewState extends State<CourseAppointmentsView> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (appointment.status == CalendarEventStatus.canceled)
-                      Text("CANCELED", style: Theme.of(context).textTheme.bodyMedium),
-                    Column(
+                      Text("CANCELED",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
+                    Expanded(
+                        child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          DateFormat("E. d").format(appointment.startDate),
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          DateFormat("E d").format(appointment.startDate),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
                         ),
                         Text(DateFormat.yMMM().format(appointment.startDate),
-                            style: Theme.of(context).textTheme.bodyLarge),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                         Text(
                             "${DateFormat.Hm().format(appointment.startDate)} - ${DateFormat.Hm().format(appointment.endDate)}",
-                            style: Theme.of(context).textTheme.bodyLarge),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer)),
                         if (appointment.roomId != null && appointment.status != CalendarEventStatus.canceled) ...[
                           const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
                           InkWell(
@@ -89,12 +104,14 @@ class _CourseAppointmentsViewState extends State<CourseAppointmentsView> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dotted),
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                  decoration: TextDecoration.underline,
+                                  decorationStyle: TextDecorationStyle.dotted),
                             ),
                           )
                         ]
                       ],
-                    ),
+                    )),
                   ],
                 )));
       },
@@ -163,7 +180,8 @@ class CoursePageState extends ApiBackedState<(CourseDetail, CourseGroupDetail), 
       if (courseGroupDetails.appointments.isNotEmpty)
         CourseAppointmentsView(courseGroupDetails.appointments, selectedDate: widget.selectedDate),
       if (courseDetails.localizedCourseContent != null || courseDetails.localizedCourseObjective != null)
-        _infoCard(Icons.folder, AppLocalizations.of(context)!.courseDetailedInformation, DetailedCourseInfoView(courseDetails: courseDetails)),
+        _infoCard(Icons.folder, AppLocalizations.of(context)!.courseDetailedInformation,
+            DetailedCourseInfoView(courseDetails: courseDetails)),
       ListTile(
         leading: const Icon(Icons.link),
         title: const Text("Ilias"),

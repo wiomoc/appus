@@ -1,6 +1,5 @@
-import 'package:campus_flutter/courseComponent/courses_view.dart';
+import 'package:campus_flutter/courseComponent/views/courses_page.dart';
 import 'package:campus_flutter/homeComponent/home_screen.dart';
-import 'package:campus_flutter/organisationsComponent/organisations_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:campus_flutter/settingsComponent/views/settings_view.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'calendarComponent/calendars_view.dart';
+import 'calendarComponent/views/calendars_page.dart';
 import 'placesComponent/views/places_page.dart';
 import 'searchComponent/views/search_body_view.dart';
+import 'updatesComponent/views/update_page.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -121,7 +121,7 @@ class _NavigationState extends State<Navigation> {
   Widget _navigationBody() {
     switch (currentPageIndex) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
         return const UpdatesPage();
       case 2:

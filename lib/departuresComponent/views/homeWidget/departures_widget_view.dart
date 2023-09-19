@@ -5,6 +5,7 @@ import 'package:campus_flutter/base/helpers/card_with_padding.dart';
 import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../api/vvs_departures.dart';
 import '../../departures_service.dart';
@@ -34,7 +35,7 @@ class _DeparturesHomeWidgetState extends ApiBackedState<List<Departure>, Departu
   // TODO: make nice
   @override
   Widget build(BuildContext context) => WidgetFrameView(
-      title: _station != null ? "Departures @ ${_station!.name}" : "Departures",
+      title:  AppLocalizations.of(context)!.departures + (_station != null ? " @ ${_station!.name}" : ""),
       child: GestureDetector(
           onTap: () => _onWidgetPressed(context),
           child: ConstrainedBox(
@@ -55,7 +56,7 @@ class _DeparturesHomeWidgetState extends ApiBackedState<List<Departure>, Departu
   }
 
   @override
-  String get resourceName => "Departures";
+  String get resourceName => AppLocalizations.of(context)!.departures;
 
   @override
   ErrorHandlingViewType get errorHandlingViewType => ErrorHandlingViewType.descriptionOnly;

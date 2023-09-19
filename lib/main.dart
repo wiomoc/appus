@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stash/stash_api.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -27,14 +28,6 @@ main() async {
   //        (event) => print('Key "${event.entry.key}" added to the cache'));
   getIt.registerSingleton<Cache<Map>>(cache);
 
-/*
-  if (kIsWeb) {
-    getIt.registerSingleton<MainApi>(MainApi.webCache());
-  } else {
-    final directory = await getTemporaryDirectory();
-    HiveCacheStore(directory.path).clean();
-    getIt.registerSingleton<MainApi>(MainApi.mobileCache(await getTemporaryDirectory()));
-  }*/
   //debugPaintSizeEnabled=true;
   runApp(const ProviderScope(child: CampusApp()));
 }
@@ -69,6 +62,8 @@ class AuthenticationRouter extends StatefulWidget {
 class _AuthenticationRouterState extends State<AuthenticationRouter> {
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = Localizations.localeOf(context).languageCode;
+    
     return StreamBuilder(
         stream: getIt<CampusApi>().isAuthenticated,
         builder: (context, snapshot) {

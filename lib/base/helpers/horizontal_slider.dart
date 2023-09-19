@@ -8,12 +8,12 @@ class HorizontalSlider<E> extends StatelessWidget {
       required this.height,
       required this.child,
       this.scrollController,
-      this.leadingTrailingPadding = true});
+      this.leadingTrailingPadding = 5.0});
 
   final List<E> data;
   final Widget Function(E data) child;
   final double height;
-  final bool leadingTrailingPadding;
+  final double leadingTrailingPadding;
   final ScrollController? scrollController;
 
   @override
@@ -26,14 +26,15 @@ class HorizontalSlider<E> extends StatelessWidget {
             child: ListView(scrollDirection: Axis.horizontal, controller: scrollController, children: [
               for (var indexAndValue in data.indexed) ...[
                 if (indexAndValue.$1 == 0) ...[
-                  if (leadingTrailingPadding) const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
+                  if (leadingTrailingPadding != 0)
+                    Padding(padding: EdgeInsets.only(left: leadingTrailingPadding)),
                   child(indexAndValue.$2)
                 ],
                 if (indexAndValue.$1 != 0 && indexAndValue.$1 == data.length - 1) ...[
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
                   child(indexAndValue.$2),
-                  if (orientation != Orientation.landscape && leadingTrailingPadding)
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 3))
+                  if (orientation != Orientation.landscape && leadingTrailingPadding != 0)
+                    Padding(padding: EdgeInsets.only(left:  leadingTrailingPadding))
                 ],
                 if (indexAndValue.$1 != 0 && indexAndValue.$1 != data.length - 1) ...[
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 3)),

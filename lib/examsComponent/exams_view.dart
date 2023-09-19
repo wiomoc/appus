@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../base/helpers/icon_text.dart';
-import '../mapComponent/room_location_page.dart';
+import '../mapComponent/views/room_location_page.dart';
 
 class ExamsScreen extends StatefulWidget {
   const ExamsScreen({super.key});
@@ -99,7 +99,7 @@ class _ExamsScreenState extends ApiBackedState<(List<PlannedExam>?, List<Achieve
     return ListView(
       children: [
         if (data.$1 != null && data.$1!.isNotEmpty)
-          Padding(padding: EdgeInsets.symmetric(horizontal: 5), child: Text(AppLocalizations.of(context)!.examsAndGradesRegistered)),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 5), child: Text(AppLocalizations.of(context)!.examsAndGradesRegistered)),
         if (data.$1 != null && data.$1!.isNotEmpty)
           ...data.$1!.mapIndexedAndLast((i, plannedExam, last) => Column(children: [
                 PlannedExamRow(plannedExam),

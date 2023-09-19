@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stash/stash_api.dart';
@@ -180,6 +182,7 @@ class MergedApiOperation<A, B> with ChangeNotifier implements AbstractApiOperati
   final AbstractApiOperation<A> firstOperation;
   final AbstractApiOperation<B> secondOperation;
 
+  // ignore: prefer_const_constructors
   ApiResult<(A?, B?)> _currentResult = LoadingApiResult<(A?, B?)>();
 
   MergedApiOperation(this.firstOperation, this.secondOperation) {
@@ -189,7 +192,6 @@ class MergedApiOperation<A, B> with ChangeNotifier implements AbstractApiOperati
 
   @override
   ApiResult<(A?, B?)> get value => _currentResult;
-
   @override
   void fetch([Duration? maxAge]) {
     firstOperation.fetch(maxAge);
@@ -252,4 +254,24 @@ class MergedApiOperation<A, B> with ChangeNotifier implements AbstractApiOperati
     firstOperation.removeListener(_onApiResultChange);
     secondOperation.removeListener(_onApiResultChange);
   }
+}
+
+Future<ApiResponseData<T>> fetchAndWait<T>(AbstractApiOperation<T> apiOperation, [Duration? maxAge]) {
+  final completer = Completer<ApiResponseData<T>>();
+  void listener() {
+    final apiResult = apiOperation.value;
+    if (apiResult is FinalApiResult<T>) {
+      apiOperation.removeListener(listener);
+      Future(() => apiOperation.dispose());
+      completer.complete(apiResult.response!);
+    } else if (apiResult is ErrorApiResult<T>) {
+      apiOperation.removeListener(listener);
+      Future(() => apiOperation.dispose());
+      completer.completeError(apiResult.error);
+    }
+  }
+
+  apiOperation.addListener(listener);
+  apiOperation.fetch(maxAge);
+  return completer.future;
 }

@@ -44,7 +44,6 @@ dependencies:
   auto_size_text: ^3.0.0
   syncfusion_flutter_datepicker: ^22.1.39
   icalendar_parser: ^2.0.0
-  zoom_widget: ^2.0.1
   flutter_osm_plugin: ^0.60.4
   nfc_manager: ^3.3.0
   flutter_html: ^3.0.0-beta.2

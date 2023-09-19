@@ -1,3 +1,4 @@
+import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
 
 class CardWithPadding extends StatelessWidget {
@@ -20,7 +21,7 @@ class CardWithPadding extends StatelessWidget {
     return SizedBox(
         height: height,
         child: Card(
-          margin: margin,
+          margin: margin ?? EdgeInsets.all(context.halfPadding),
           color: color,
           child: Padding(
             padding: padding ?? const EdgeInsets.all(10.0),

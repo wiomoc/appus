@@ -8,7 +8,9 @@ import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stash/stash_api.dart';
 
+import '../../../../providers_get_it.dart';
 import 'campus_api_exception.dart';
 
 class AuthTokens {
@@ -249,5 +251,7 @@ class CampusApi {
     isAuthenticated.value = false;
     currentAuthTokens = null;
     _storeAuthTokens();
+    final cache = getIt<Cache<Map>>();
+    cache.clear();
   }
 }

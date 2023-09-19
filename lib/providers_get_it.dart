@@ -1,8 +1,6 @@
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
 import 'package:campus_flutter/gradeComponent/viewModels/grade_viewmodel.dart';
-import 'package:campus_flutter/homeComponent/split_view_viewmodel.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
-import 'package:campus_flutter/newsComponent/viewModel/news_viewmodel.dart';
 import 'package:campus_flutter/placesComponent/viewModels/places_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -22,13 +20,6 @@ final loginViewModel = Provider((ref) => LoginViewModel());
 /// view model for places
 final placesViewModel = Provider((ref) => PlacesViewModel());
 
-/// view model for news
-final newsViewModel = Provider((ref) => NewsViewModel());
-
-/// view model for movies
-
 /// view model for grades
 final gradeViewModel = Provider((ref) => GradeViewModel(ref));
 
-/// view model for landscape mode
-final homeSplitViewModel = Provider((ref) => SplitViewViewModel());

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../views/error_handling_view.dart';
 import 'api_operation.dart';
@@ -79,7 +80,7 @@ mixin ApiBackedPageState<T, W extends StatefulWidget> on ApiBackedState<T, W> {
           },
         ),
         action: SnackBarAction(
-          label: 'Retry',
+          label: AppLocalizations.of(context)!.retry,
           onPressed: () {
             _apiOperation?.retry();
           },

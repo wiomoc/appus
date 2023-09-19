@@ -13,9 +13,9 @@ import '../../../homeComponent/widgetComponent/views/widget_frame_view.dart';
 import '../../protocols/global_search.dart';
 
 abstract class BaseSearchResultView<T extends Searchable> extends StatefulWidget {
-  String get title;
-
   final String searchText;
+
+  String getTitle(BuildContext context);
 
   AbstractApiOperation<List<T>> search();
 
@@ -66,11 +66,11 @@ class _BaseSearchResultView<T extends Searchable> extends State<BaseSearchResult
         ElevatedButton(onPressed: _searchOperation?.retry, child:  Text(AppLocalizations.of(context)!.retry))
       ]);
     } else {
-      body = DelayedLoadingIndicator(name: widget.title);
+      body = DelayedLoadingIndicator(name: widget.getTitle(context));
     }
 
     return WidgetFrameView(
-        title: widget.title,
+        title: widget.getTitle(context),
         subtitle: (searchResults is LoadingApiResult<List<T>> && searchResults.cached != null)
             ? const LinearProgressIndicator()
             : null,

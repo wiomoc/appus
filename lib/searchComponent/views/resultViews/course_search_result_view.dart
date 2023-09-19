@@ -1,6 +1,7 @@
 import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/courseComponent/model/course_summary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../courseComponent/api/courses_search.dart';
 import '../../../courseComponent/views/course_view.dart';
@@ -13,7 +14,7 @@ class CourseSearchResultView extends BaseSearchResultView<CourseSummary> {
   AbstractApiOperation<List<CourseSummary>> search() => CoursesSearchApiOperation(searchText);
 
   @override
-  String get title => "Courses";
+  String getTitle(BuildContext context) =>  AppLocalizations.of(context)!.courses;
 
   @override
   Widget buildResultEntry(BuildContext context, CourseSummary entry) {
