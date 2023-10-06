@@ -81,7 +81,7 @@ class CourseDetailApiOperation extends ApiOperation<(CourseDetail, CourseGroupDe
         id: courseDetail["cpCourseDto"]["id"],
         courseNumber: courseDetail["cpCourseDto"]["courseNumber"]["courseNumber"],
         localizedTitle: CampusApi.getLocalized(courseDetail["cpCourseDto"]["courseTitle"])!,
-        semesterHours: (semesterHoursString != null) ? int.parse(semesterHoursString) : null,
+        semesterHours: (semesterHoursString != null) ? int.tryParse(semesterHoursString) : null,
         localizedType: CampusApi.getLocalized(courseDetail["cpCourseDto"]["courseTypeDto"]["courseTypeName"])!,
         localizedSemester: CampusApi.getLocalized(courseDetail["cpCourseDto"]["semesterDto"]["semesterDesignation"])!,
         localizedOrganisation:

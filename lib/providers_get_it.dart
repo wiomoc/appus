@@ -1,7 +1,6 @@
 import 'package:campus_flutter/calendarComponent/model/calendar_event.dart';
 import 'package:campus_flutter/gradeComponent/viewModels/grade_viewmodel.dart';
 import 'package:campus_flutter/loginComponent/viewModels/login_viewmodel.dart';
-import 'package:campus_flutter/placesComponent/viewModels/places_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,8 +16,6 @@ final hideFailedGrades = StateProvider<bool>((ref) => false);
 /// view model for authentication handling
 final loginViewModel = Provider((ref) => LoginViewModel());
 
-/// view model for places
-final placesViewModel = Provider((ref) => PlacesViewModel());
 
 /// view model for grades
 final gradeViewModel = Provider((ref) => GradeViewModel(ref));

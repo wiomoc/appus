@@ -1,4 +1,5 @@
 import 'package:campus_flutter/base/helpers/horizontal_slider.dart';
+import 'package:campus_flutter/searchComponent/views/resultViews/building_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/resultViews/room_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/search_textfield_view.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +19,20 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
-  final List<SearchCategory> _selectedCategories = [SearchCategory.lectures, SearchCategory.rooms];
+  final List<SearchCategory> _selectedCategories = [];
   String _searchText = "";
 
   @override
   void initState() {
     super.initState();
     if (widget.index == 0) {
+      _selectedCategories.add(SearchCategory.rooms);
       _selectedCategories.add(SearchCategory.lectures);
-      _selectedCategories.add(SearchCategory.grade);
+    } else if (widget.index == 2) {
+      _selectedCategories.add(SearchCategory.lectures);
+    } else if (widget.index == 4) {
+      _selectedCategories.add(SearchCategory.rooms);
+      _selectedCategories.add(SearchCategory.buildings);
     }
   }
 
@@ -51,7 +57,7 @@ class _SearchViewState extends State<SearchView> {
         child: (_searchText.isEmpty)
             ? Center(child: Text(AppLocalizations.of(context)!.searchEnterQuery))
             : (_selectedCategories.isEmpty)
-                ? const Center(child: Text("Select some Categories to Start"))
+                ? Center(child: Text(AppLocalizations.of(context)!.searchSelectCategories))
                 : Scrollbar(
                     child: SingleChildScrollView(
                         child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -63,10 +69,10 @@ class _SearchViewState extends State<SearchView> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: HorizontalSlider(
-            data: SearchCategory.values.where((element) => element != SearchCategory.unknown).toList(),
+            data: SearchCategory.values.toList(),
             height: 40,
             child: (searchCategory) => FilterChip.elevated(
-                  label: Text(searchCategory.title),
+                  label: Text(searchCategory.localizedTitle(context)),
                   onSelected: (selected) {
                     if (selected) {
                       _addCategory(searchCategory);
@@ -103,66 +109,41 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _searchResultViewBuilder(SearchCategory searchCategory) {
     switch (searchCategory) {
-     // case SearchCategory.grade:
+      // case SearchCategory.grade:
       //  return const GradeSearchResultView(key: ValueKey("gradeSearchResultView"));
-     // case SearchCategory.cafeterias:
-     //   return const CafeteriasSearchResultView(key: ValueKey("cafeteriasSearchResultView"));
-     // case SearchCategory.calendar:
-     //   return const CalendarSearchResultView(key: ValueKey("calendarSearchResultView"));
-      case SearchCategory.news:
-        // TODO:
-        return Container();
+      // case SearchCategory.cafeterias:
+      //   return const CafeteriasSearchResultView(key: ValueKey("cafeteriasSearchResultView"));
+      // case SearchCategory.calendar:
+      //   return const CalendarSearchResultView(key: ValueKey("calendarSearchResultView"));
       //case SearchCategory.studyRoom:
       //  return const StudyRoomSearchResultView();
       case SearchCategory.lectures:
         return CourseSearchResultView(searchText: _searchText, key: const ValueKey("lectureSearchResultView"));
       case SearchCategory.rooms:
         return RoomSearchResultView(searchText: _searchText, key: const ValueKey("roomsSearchResultView"));
-      case SearchCategory.persons:
-        // TODO:
-        return Container();
+      case SearchCategory.buildings:
+        return BuildingSearchResultView(searchText: _searchText, key: const ValueKey("buildingsSearchResultView"));
       default:
         return Container();
     }
   }
 }
 
-
 enum SearchCategory {
-  /// enums that exist in the Text Classification Model
-  cafeterias("Cafeterias"),
-  calendar("Calendar"),
-  grade("Grades"),
-  movie("Movies"),
-  news("News"),
-  studyRoom("Study Rooms"),
-  unknown("Unknown"),
+  lectures,
+  rooms,
+  buildings;
 
-  /// enums that are not classified but shown in searches
-  lectures("Lectures"),
-  rooms("Rooms"),
-  persons("Persons");
-
-  final String title;
-
-  const SearchCategory(this.title);
-
-  factory SearchCategory.fromString(String category) {
-    switch (category) {
-      case "cafeterias":
-        return SearchCategory.cafeterias;
-      case "calendar":
-        return SearchCategory.calendar;
-      case "grade":
-        return SearchCategory.grade;
-      case "movie":
-        return SearchCategory.movie;
-      case "news":
-        return SearchCategory.news;
-      case "studyroom":
-        return SearchCategory.studyRoom;
+  String localizedTitle(BuildContext context) {
+    switch (this) {
+      case SearchCategory.lectures:
+        return AppLocalizations.of(context)!.courses;
+      case SearchCategory.rooms:
+        return AppLocalizations.of(context)!.mapRooms;
+      case SearchCategory.buildings:
+        return AppLocalizations.of(context)!.mapBuildings;
       default:
-        return SearchCategory.unknown;
+        return "";
     }
   }
 }

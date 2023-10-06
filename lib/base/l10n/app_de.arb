@@ -35,6 +35,7 @@
   "examsAndGradesNoGrade": "n.v.",
   "search": "Suche",
   "searchNoResults": "Keine Ergebnisse",
+  "searchSelectCategories": "Wähle mindestens eine Kategorie aus",
   "searchEnterQuery": "Gebe einen Suchbegriff zum loslegen ein.",
   "studentIdBalance": "Studentenausweis Guthaben",
   "studentIdBalanceBalance": "Guthaben",

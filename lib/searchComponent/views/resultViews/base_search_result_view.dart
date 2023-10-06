@@ -136,4 +136,3 @@ class _BaseSearchResultView<T extends Searchable> extends State<BaseSearchResult
     _searchOperation?.dispose();
   }
 }
-//mixin

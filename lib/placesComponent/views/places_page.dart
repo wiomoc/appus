@@ -1,3 +1,4 @@
+import 'package:campus_flutter/base/enums/campus.dart';
 import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:campus_flutter/base/helpers/padded_divider.dart';
 import 'package:campus_flutter/theme.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../departuresComponent/views/departures_details_view.dart';
 import '../../learningSpacesComponent/views/learning_spaces_page.dart';
 import '../../mensaComponent/views/mensas_page.dart';
+import 'campuses/campus_card_view.dart';
 
 class PlacesPage extends StatelessWidget {
   const PlacesPage({super.key});
@@ -23,6 +25,15 @@ class PlacesPage extends StatelessWidget {
         _navigationCard(context, Icons.train, AppLocalizations.of(context)!.placesPublicTransport,
             (context) => const DeparturesPage()),
         const PaddedDivider(),
+        if (MediaQuery.of(context).size.width < 700) ...[
+          const CampusCardView(campus: Campus.vaihingen),
+          const CampusCardView(campus: Campus.stadtmitte)
+        ]
+        else
+          const Row(children: [
+            Expanded(child: CampusCardView(campus: Campus.vaihingen)),
+            Expanded(child: CampusCardView(campus: Campus.stadtmitte))
+          ],)
         //for (var campus in ref.watch(placesViewModel).campuses) CampusCardView(campus: campus),
       ],
     ));

@@ -93,7 +93,7 @@ class _ExamsScreenState extends ApiBackedState<(List<PlannedExam>?, List<Achieve
 
   @override
   Widget buildBody((List<PlannedExam>?, List<Achievement>?) data) {
-    if (data.$1?.isEmpty ?? true && (data.$2?.isEmpty ?? true)) {
+    if ((data.$1?.isEmpty ?? true) && (data.$2?.isEmpty ?? true)) {
       return Center(child: Text(AppLocalizations.of(context)!.examsAndGradesEmpty));
     }
     return ListView(

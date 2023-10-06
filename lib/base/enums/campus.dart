@@ -1,12 +1,8 @@
 import 'package:campus_flutter/base/classes/location.dart';
 
 enum Campus {
-  stammgelaende("Stammgelände"),
-  olympiapark("Campus Olympiapark"),
-  klinikumRechts("Klinikum rechts der Isar"),
-  grosshadern("Klinikum Großhadern"),
-  garching("Garching Forschungszentrum"),
-  freising("Campus Freising");
+  vaihingen("Vaihingen"),
+  stadtmitte("Stadtmitte");
 
   final String name;
 
@@ -16,43 +12,17 @@ enum Campus {
 extension CampusExtension on Campus {
   static List<Campus> get campusPlaces {
     return [
-      Campus.stammgelaende,
-      Campus.garching,
-      Campus.olympiapark,
-      Campus.klinikumRechts,
-      Campus.freising
+      Campus.vaihingen,
+      Campus.stadtmitte,
     ];
-  }
-
-  String get searchStringRooms {
-    switch (this) {
-      case Campus.stammgelaende:
-        return "Stammgelände";
-      case Campus.olympiapark:
-        return "Olympiapark";
-      case Campus.klinikumRechts:
-        return "Klinikum Isar";
-      case Campus.grosshadern:
-        return "Großhadern";
-      case Campus.garching:
-        return "Garching Forschungszentrum";
-      case Campus.freising:
-        return "Weihenstephan";
-    }
   }
 
   String? get image {
     switch (this) {
-      case Campus.stammgelaende:
+      case Campus.vaihingen:
         return "assets/images/campus/campus-stamm.jpeg";
-      case Campus.olympiapark:
+      case Campus.stadtmitte:
         return "assets/images/campus/campus-olympia.jpg";
-      case Campus.klinikumRechts:
-        return "assets/images/campus/campus-klinikum.jpg";
-      case Campus.garching:
-        return "assets/images/campus/campus-garching.jpeg";
-      case Campus.freising:
-        return "assets/images/campus/campus-freising.jpg";
       default:
         return null;
     }
@@ -60,30 +30,26 @@ extension CampusExtension on Campus {
 
   Location get location {
     switch (this) {
-      case Campus.stammgelaende:
-        return Location(
-            latitude: 48.14887567648079, longitude: 11.568029074814328);
-      case Campus.olympiapark:
-        return Location(
-            latitude: 48.17957305879896, longitude: 11.546601863009668);
-      case Campus.klinikumRechts:
-        return Location(
-            latitude: 48.13760759635786, longitude: 11.60083902677729);
-      case Campus.grosshadern:
-        return Location(
-            latitude: 48.1116433849602, longitude: 11.47027262422505);
-      case Campus.garching:
-        return Location(
-            latitude: 48.26513710129958, longitude: 11.671590834492283);
-      case Campus.freising:
-        return Location(
-            latitude: 48.39549985559942, longitude: 11.727904526510946);
+      case Campus.vaihingen:
+        return Location(latitude: 48.14887567648079, longitude: 11.568029074814328);
+      case Campus.stadtmitte:
+        return Location(latitude: 48.17957305879896, longitude: 11.546601863009668);
     }
   }
 
   Map<Campus, Location> getAll() {
     return Map.fromEntries(Campus.values.map((e) => MapEntry(e, e.location)));
   }
+
+  List<(String, int)> get popularRooms {
+    switch (this) {
+      case Campus.vaihingen:
+        return [("V53.01", 7153), ("V57.01", 7007), ("V47.01", 6999)];
+      case Campus.stadtmitte:
+        return [("M17.01", 7215), ("M17.02", 7216)];
+    }
+  }
+
 /*
   Station get defaultStation {
     switch (this) {

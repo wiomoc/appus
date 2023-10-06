@@ -1,5 +1,4 @@
 import 'package:campus_flutter/base/enums/campus.dart';
-import 'package:campus_flutter/placesComponent/views/campuses/campus_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +48,7 @@ class _CampusScaffoldState extends ConsumerState<CampusScaffold> {
               ),
             );
           }),
-          CampusView(campus: widget.campus)
+          //CampusView(campus: widget.campus)
         ]));
   }
 }

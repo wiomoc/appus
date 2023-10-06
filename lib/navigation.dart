@@ -52,6 +52,12 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
       final isLandScape = orientation == Orientation.landscape;
+      final searchButton = (currentPageIndex == 0 || currentPageIndex == 2 || currentPageIndex == 4)
+          ? IconButton(
+              onPressed: () => _toggleSearch(),
+              icon: _isSearching ? const Icon(Icons.arrow_back) : const Icon(Icons.search))
+          : null;
+
       return Scaffold(
           extendBody: true,
           appBar: AppBar(
@@ -61,9 +67,7 @@ class _NavigationState extends State<Navigation> {
                 ? Padding(
                     padding: const EdgeInsets.all(15),
                     child: Image.asset('assets/images/logos/tum-logo-blue.png', fit: BoxFit.scaleDown))
-                : IconButton(
-                    onPressed: () => _toggleSearch(),
-                    icon: _isSearching ? const Icon(Icons.arrow_back) : const Icon(Icons.search)),
+                : searchButton,
             title: (() {
               switch (currentPageIndex) {
                 case 0:
@@ -85,7 +89,7 @@ class _NavigationState extends State<Navigation> {
               }
             }()),
             actions: <Widget>[
-              if (kIsWeb && isLandScape) IconButton(onPressed: () => _toggleSearch(), icon: const Icon(Icons.search)),
+              if (kIsWeb && isLandScape && searchButton != null) searchButton,
               IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsView()));
@@ -168,7 +172,8 @@ class _NavigationState extends State<Navigation> {
               selectedIcon: Icon(Icons.house),
               label: 'Home',
             ),
-            const NavigationDestination(icon: Icon(Icons.feed_outlined), selectedIcon: Icon(Icons.feed), label: 'Updates'),
+            const NavigationDestination(
+                icon: Icon(Icons.feed_outlined), selectedIcon: Icon(Icons.feed), label: 'Updates'),
             NavigationDestination(
               icon: const Icon(Icons.class_outlined),
               selectedIcon: const Icon(Icons.class_),
@@ -213,10 +218,9 @@ class _NavigationState extends State<Navigation> {
               label: Text('Updates'),
             ),
             NavigationRailDestination(
-              icon: const Icon(Icons.class_outlined),
-              selectedIcon: const Icon(Icons.class_),
-              label: Text(AppLocalizations.of(context)!.courses)
-            ),
+                icon: const Icon(Icons.class_outlined),
+                selectedIcon: const Icon(Icons.class_),
+                label: Text(AppLocalizations.of(context)!.courses)),
             NavigationRailDestination(
               icon: const Icon(Icons.calendar_month_outlined),
               selectedIcon: const Icon(Icons.calendar_month),
