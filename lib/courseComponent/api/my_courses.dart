@@ -18,11 +18,10 @@ class MyCoursesApiOperation extends ApiOperation<List<CourseSummary>> {
   @override
   Future<List<CourseSummary>> fetchOnline() async {
     final campusApi = getIt.get<CampusApi>();
-    final List<dynamic> courseResources = await campusApi
-        .callRestApi("slc.tm.cp/student/myCourses", params: {"\$orderBy": "title=ascnf", "\$skip": 0, "\$top": 20});
+    final List<dynamic> courseResources = await campusApi.callRestApi("slc.tm.cp/student/myCourses",
+        params: {"\$orderBy": "title=ascnf", "\$skip": 0, "\$top": 20}, resourcesKey: "registrations");
 
-    return courseResources.map((courseResource) {
-      final courseRegistration = courseResource["content"]["cpCourseGroupRegistrationDto"];
+    return courseResources.map((courseRegistration) {
       final semesterHoursString = (courseRegistration["courseNormConfigs"] as List<dynamic>)
           .where((element) => element["key"] == "SST")
           .firstOrNull?["value"];
@@ -38,4 +37,3 @@ class MyCoursesApiOperation extends ApiOperation<List<CourseSummary>> {
     }).toList(growable: false);
   }
 }
-

@@ -26,8 +26,8 @@ class CourseDetailApiOperation extends ApiOperation<(CourseDetail, CourseGroupDe
       };
 
   Future<CourseGroupDetail> _fetchGroups(CampusApi campusApi) async {
-    final resource = await campusApi.callRestApi("slc.tm.cp/student/courseGroups/firstGroups/$id");
-    final Map<String, dynamic> courseGroup = resource[0]["content"]["cpCourseGroupDto"];
+    final resource = await campusApi.callRestApi("slc.tm.cp/student/courseGroups/firstGroups/$id", resourcesKey: "courseGroupDtos");
+    final Map<String, dynamic> courseGroup = resource[0];
 
     CalendarEventStatus decodeAppointmentStatus(String str) {
       switch (str) {
