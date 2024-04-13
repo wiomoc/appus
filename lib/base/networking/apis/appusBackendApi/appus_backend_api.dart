@@ -1,1 +1,1 @@
-const String appusBackendBaseUrl = "http://appus.wiomoc.de";
+const String appusBackendBaseUrl = "https://appus.wiomoc.de";

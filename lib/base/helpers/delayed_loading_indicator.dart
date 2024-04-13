@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DelayedLoadingIndicator extends StatelessWidget {
   const DelayedLoadingIndicator({
@@ -13,6 +14,7 @@ class DelayedLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loadingText = AppLocalizations.of(context)!.loading;
     return FutureBuilder(
         future: Future.delayed(const Duration(milliseconds: 150)),
         builder: (context, snapshot) {
@@ -23,7 +25,7 @@ class DelayedLoadingIndicator extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const CircularProgressIndicator.adaptive(),
-                        Text(name != null ? "Loading $name" : "Loading")
+                        Text(name != null ? "$loadingText $name" : loadingText)
                       ]
                   )
               );

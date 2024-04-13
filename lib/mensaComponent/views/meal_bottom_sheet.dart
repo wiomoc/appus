@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:collection/collection.dart';
@@ -33,13 +35,14 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
   double? _stars;
   AsyncSnapshot<Rating> _ratingsSnapshot = const AsyncSnapshot.waiting();
   late Retryable<Rating> _ratingsRetryable;
+  late StreamSubscription<Rating> _ratingSubscription;
   late bool _allowRating = false;
 
   @override
   void initState() {
     _stars = widget.stars;
     _ratingsRetryable = Retryable(() => fetchRatingDetails(widget.meal.name));
-    _ratingsRetryable.stream.listen((snapshot) {
+    _ratingSubscription = _ratingsRetryable.stream.listen((snapshot) {
       setState(() {
         _ratingsSnapshot = AsyncSnapshot.withData(ConnectionState.done, snapshot);
         if (_stars != snapshot.stars) {
@@ -256,6 +259,12 @@ class _MealBottomSheetState extends State<MealBottomSheet> {
                               errorWidget: (context, error, stackTrace) => Container(),
                             )))),
             ]));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _ratingSubscription.cancel();
   }
 }
 
