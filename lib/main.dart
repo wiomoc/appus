@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:stash/stash_api.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import 'base/helpers/delayed_loading_indicator.dart';
 import 'login2Component/login_view.dart';

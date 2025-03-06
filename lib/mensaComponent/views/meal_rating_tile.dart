@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../../base/helpers/card_with_padding.dart';
 import '../mensa_service.dart';

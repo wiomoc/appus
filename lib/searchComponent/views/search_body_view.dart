@@ -3,7 +3,7 @@ import 'package:campus_flutter/searchComponent/views/resultViews/building_search
 import 'package:campus_flutter/searchComponent/views/resultViews/room_search_result_view.dart';
 import 'package:campus_flutter/searchComponent/views/search_textfield_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import 'resultViews/course_search_result_view.dart';
 

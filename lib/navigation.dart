@@ -5,7 +5,7 @@ import 'package:campus_flutter/settingsComponent/views/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import 'calendarComponent/views/calendars_page.dart';
 import 'placesComponent/views/places_page.dart';

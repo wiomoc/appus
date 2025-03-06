@@ -5,7 +5,7 @@ import 'package:campus_flutter/base/extensions/date_day.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../../base/helpers/delayed_loading_indicator.dart';
 import '../../../../base/helpers/retryable.dart';

@@ -1,6 +1,6 @@
 import 'package:campus_flutter/mapComponent/views/map_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../base/helpers/api_backed_state.dart';
 import '../api/room_location_api.dart';

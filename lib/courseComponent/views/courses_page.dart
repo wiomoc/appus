@@ -1,7 +1,7 @@
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/courseComponent/model/course_summary.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../api/my_courses.dart';
 import 'course_view.dart';

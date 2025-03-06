@@ -21,9 +21,7 @@ class HorizontalSlider<E> extends StatelessWidget {
     final orientation = MediaQuery.orientationOf(context);
     return SizedBox(
         height: height,
-        child: Padding(
-            padding: EdgeInsets.only(right: orientation == Orientation.landscape ? context.padding : 0),
-            child: ListView(scrollDirection: Axis.horizontal, controller: scrollController, children: [
+        child: ListView(scrollDirection: Axis.horizontal, controller: scrollController, children: [
               for (var indexAndValue in data.indexed) ...[
                 if (indexAndValue.$1 == 0) ...[
                   if (leadingTrailingPadding != 0)
@@ -41,6 +39,6 @@ class HorizontalSlider<E> extends StatelessWidget {
                   child(indexAndValue.$2)
                 ]
               ]
-            ])));
+            ]));
   }
 }

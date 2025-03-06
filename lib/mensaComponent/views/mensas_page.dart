@@ -3,7 +3,7 @@ import 'package:campus_flutter/mapComponent/views/building_location_page.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../api/sws_meals.dart';
 import '../model/meal.dart';

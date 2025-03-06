@@ -5,7 +5,7 @@ import 'package:campus_flutter/base/helpers/card_with_padding.dart';
 import 'package:campus_flutter/base/views/error_handling_view.dart';
 import 'package:campus_flutter/homeComponent/widgetComponent/views/widget_frame_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../api/vvs_departures.dart';
 import '../../departures_service.dart';

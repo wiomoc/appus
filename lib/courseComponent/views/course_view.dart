@@ -5,7 +5,7 @@ import 'package:campus_flutter/base/helpers/url_launcher.dart';
 import 'package:campus_flutter/courseComponent/api/course_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../base/helpers/card_with_padding.dart';
 import '../../base/helpers/horizontal_slider.dart';

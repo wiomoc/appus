@@ -39,7 +39,7 @@ class ChartView extends ConsumerWidget {
             primaryXAxis: CategoryAxis(),
             primaryYAxis:
                 NumericAxis(minimum: 0, maximum: data.values.reduce(max).toDouble(), interval: 1),
-            series: <ChartSeries<MapEntry<dynamic, int>, String>>[
+            series: [
               ColumnSeries<MapEntry<dynamic, int>, String>(
                 dataSource: data.entries.toList(),
                 xValueMapper: (MapEntry<dynamic, int> data, _) => data.key.toString(),

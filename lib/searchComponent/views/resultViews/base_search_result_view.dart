@@ -5,7 +5,7 @@ import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/base/helpers/delayed_loading_indicator.dart';
 import 'package:campus_flutter/searchComponent/protocols/searchable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../base/helpers/padded_divider.dart';
 import '../../../base/views/error_handling_view.dart';

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:campus_flutter/base/helpers/api_backed_state.dart';
 import 'package:campus_flutter/mapComponent/api/tik_building_api.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../base/helpers/padded_divider.dart';
 import '../../../base/views/error_handling_view.dart';

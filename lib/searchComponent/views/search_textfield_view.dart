@@ -1,6 +1,6 @@
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 
 class SearchTextField extends StatefulWidget {

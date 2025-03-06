@@ -3,7 +3,7 @@ import 'package:campus_flutter/base/helpers/icon_text.dart';
 import 'package:campus_flutter/base/helpers/padded_divider.dart';
 import 'package:campus_flutter/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../departuresComponent/views/departures_details_view.dart';
 import '../../learningSpacesComponent/views/learning_spaces_page.dart';

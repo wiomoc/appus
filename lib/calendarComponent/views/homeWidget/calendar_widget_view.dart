@@ -8,7 +8,7 @@ import 'package:campus_flutter/theme.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../base/views/error_handling_view.dart';
 import 'calendar_widget_event_view.dart';

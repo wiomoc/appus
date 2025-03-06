@@ -1,7 +1,7 @@
 import 'package:campus_flutter/base/helpers/api_operation.dart';
 import 'package:campus_flutter/mapComponent/model/room_search_entry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../../mapComponent/api/room_search_api.dart';
 import '../../../mapComponent/views/room_location_page.dart';
