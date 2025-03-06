@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 /// When the location services are not enabled or permissions
 /// are denied the `Future` will return an error.
 class LocationService {
-  static Future<Position> determinePosition() async {
+  static Future<Position> determinePosition({bool askForPermission = true}) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -17,6 +17,9 @@ class LocationService {
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
+      if(!askForPermission) {
+        return Future.error("No Permission");
+      }
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.deniedForever) {
         return Future.error("Permission forever denied");

@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stash/stash_api.dart';
 
@@ -55,7 +54,7 @@ class CampusApi {
   static const String authTokenPrefKey = "campus_auth_token";
 
   late final Future<void> isInitialized;
-  final BehaviorSubject<bool> isAuthenticated = BehaviorSubject();
+  final ValueNotifier<bool?> isAuthenticated = ValueNotifier(null);
 
   AuthTokens? currentAuthTokens;
   Dio dioClient;

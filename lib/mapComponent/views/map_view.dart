@@ -25,8 +25,8 @@ class MapState extends State<MapView> {
     _controller = MapController.customLayer(
         initPosition: _coord3857To4326(widget.building.coordinates!),
         customTile: CustomTile(
-            sourceName: "lageplan",
-            urlsServers: [TileURLs(url: "https://lageplan.uni-stuttgart.de/osm_tiles/")],
+            sourceName: "osm",
+            urlsServers: [TileURLs(url: "https://tile.openstreetmap.org/")],
             maxZoomLevel: 19,
             minZoomLevel: 12,
             tileExtension: ".png"));

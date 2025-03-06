@@ -116,7 +116,7 @@ class SettingsView extends ConsumerWidget {
 
   Widget _authentication(BuildContext context, WidgetRef ref) {
     final campusApi = getIt<CampusApi>();
-    final isAuthenticated = campusApi.isAuthenticated.value;
+    final isAuthenticated = campusApi.isAuthenticated.value == true;
     return WidgetFrameView(
         child: GestureDetector(
             onTap: () {
