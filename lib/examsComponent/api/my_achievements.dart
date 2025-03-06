@@ -15,6 +15,18 @@ class MyAchievementsApiOperation extends ApiOperation<List<Achievement>> {
   Map<String, dynamic> toCached(List<Achievement> object) =>
       {"achievements": object.map((course) => course.toJson()).toList()};
 
+  static DateTime? tryParseDateTime(String? value) => value != null? DateTime.tryParse(value): null;
+
+  static AchievementType parseType(String? value) {
+    switch(value) {
+      case "FINAL_THESIS":
+        return AchievementType.thesis;
+      case "EXAM":
+      default:
+        return AchievementType.exam;
+    }
+  }
+
   @override
   Future<List<Achievement>> fetchOnline() async {
     final campusApi = getIt.get<CampusApi>();
@@ -26,16 +38,17 @@ class MyAchievementsApiOperation extends ApiOperation<List<Achievement>> {
       final achievement = achievementResource["content"]["achievementDto"];
       return Achievement(
           id: achievement["id"],
+          type: parseType(achievement["achievementType"]),
           localizedCourseName: CampusApi.getLocalized(achievement["cpCourseLibDto"]["courseTitle"])!,
           localizedStudyName: CampusApi.getLocalized(achievement["studyBasicInfoLibDto"]["studyName"])!,
           localizedDegreeName: CampusApi.getLocalized(
               achievement["studyBasicInfoLibDto"]["basicStudyProgrammeLibDto"]["degreeType"]["name"])!,
-          courseId: achievement["cpCourseLibDto"]["id"],
-          grade: achievement["gradeDto"]["value"],
+          courseId: achievement["cpCourseLibDto"]?["id"],
+          grade: achievement["gradeDto"]?["value"],
           valid: achievement["achievementStatusType"] == "FINAL",
-          passed: achievement["gradeDto"]["isPositive"],
+          passed: achievement["gradeDto"]?["isPositive"],
           localizedSemester: CampusApi.getLocalized(achievement["semesterLibDto"]["semesterDesignation"])!,
-          dateTime: DateTime.parse(achievement["achievementDate"]["value"]));
+          dateTime: tryParseDateTime(achievement["achievementDate"]?["value"]));
     }).toList(growable: false);
   }
 }

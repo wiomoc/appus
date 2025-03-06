@@ -31,6 +31,8 @@
   "courseBasicInformation": "Basic Information",
   "courseDetailedInformation": "Detailed Information",
   "examsAndGrades": "Exams & Grades",
+  "examsExam": "Exam",
+  "examsThesis": "Thesis",
   "examsAndGradesEmpty": "No exams yet",
   "examsAndGradesRegistered": "Registered",
   "examsAndGradesNoGrade": "n/a",

@@ -31,6 +31,8 @@
   "courseBasicInformation": "Grundlegende Informationen",
   "courseDetailedInformation": "Detaillierte Informationen",
   "examsAndGrades": "Prüfungen & Noten",
+  "examsExam": "Prüfung",
+  "examsThesis": "Thesis",
   "examsAndGradesEmpty": "Aktuell keine Prüfungen vorhanden",
   "examsAndGradesRegistered": "Angemeldet",
   "examsAndGradesNoGrade": "n.v.",

@@ -12,19 +12,41 @@ class AchievementRow extends StatelessWidget {
 
   const AchievementRow(this.grade, {super.key});
 
+  String _titleText(BuildContext context) {
+    if(grade.localizedCourseName.isNotEmpty && grade.localizedCourseName != "-") {
+      return grade.localizedCourseName;
+    } else {
+      switch(grade.type) {
+        case AchievementType.exam:
+          return AppLocalizations.of(context)!.examsExam;
+        case AchievementType.thesis:
+          return AppLocalizations.of(context)!.examsThesis;
+      }
+    }
+  }
+
+  String get _dateText {
+    final dateTime = grade.dateTime;
+    if(dateTime != null) {
+      return "${DateFormat.MMMd().format(dateTime)} - ${grade.localizedSemester}";
+    } else {
+      return grade.localizedSemester;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Opacity(
         opacity: grade.valid? 1: 0.3,
         child: ListTile(
             leading: GradeRectangle(grade: grade.grade),
-            title: Text(grade.localizedCourseName),
+            title: Text(_titleText(context)),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconText(
                     iconData: Icons.date_range,
-                    label: "${DateFormat.MMMd().format(grade.dateTime)} - ${grade.localizedSemester}", //grade.lvNumber,
+                    label: _dateText,
                     iconColor: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).colorScheme.secondary),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),

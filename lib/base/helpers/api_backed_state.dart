@@ -71,7 +71,7 @@ mixin ApiBackedPageState<T, W extends StatefulWidget> on ApiBackedState<T, W> {
     super.onApiResultChange();
     final apiResult = _apiOperation?.value;
     if (apiResult is ErrorApiResult<T> && apiResult.cached != null) {
-      scaffoldMessengerKey.currentState!.showSnackBar(SnackBar(
+      scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
         content: ErrorHandlingView(
           error: apiResult.error,
           errorHandlingViewType: ErrorHandlingViewType.textOnly,

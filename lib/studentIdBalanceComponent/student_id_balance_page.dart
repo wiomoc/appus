@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
+import 'package:campus_flutter/studentIdBalanceComponent/student_id_nfc_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -18,73 +19,18 @@ class StudentIdBalancePage extends StatefulWidget {
   }
 }
 
-class _StudentIdBalancePageState extends State<StudentIdBalancePage> {
+class _StudentIdBalancePageState extends State<StudentIdBalancePage> implements StudentIdNfcListener {
+  late final StudentIdNfcService _service;
+
   bool? _isNfcAvailable;
   double? _balance;
   String? _error;
 
-  Future<void> _onDiscovered(NfcTag tag) async {
-    setState(() {
-      _balance = null;
-      _error = null;
-    });
-    Future<Uint8List> Function(Uint8List)? mifareDesfireTagTransceive;
-    if (Platform.isAndroid) {
-      final mifareDesfireTag = IsoDep.from(tag);
-      if (mifareDesfireTag != null) {
-        mifareDesfireTagTransceive = (data) => mifareDesfireTag.transceive(data: data);
-      }
-    } else if (Platform.isIOS) {
-      final mifareDesfireTag = MiFare.from(tag);
-      mifareDesfireTagTransceive = mifareDesfireTag?.sendMiFareCommand;
-    } else {
-      throw UnsupportedError("Unsupported platform");
-    }
-    if (mifareDesfireTagTransceive == null) {
-      setState(() {
-        _balance = null;
-        _error = AppLocalizations.of(context)!.studentIdBalanceCardIsNotAID;
-      });
-      return;
-    }
-    // Select Application
-    final selectResponse = await mifareDesfireTagTransceive(Uint8List.fromList([0x5A, 0x5F, 0x84, 0x15]));
-    if (selectResponse.length != 1 || selectResponse[0] != 0) {
-      setState(() {
-        _balance = null;
-        _error = "Could not select app: $selectResponse";
-      });
-      return;
-    }
-    // Get Value
-    final valueResponse = await mifareDesfireTagTransceive(Uint8List.fromList([0x6C, 0x01]));
-    if (valueResponse.length < 5 || valueResponse[0] != 0) {
-      setState(() {
-        _balance = null;
-        _error = "Could not get value: $valueResponse";
-      });
-      return;
-    }
-
-    final balance = ((valueResponse[1] & 0xFF) |
-            ((valueResponse[2] & 0xFF) << 8) |
-            ((valueResponse[3] & 0xFF) << 16) |
-            ((valueResponse[4] & 0xFF << 24))) /
-        1000.0;
-    setState(() {
-      _balance = balance;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    NfcManager.instance.isAvailable().then((isNfcAvailable) {
-      setState(() => _isNfcAvailable = true);
-      if (isNfcAvailable) {
-        NfcManager.instance.startSession(pollingOptions: {NfcPollingOption.iso14443}, onDiscovered: _onDiscovered);
-      }
-    });
+    _service = StudentIdNfcService(this);
+    _service.start();
   }
 
   @override
@@ -98,7 +44,8 @@ class _StudentIdBalancePageState extends State<StudentIdBalancePage> {
           Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
         const Icon(Icons.wifi_off, size: 100),
         const Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-        Text(AppLocalizations.of(context)!.studentIdNFCUnavailable, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
+        Text(AppLocalizations.of(context)!.studentIdNFCUnavailable,
+            textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge)
       ]);
     } else {
       if (_balance == null) {
@@ -140,10 +87,7 @@ class _StudentIdBalancePageState extends State<StudentIdBalancePage> {
       }
     }
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(AppLocalizations.of(context)!.studentIdBalance)
-      ),
+      appBar: AppBar(leading: const BackButton(), title: Text(AppLocalizations.of(context)!.studentIdBalance)),
       body: Center(child: body),
     );
   }
@@ -171,5 +115,42 @@ class _StudentIdBalancePageState extends State<StudentIdBalancePage> {
     } else {
       return const Color.fromRGBO(236, 60, 26, 1.0);
     }
+  }
+
+  @override
+  void onAvailabilityChanged(bool available) {
+    setState(() {
+      _isNfcAvailable = available;
+    });
+  }
+
+  @override
+  void onBalanceRead(double balance) {
+    setState(() {
+      _error = null;
+      _balance = balance;
+    });
+  }
+
+  @override
+  void onCardDiscovered() {
+    setState(() {
+      _error = null;
+      _balance = null;
+    });
+  }
+
+  @override
+  void onError(String Function(AppLocalizations localizations) errorSupplier) {
+    setState(() {
+      _error = errorSupplier(AppLocalizations.of(context)!);
+      _balance = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _service.dispose();
   }
 }
