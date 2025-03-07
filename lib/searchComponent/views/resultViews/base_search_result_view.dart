@@ -56,7 +56,7 @@ class _BaseSearchResultView<T extends Searchable> extends State<BaseSearchResult
             separatorBuilder: (context, index) => const PaddedDivider(
                   height: 0,
                 ),
-            itemCount: min(cachedData.length, 5));
+            itemCount: min(cachedData.length, 7));
       } else {
         body = SizedBox(height: 100, child: Center(child: Text(AppLocalizations.of(context)!.searchNoResults)));
       }

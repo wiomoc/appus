@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:campus_flutter/learningSpacesComponent/views/room_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import '../api/stuvus_learning_spaces.dart';
@@ -6,9 +7,10 @@ import '../model/learning_spaces.dart';
 
 class RoomCard extends StatelessWidget {
   final Room room;
+  final List<String> tags;
   final double? occupationPercentage;
 
-  const RoomCard({required this.room, this.occupationPercentage, super.key});
+  const RoomCard({required this.room, this.occupationPercentage, super.key, required this.tags});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class RoomCard extends StatelessWidget {
               ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: CachedNetworkImage(
-                      imageUrl: "$learningSpacesBaseUrl/${room.thumbnail!}",
+                      imageUrl: expandImageUrl(room.thumbnail!),
                       fit: BoxFit.cover,
                       height: 140,
                       width: double.infinity,
@@ -51,15 +53,17 @@ class RoomCard extends StatelessWidget {
                           const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
                           Expanded(
                               child: Text(
-                                room.address,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              )),
+                            room.address.split(",").first,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          )),
                           Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("${room.seats} Seats", maxLines: 1, style: Theme.of(context).textTheme.bodyLarge),
+                                if (room.seats != null)
+                                  Text("${room.seats} Seats",
+                                      maxLines: 1, style: Theme.of(context).textTheme.bodyLarge),
                                 if (occupationPercentage != null)
                                   Text("~${occupationPercentage!.toStringAsFixed(0)}%",
                                       maxLines: 1, style: Theme.of(context).textTheme.bodyLarge),
@@ -72,12 +76,11 @@ class RoomCard extends StatelessWidget {
   }
 
   void _showDetailsBottomSheet(BuildContext context) {
-    /*showModalBottomSheet(
+    showModalBottomSheet(
         isScrollControlled: true,
         useSafeArea: true,
         isDismissible: true,
         context: context,
-        builder: (context) => MealBottomSheet(meal: meal, stars: stars, date: date, onStarsUpdate: onStarsUpdate));
-        */
+        builder: (context) => RoomBottomSheet(room: room, tags: tags));
   }
 }

@@ -14,8 +14,8 @@ class LinkView extends ConsumerWidget {
     return Row(
       children: [
         Expanded(
-            child: AspectRatio(
-                aspectRatio: 3,
+            child: SizedBox(
+                height: 60,
                 child: Card(
                     margin: EdgeInsets.only(right: 5.0, top: 5.0, bottom: 5.0, left: context.halfPadding),
                     child: InkWell(
@@ -30,8 +30,8 @@ class LinkView extends ConsumerWidget {
                           iconSize: 24,
                         )))))),
         Expanded(
-            child: AspectRatio(
-                aspectRatio: 3,
+            child: SizedBox(
+                height: 60,
                 child: Card(
                     margin: const EdgeInsets.all(5.0),
                     child: InkWell(
@@ -47,8 +47,8 @@ class LinkView extends ConsumerWidget {
                           iconSize: 24,
                         )))))),
         Expanded(
-            child: AspectRatio(
-                aspectRatio: 3,
+            child: SizedBox(
+                height: 60,
                 child: Card(
                     margin: EdgeInsets.only(right: context.halfPadding, top: 5.0, bottom: 5.0, left: 5.0),
                     child: InkWell(

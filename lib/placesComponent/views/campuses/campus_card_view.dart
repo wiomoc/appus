@@ -11,13 +11,10 @@ class CampusCardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         constraints: const BoxConstraints(maxWidth: 600),
-        child: AspectRatio(
-            aspectRatio: 1.75,
-            child: Card(
-                child: Column(
-              children: [
-                Expanded(
-                    flex: 2,
+        child: Card(
+            child: Column(
+          children: [AspectRatio(
+                    aspectRatio: 1.8,
                     child: SizedBox.expand(
                         child: ClipRRect(
                             borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
@@ -40,23 +37,24 @@ class CampusCardView extends StatelessWidget {
                                     ]),
                                   ))
                             ])))),
-                for (var popularRoom in campus.popularRooms)
-                  ListTile(
-                    title: Text(
-                      popularRoom.$1,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    leading: const Icon(
-                      Icons.school,
-                      size: 16,
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => RoomLocationPage(roomId: popularRoom.$2))),
-                  )
-              ],
-            ))));
+            for (var popularRoom in campus.popularRooms)
+              ListTile(
+                title: Text(
+                  popularRoom.$1,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                leading: const Icon(
+                  Icons.school,
+                  size: 16,
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                ),
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => RoomLocationPage(roomId: popularRoom.$2))),
+              )
+          ],
+        )));
   }
 }

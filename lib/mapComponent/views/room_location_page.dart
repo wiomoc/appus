@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:campus_flutter/base/l10n/generated/app_localizations.dart';
 
 import '../../base/helpers/api_backed_state.dart';
+import '../../base/views/child_sized_draggable_scrollable_sheet.dart';
 import '../api/room_location_api.dart';
 import '../model/room_location.dart';
 import 'floor_plan_view.dart';
 import 'room_information_view.dart';
-
 
 class RoomLocationPage extends StatefulWidget {
   final int roomId;
@@ -51,13 +51,10 @@ class RoomLocationPageState extends ApiBackedState<RoomLocation, RoomLocationPag
               : null,
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           bottomSheet: data != null
-              ? DraggableScrollableSheet(
-                  minChildSize: 50 / screenHeight,
-                  maxChildSize: 200 / screenHeight,
-                  initialChildSize: 120 / screenHeight,
-                  expand: false,
-                  builder: (context, scrollController) =>
-                      SingleChildScrollView(controller: scrollController, child: RoomInformationView(data!)))
+              ? ChildSizedDraggableScrollableSheet(
+                  hiddenHeight: 20,
+                  builder: (context) =>
+                      RoomInformationView(data!))
               : null,
         ));
   }

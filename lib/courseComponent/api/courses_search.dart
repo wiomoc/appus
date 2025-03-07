@@ -1,10 +1,11 @@
+import 'package:collection/collection.dart';
+
 import '../../base/helpers/api_operation.dart';
 import '../../base/networking/apis/campUSApi/campus_api.dart';
 import '../../providers_get_it.dart';
 import '../model/course_summary.dart';
 
 class CoursesSearchApiOperation extends ApiOperation<List<CourseSummary>> {
-
   final String searchText;
 
   CoursesSearchApiOperation(this.searchText);
@@ -23,28 +24,28 @@ class CoursesSearchApiOperation extends ApiOperation<List<CourseSummary>> {
   @override
   Future<List<CourseSummary>> fetchOnline() async {
     final campusApi = getIt.get<CampusApi>();
-    final List<dynamic> courseResources = await campusApi.callRestApi("slc.tm.cp/student/courses",
-        params: {
-          "\$orderBy": "title=ascnf",
-          "\$skip": 0,
-          "\$top": 5,
-          "\$filter": "courseNormKey-eq=LVEAB;filterTerm-like=$searchText;orgId-eq=3"
-        });
+    final List<dynamic> courseResources =
+        await campusApi.callRestApi("slc.tm.cp/student/courses", resourcesKey: "courses", params: {
+      "\$orderBy": "title=ascnf",
+      "\$skip": 0,
+      "\$top": 10,
+      "\$filter": "courseNormKey-eq=LVEAB;filterTerm-like=$searchText;orgId-eq=3"
+    });
 
-    return courseResources.map((courseResource) {
-      final course = courseResource["content"]["cpCourseDto"];
-      final semesterHoursString = (course["courseNormConfigs"] as List<dynamic>)
-          .where((element) => element["key"] == "SST")
-          .firstOrNull?["value"];
+    return courseResources
+        .map((course) {
+          final semesterHoursString = (course["courseNormConfigs"] as List<dynamic>)
+              .where((element) => element["key"] == "SST")
+              .firstOrNull?["value"];
 
-      return CourseSummary(
-          id: course["id"],
-          courseNumber: course["courseNumber"]["courseNumber"],
-          localizedTitle: CampusApi.getLocalized(course["courseTitle"])!,
-          localizedType: CampusApi.getLocalized(course["courseTypeDto"]["courseTypeName"])!,
-          groupId: 0,
-          semesterHours: (semesterHoursString != null) ? int.tryParse(semesterHoursString) : null);
-    }).toList(growable: false);
+          return CourseSummary(
+              id: course["id"],
+              courseNumber: course["courseNumber"]["courseNumber"],
+              localizedTitle: CampusApi.getLocalized(course["courseTitle"])!,
+              localizedType: CampusApi.getLocalized(course["courseTypeDto"]["courseTypeName"])!,
+              groupId: 0,
+              semesterHours: (semesterHoursString != null) ? int.tryParse(semesterHoursString) : null);
+        })
+        .toList(growable: false);
   }
 }
-

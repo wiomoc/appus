@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 
 import '../../base/helpers/url_launcher.dart';
+import '../../base/views/child_sized_draggable_scrollable_sheet.dart';
 import '../model/news.dart';
 
 class NewsCard extends StatelessWidget {
@@ -41,7 +42,9 @@ class NewsCard extends StatelessWidget {
                                 Image.asset("assets/images/placeholders/news_placeholder.png", fit: BoxFit.fill),
                             errorWidget: (context, url, error) => Image.asset(
                                   "assets/images/placeholders/news_placeholder.png",
-                                ))),
+                                )))
+                  else
+                    const Padding(padding: EdgeInsets.all(2)),
                   if (news.title != null)
                     Expanded(
                         child: Padding(
@@ -77,54 +80,50 @@ class NewsCard extends StatelessWidget {
         builder: (context) {
           return Container(
               constraints: const BoxConstraints(maxWidth: 480),
-              child: DraggableScrollableSheet(
-                  initialChildSize: 0.8,
-                  minChildSize: 0.8,
-                  expand: false,
-                  builder: (context, scrollController) {
-                    final isInstagram = newsItem.link.contains("instagram.com");
-                    return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      if (newsItem.image != null)
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(15.0),
-                            child: Image.network(
-                              newsItem.image!.toString(),
-                              fit: BoxFit.fitWidth,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(
-                                    child: Padding(padding: EdgeInsets.all(25), child: CircularProgressIndicator()));
-                              },
-                            )),
-                      Expanded(
-                          child: SingleChildScrollView(
-                              controller: scrollController,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                if (newsItem.title != null)
-                                  Padding(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Text(newsItem.title!,
-                                          style: Theme.of(context).textTheme.titleMedium)),
-                                if (newsItem.text != null)
-                                  Padding(
-                                      padding: const EdgeInsets.all(1),
-                                      child: Html(
-                                        data: newsItem.text!,
-                                      )),
-                                ListTile(
-                                    onTap: () {
-                                      UrlLauncher.urlString(newsItem.link);
-                                    },
-                                    leading: Icon(isInstagram ? Icons.photo_outlined : Icons.language),
-                                    trailing: const Icon(Icons.open_in_new),
-                                    title: Text(
-                                      isInstagram ? "Instagram" : newsItem.link,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ))
-                              ]))),
-                    ]);
-                  }));
+              child: ChildSizedDraggableScrollableSheet(builder: (context) {
+                final isInstagram = newsItem.link.contains("instagram.com");
+                return Column(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                  if (newsItem.image != null)
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Image.network(
+                          newsItem.image!.toString(),
+                          fit: BoxFit.fitWidth,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(
+                                child: Padding(padding: EdgeInsets.all(25), child: CircularProgressIndicator()));
+                          },
+                        ))
+                  else
+                    const Padding(padding: EdgeInsets.all(5.0)),
+                  Flexible(
+                      child: SingleChildScrollView(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            if (newsItem.title != null)
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  child: Text(newsItem.title!, style: Theme.of(context).textTheme.titleMedium)),
+                            if (newsItem.text != null)
+                              Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Html(
+                                    data: newsItem.text!,
+                                  )),
+                            ListTile(
+                                onTap: () {
+                                  UrlLauncher.urlString(newsItem.link);
+                                },
+                                leading: Icon(isInstagram ? Icons.photo_outlined : Icons.language),
+                                trailing: const Icon(Icons.open_in_new),
+                                title: Text(
+                                  isInstagram ? "Instagram" : newsItem.link,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ))
+                          ]))),
+                ]);
+              }));
         });
   }
 }

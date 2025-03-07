@@ -2,6 +2,7 @@ import 'package:campus_flutter/mapComponent/views/map_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../base/helpers/api_backed_state.dart';
+import '../../base/views/child_sized_draggable_scrollable_sheet.dart';
 import '../../courseComponent/views/basic_course_info_row_view.dart';
 import '../api/building_location_api.dart';
 import '../model/room_location.dart';
@@ -37,19 +38,14 @@ class RoomLocationPageState extends ApiBackedState<Building, BuildingLocationPag
           appBar: appBar(),
           body: body(),
           bottomSheet: data != null
-              ? DraggableScrollableSheet(
-                  minChildSize: 50 / screenHeight,
-                  maxChildSize: 100 / screenHeight,
-                  initialChildSize: 80 / screenHeight,
-                  expand: false,
-                  builder: (context, scrollController) => SingleChildScrollView(
-                      controller: scrollController,
-                      child: Padding(
+              ? ChildSizedDraggableScrollableSheet(
+                  hiddenHeight: 20,
+                  builder: (context) => Padding(
                           padding: const EdgeInsets.all(12),
                           child: BasicCourseInfoRowView(
                             iconData: Icons.location_city_outlined,
                             information: "${data!.street}\n${data!.city}",
-                          ))))
+                          )))
               : null,
         ));
   }

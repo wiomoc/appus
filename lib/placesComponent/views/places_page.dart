@@ -30,7 +30,9 @@ class PlacesPage extends StatelessWidget {
           const CampusCardView(campus: Campus.stadtmitte)
         ]
         else
-          const Row(children: [
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             Expanded(child: CampusCardView(campus: Campus.vaihingen)),
             Expanded(child: CampusCardView(campus: Campus.stadtmitte))
           ],)

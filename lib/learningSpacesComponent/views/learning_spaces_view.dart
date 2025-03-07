@@ -62,6 +62,11 @@ class LearningSpacesViewState extends State<LearningSpacesView> {
                   padding: const EdgeInsets.all(5),
                   child: RoomCard(
                     room: room,
+                    tags: [
+                      learningSpaces.locations.firstWhere((campus) => campus.id == room.location).label,
+                      learningSpaces.accessGroups.firstWhere((accessGroup) => accessGroup.id == room.accessGroups).toString(),
+                      learningSpaces.types.firstWhere((type) => type.id == room.type).toString(),
+                    ],
                     occupationPercentage: room.tikName != null ? (widget.occupations?[room.tikName!]) : null,
                   ));
             })

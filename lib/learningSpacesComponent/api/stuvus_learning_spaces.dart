@@ -25,3 +25,5 @@ class LearningSpacesApiOperation extends ApiOperation<LearningSpaces> {
     return LearningSpaces.fromJson(response.data);
   }
 }
+
+String expandImageUrl(String relativeImageUrl) => "$learningSpacesBaseUrl/$relativeImageUrl";
